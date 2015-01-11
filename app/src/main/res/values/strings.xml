@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Suvidha</string>
+    <string name="hello_world">Suvidha</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_suvidha_member">SuvidhaMember</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+    <string name="disease_prompt">Others</string>
+    //Database                                <string-array name="Diseases">
+        <item> Eye doctors </item>
+        <item> ENT doctors</item>
+        <item> Skin doctors</item>
+        <item> Heart doctors</item>
+        <item> Kidney doctors</item>
+        <item> Neurologists</item>
+        <item> Osteologists</item>
+        <item> General physicians</item>
+    </string-array>
+
+    <string name="title_activity_emergency_page">EmergencyPage</string>
+    <string name="title_activity_ambulance">Ambulance</string>
+    <string name="title_activity_seach_results">SeachResults</string>
+    <string name="title_activity_rate_doctors">RateDoctors</string>
+    <string name="title_activity_forum">Forum</string>
+    <string name="title_activity_check_appointment_status">CheckAppointmentStatus</string>
+    <string name="title_activity_suvidha_doctor">SuvidhaDoctor</string>
+    <string name="title_activity_suvidha_hospital">SuvidhaHospital</string>
+    <string name="title_activity_update_details">UpdateDetails</string>
+    <string name="title_activity_existing_appointments">ExistingAppointments</string>
+
+</resources>

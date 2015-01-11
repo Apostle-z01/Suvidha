@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.prithwishmukherjee.duvidha" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SuvidhaMember"
+            android:label="@string/title_activity_suvidha_member"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.prithwishmukherjee.duvidha.MainActivity" />
+        </activity>
+        <activity
+            android:name=".EmergencyPage"
+            android:label="@string/title_activity_emergency_page" >
+        </activity>
+        <activity
+            android:name=".Ambulance"
+            android:label="@string/title_activity_ambulance" >
+        </activity>
+        <activity
+            android:name=".SearchResults"
+            android:label="@string/title_activity_seach_results" >
+        </activity>
+        <activity
+            android:name=".RateDoctors"
+            android:label="@string/title_activity_rate_doctors" >
+        </activity>
+        <activity
+            android:name=".Forum"
+            android:label="@string/title_activity_forum" >
+        </activity>
+        <activity
+            android:name=".CheckAppointmentStatus"
+            android:label="@string/title_activity_check_appointment_status" >
+        </activity>
+        <activity
+            android:name=".SuvidhaDoctor"
+            android:label="@string/title_activity_suvidha_doctor" >
+        </activity>
+        <activity
+            android:name=".SuvidhaHospital"
+            android:label="@string/title_activity_suvidha_hospital" >
+        </activity>
+        <activity
+            android:name=".UpdateDetails"
+            android:label="@string/title_activity_update_details" >
+        </activity>
+        <activity
+            android:name=".ExistingAppointments"
+            android:label="@string/title_activity_existing_appointments" >
+        </activity>
+    </application>
+//  fucking push
+</manifest>

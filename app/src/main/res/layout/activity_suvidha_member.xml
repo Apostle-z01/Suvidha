@@ -1,0 +1,113 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.prithwishmukherjee.duvidha.SuvidhaMember"
+    android:id="@+id/p2"
+    android:background="#ffffc255"
+    android:clickable="true">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search for"
+        android:id="@+id/textView3"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="112dp"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size" />
+
+
+
+
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:entries= "@array/Diseases"
+        android:prompt="@string/disease_prompt"
+        android:spinnerMode="dropdown"
+        android:layout_alignTop="@+id/textView3"
+        android:background="#ffffffff"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/textView3"
+        android:layout_marginRight="100dp"
+        android:minHeight="@dimen/abc_action_bar_icon_vertical_padding_material" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go"
+        android:id="@+id/button"
+        android:layout_alignTop="@+id/spinner"
+        android:layout_alignStart="@+id/spinner"
+        android:layout_marginStart="291dp"
+        android:textSize="30dp"
+        android:background="#ffeeff54"
+        android:onClick="gotoSearchResults"
+        android:enabled="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Welcomelogo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="left"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:layout_marginTop="20dp"
+        android:textColor="#ff000000"
+        android:background="#ffffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate Doctors"
+        android:id="@+id/RateDoctors"
+        android:layout_below="@+id/spinner"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="100dp"
+        android:clickable="true"
+        android:onClick="gotoRateDoctors"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Discuss in forum"
+        android:id="@+id/Discuss"
+        android:clickable="true"
+        android:onClick="gotoForum"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check Appointments status"
+        android:id="@+id/Appointment"
+        android:layout_marginTop="83dp"
+        android:clickable="true"
+        android:onClick="gotoCheckAppointmentStatus"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:layout_below="@+id/Discuss"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Details"
+        android:id="@+id/update"
+        android:clickable="true"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:layout_marginTop="79dp"
+        android:layout_below="@+id/Appointment"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>

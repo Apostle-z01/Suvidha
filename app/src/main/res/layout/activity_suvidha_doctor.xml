@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.prithwishmukherjee.duvidha.SuvidhaDoctor"
+    android:id="@+id/d1"
+    android:background="#fffeff62">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="40dp"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View appointments"
+        android:id="@+id/viewExisitngAppointments"
+        android:layout_marginTop="180dp"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:onClick="viewExistingAppointments"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Pending Appointments"
+        android:id="@+id/pendingAppointments"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="75dp"
+        android:clickable="true"
+        android:onClick="viewExistingAppointments"
+        android:layout_below="@+id/viewExisitngAppointments" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Details"
+        android:id="@+id/updateDetails"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:layout_marginTop="69dp"
+        android:layout_below="@+id/pendingAppointments"
+        android:layout_alignParentStart="true"
+        android:clickable="true"
+        android:onClick="updateDetails"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="current rating: "
+        android:id="@+id/textView15"
+        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:textColor="#ffff3147"
+        android:layout_alignParentStart="true"
+        android:layout_alignLeft="@+id/imageView2"
+        android:layout_below="@+id/textView4" />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:layout_toEndOf="@+id/imageView2"
+        android:layout_below="@+id/textView15"
+        android:numStars="10" />
+
+</RelativeLayout>
