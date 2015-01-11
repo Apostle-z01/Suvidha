@@ -3,14 +3,28 @@ package com.example.prithwishmukherjee.duvidha;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.ibm.mobile.services.data.IBMDataException;
+import com.ibm.mobile.services.data.IBMQuery;
+
+import java.util.List;
+
+import bolts.Continuation;
+import bolts.Task;
+
 
 public class MainActivity extends ActionBarActivity {
+
+    //Defining global variables here
+    SuvidhaApplication svdApplication;
+    //ArrayAdapter<Doctor> lvArrayAdapter;
+    public static final String CLASS_NAME="MainActivity";
 
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
 
@@ -18,29 +32,64 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
+        /* Use application class to maintain global state. */
+        svdApplication = (SuvidhaApplication) getApplication();
+        //itemList = blApplication.getItemList();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+        //Code to add new doctor to the database
+        /*
+        Doctor doc = new Doctor();
+        doc.setAddress("LLR A-111, IIT Kharagpur");
+        doc.setName("Prithvish Mukerjee");
+        doc.setArea("Genitals");
+        doc.save().continueWith(new Continuation<IBMDataObject, Void>() {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+            @Override
+            public Void then(Task<IBMDataObject> task) throws Exception {
+                if (task.isFaulted()) {
+                    // Handle errors
+                    Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                    return null;
+                } else {
+                    Doctor myDoc = (Doctor) task.getResult();
+                    Log.e(CLASS_NAME,myDoc.getAddress());
+                    Log.e(CLASS_NAME,myDoc.getName());
+                    Log.e(CLASS_NAME,myDoc.getArea());
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+                    // Do more work
+                }
+                return null;
+            }
+        });
+        */
+
+        try {
+            //To retrieve from the database
+            IBMQuery<Doctor> query = IBMQuery.queryForClass(Doctor.class);
+
+            query.find().continueWith(new Continuation<List<Doctor>, Void>() {
+
+                @Override
+                public Void then(Task<List<Doctor>> task) throws Exception {
+                    if (task.isFaulted()) {
+                        // Handle errors
+                    } else {
+                        // do more work
+                        List<Doctor> objects = task.getResult();
+                        for(Doctor doc:objects){
+                            Log.e(CLASS_NAME, doc.getName());
+                            Log.e(CLASS_NAME,doc.getArea());
+                            Log.e(CLASS_NAME,doc.getAddress());
+                        }
+                    }
+                    return null;
+                }
+            }, Task.UI_THREAD_EXECUTOR);
+        } catch (IBMDataException error) {
+            Log.e(CLASS_NAME,"Exception : " +error.getMessage());
         }
 
-        return super.onOptionsItemSelected(item);
     }
 
     //Log in button
