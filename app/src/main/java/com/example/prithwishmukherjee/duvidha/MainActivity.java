@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
         */
-
+        Log.e(CLASS_NAME,"Inside onCreate");
         try {
             //To retrieve from the database
             IBMQuery<Doctor> query = IBMQuery.queryForClass(Doctor.class);
@@ -82,6 +82,7 @@ public class MainActivity extends ActionBarActivity {
                             Log.e(CLASS_NAME,doc.getArea());
                             Log.e(CLASS_NAME,doc.getAddress());
                         }
+                        Log.e(CLASS_NAME,"HERE");
                     }
                     return null;
                 }
