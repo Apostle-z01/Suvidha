@@ -4,7 +4,7 @@ import com.ibm.mobile.services.data.IBMDataObject;
 import com.ibm.mobile.services.data.IBMDataObjectSpecialization;
 
 /**
- * Created by Prithwish, not Manav on 1/10/2015.
+ * Created by Manav on 1/10/2015.
  */
 @IBMDataObjectSpecialization("Doctor")
 public class Doctor extends IBMDataObject{

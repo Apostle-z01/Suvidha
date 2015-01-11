@@ -77,7 +77,9 @@ public class SuvidhaApplication extends Application{
 
         // Initialize the IBM Data Service.
         IBMData.initializeService();
-        // Register the Item Specialization.
+
+        // Register the Specializations.
         Doctor.registerSpecialization(Doctor.class);
+        Users.registerSpecialization(Users.class);
     }
 }
