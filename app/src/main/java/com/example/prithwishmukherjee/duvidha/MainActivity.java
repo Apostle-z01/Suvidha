@@ -227,4 +227,9 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, EmergencyPage.class);
         startActivity(intent);
     }
+
+    public void gotoRegistrationPage(View view){
+        Intent intent = new Intent(this, RegistrationPage.class);
+        startActivity(intent);
+    }
 }

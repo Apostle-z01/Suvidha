@@ -29,16 +29,16 @@ public class SearchResults extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search_results);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        //Intent intent = getIntent();
+        //String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
-        ll=(LinearLayout) findViewById(R.id.ll);
+        ll=(LinearLayout) findViewById(R.id.li);
 
         list1 = new ArrayList<String>();
 
-        list1.add("List of Doctors for " + message);
+        list1.add("List of Doctors for " );
 
 
 
