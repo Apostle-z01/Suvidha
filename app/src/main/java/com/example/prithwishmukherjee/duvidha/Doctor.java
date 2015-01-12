@@ -40,6 +40,46 @@ public class Doctor extends IBMDataObject{
         setObject("area", (docArea != null) ? docArea : "");
     }
 
+    /*Gets the regNum of the Doctor*/
+    public String getReg() {
+        return (String) getObject("registrationNumber");
+    }
+
+    /* Sets the regNum of the doctor */
+    public void setReg(String regNum) {
+        setObject("registrationNumber", (regNum != null) ? regNum : "");
+    }
+
+    /*Gets the docFees of the Doctor*/
+    public String getFees() {
+        return (String) getObject("area");
+    }
+
+    /* Sets the docFees of the doctor */
+    public void setFees(String docFees) {
+        setObject("fees", (docFees != null) ? docFees : "");
+    }
+
+    /*Gets whether the doctor takes online appointment*/
+    public String getAppointments() {
+        return (String) getObject("takesAppointments");
+    }
+
+    /* Sets the docAppoint of the doctor */
+    public void setAppointments(String docAppoint) {
+        setObject("takesAppointments", (docAppoint != null) ? docAppoint : "");
+    }
+
+    /*Gets the docId of the Doctor*/
+    public String getId() {
+        return (String) getObject("id");
+    }
+
+    /* Sets the docId of the doctor */
+    public void setId(String docId) {
+        setObject("id", (docId != null) ? docId : "");
+    }
+
 
 
     /**

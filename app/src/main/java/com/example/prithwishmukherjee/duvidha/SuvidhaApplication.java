@@ -8,6 +8,8 @@ import android.util.Log;
 import com.ibm.mobile.services.core.IBMBluemix;
 import com.ibm.mobile.services.data.IBMData;
 
+import javax.net.ssl.HostnameVerifier;
+
 
 /**
  * Created by Manav on 1/10/2015.
@@ -81,5 +83,8 @@ public class SuvidhaApplication extends Application{
         // Register the Specializations.
         Doctor.registerSpecialization(Doctor.class);
         Users.registerSpecialization(Users.class);
+        Hospital.registerSpecialization(Hospital.class);
+        Patient.registerSpecialization(Patient.class);
+        Appointments.registerSpecialization(Appointments.class);
     }
 }
