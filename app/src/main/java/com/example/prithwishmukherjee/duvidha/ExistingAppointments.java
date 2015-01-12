@@ -50,7 +50,7 @@ public class ExistingAppointments extends ActionBarActivity {
 
             //Get from Database
             TextView pname = new TextView(this);
-            pname.setText("Patient"+i);
+            pname.setText("Patient-"+i);
 
             TextView adate = new TextView(this);
             adate.setText(date.toString());

@@ -19,7 +19,7 @@ public class CheckAppointmentStatus extends ActionBarActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra(SuvidhaMember.EXTRA_MESSAGE);
         TextView textView = new TextView(this);
-        textView.setTextSize(50);
+        textView.setTextSize(51);
         textView.setText("Welcome " + username);
 
         setContentView(textView);

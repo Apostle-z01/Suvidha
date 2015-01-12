@@ -217,6 +217,6 @@
         android:clickable="true"
         android:textColor="#ffffffff"
         android:textSize="@dimen/abc_action_bar_progress_bar_size"
-        android:background="#d6342260" />
+        android:background="#d6242260" />
 
 </RelativeLayout>

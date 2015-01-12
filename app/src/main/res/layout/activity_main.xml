@@ -86,7 +86,7 @@
         android:clickable="true"
         android:onClick="gotoRegistrationPage"
         android:background="#ffffffff"
-        android:textColor="#ffff604a" />
+        android:textColor="#ffff614a" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -63,6 +63,7 @@ public class RegistrationPage extends ActionBarActivity {
         r1.setVisibility(View.GONE);
         editText1.setVisibility(View.GONE);
         editText.setVisibility(View.GONE);
+        //88
     }
 
     public void register(View view)
