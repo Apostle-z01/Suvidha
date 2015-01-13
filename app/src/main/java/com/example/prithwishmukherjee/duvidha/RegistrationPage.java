@@ -47,6 +47,8 @@ public class RegistrationPage extends ActionBarActivity {
     String regNum;
     String name;
     String type;
+    String area;
+    String fees;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +125,11 @@ public class RegistrationPage extends ActionBarActivity {
             type = "D";
             EditText etReg = (EditText) findViewById(R.id.regRegistrationNo);
             regNum = etReg.getText().toString();
+            EditText etFees = (EditText) findViewById(R.id.Fees);
+            fees = etFees.getText().toString();
+
+            EditText etArea = (EditText) findViewById(R.id.Specialisation);
+            etArea.getText().toString();
 
             RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.regOnlineApp);
             int id1 = radioGroup1.getCheckedRadioButtonId();
@@ -299,6 +306,8 @@ public class RegistrationPage extends ActionBarActivity {
             doc.setLon(lon);
             doc.setRegNum(regNum);
             doc.setOnlineAppointment(onlineApp);
+            doc.setArea(area);
+            doc.setFees(fees);
 
             doc.save().continueWith(new Continuation<IBMDataObject, Void>() {
 
