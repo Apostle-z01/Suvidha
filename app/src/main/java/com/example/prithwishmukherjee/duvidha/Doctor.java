@@ -62,7 +62,7 @@ public class Doctor extends IBMDataObject{
 
     /*Gets the docFees of the Doctor*/
     public String getFees() {
-        return (String) getObject("area");
+        return (String) getObject("fees");
     }
 
     /* Sets the docFees of the doctor */
@@ -102,12 +102,12 @@ public class Doctor extends IBMDataObject{
 
     /*Gets the docRating of the doctor*/
     public String getRating() {
-        return (String) getObject("docRating");
+        return (String) getObject("rating");
     }
 
     /* Sets the docRating of the doctor */
     public void setRating(String docRating) {
-        setObject("docRating", (docRating != null) ? docRating : "");
+        setObject("rating", (docRating != null) ? docRating : "");
     }
 
     /**

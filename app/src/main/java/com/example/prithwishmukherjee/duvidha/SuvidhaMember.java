@@ -1,21 +1,13 @@
 package com.example.prithwishmukherjee.duvidha;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.example.prithwishmukherjee.duvidha.MainActivity;
 
 
 public class SuvidhaMember extends ActionBarActivity {
@@ -64,7 +56,7 @@ public class SuvidhaMember extends ActionBarActivity {
         }
 
         Intent intent = new Intent(this, SearchResults.class);
-        intent.putExtra(EXTRA_MESSAGE, lat + " " + lng);
+        intent.putExtra("search", lat + " " + lng);
         startActivity(intent);
     }
 

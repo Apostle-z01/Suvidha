@@ -2,13 +2,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
+    android:fillViewport="false"
+    android:id="@+id/search_result">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/li"
         android:orientation = "vertical">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner2"
+            android:layout_gravity="right"
+            android:entries= "@array/Search_Options"
+            android:spinnerMode="dropdown"
+            android:background="#ffffffff"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/textView3"
+            android:layout_marginRight="100dp"
+            android:minHeight="@dimen/abc_action_bar_icon_vertical_padding_material"/>
     </LinearLayout>
 
 </ScrollView>

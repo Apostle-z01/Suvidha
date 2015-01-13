@@ -18,6 +18,11 @@
         <item> Osteologists</item>
         <item> General physicians</item>
     </string-array>
+    <string-array name="Search_Options">
+        <item> Top Rated Doctors </item>
+        <item> Nearest First </item>
+        <item> Cheapest First </item>
+    </string-array>
 
     <string name="title_activity_emergency_page">EmergencyPage</string>
     <string name="title_activity_ambulance">Ambulance</string>

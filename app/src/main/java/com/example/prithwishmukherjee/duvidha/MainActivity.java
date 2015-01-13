@@ -1,27 +1,22 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.ibm.mobile.services.data.IBMDataException;
-import com.ibm.mobile.services.data.IBMDataObject;
 import com.ibm.mobile.services.data.IBMQuery;
 
 import java.util.List;
 
-import bolts.Capture;
 import bolts.Continuation;
 import bolts.Task;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -152,10 +147,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     //Log in button
-    public void gotoMemberPage(View view) {
+    public void gotoMemberPage(View view){
 
-        EditText userId = (EditText) findViewById(R.id.userId);
-        EditText password = (EditText) findViewById(R.id.password);
+        EditText userId = (EditText)findViewById(R.id.userId);
+        EditText password = (EditText)findViewById(R.id.password);
         final String username = userId.getText().toString();
         final String userpass = password.getText().toString();
 
@@ -186,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
                             Log.e(CLASS_NAME, newUser.getPassword());
                             Log.e(CLASS_NAME, newUser.getType());
                             Intent intent;
-                            String type = "D";//get from Database
+                            String type = newUser.getType();//get from Database
                             if (newUser.getName().equalsIgnoreCase(username) && newUser.getPassword().equals(userpass)) {
                                 Log.e(CLASS_NAME, "Login successful");
                                 if (type.equals("P"))
