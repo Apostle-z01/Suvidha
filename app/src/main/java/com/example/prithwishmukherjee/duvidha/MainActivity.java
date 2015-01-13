@@ -1,5 +1,6 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.ibm.mobile.services.data.IBMQuery;
 
 import java.util.List;
 
+import bolts.Capture;
 import bolts.Continuation;
 import bolts.Task;
 import android.app.AlertDialog;
@@ -26,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
 
     //Defining global variables here
     SuvidhaApplication svdApplication;
-    //ArrayAdapter<Doctor> lvArrayAdapter;
+    int flag;
     public static final String CLASS_NAME="MainActivity";
 
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
@@ -150,76 +152,73 @@ public class MainActivity extends ActionBarActivity {
     }
 
     //Log in button
-    public void gotoMemberPage(View view){
+    public void gotoMemberPage(View view) {
 
-        EditText userId = (EditText)findViewById(R.id.userId);
-        EditText password = (EditText)findViewById(R.id.password);
+        EditText userId = (EditText) findViewById(R.id.userId);
+        EditText password = (EditText) findViewById(R.id.password);
         final String username = userId.getText().toString();
         final String userpass = password.getText().toString();
 
-        Log.e(CLASS_NAME,username);
-        Log.e(CLASS_NAME,userpass);
-        Log.e(CLASS_NAME,"Checking user credentials from database");
+        Log.e(CLASS_NAME, username);
+        Log.e(CLASS_NAME, userpass);
+        Log.e(CLASS_NAME, "Checking user credentials from database");
 
         //To retrieve from the database
         Users user = new Users();
         user.setName(username);
         user.setPassword(userpass);
         user.setType("P");
+        final Context context = this;
 
-        Boolean flag = false;
         try {
             IBMQuery<Users> query = IBMQuery.queryForClass(Users.class);
-            flag = query.find().continueWith(new Continuation<List<Users>, Boolean>() {
+            query.find().continueWith(new Continuation<List<Users>, Void>() {
                 @Override
-                public Boolean then(Task<List<Users>> task) throws Exception {
+                public Void then(Task<List<Users>> task) throws Exception {
                     if (task.isFaulted()) {
                         // Handle errors
                         Log.e(CLASS_NAME, "Error in retrieving");
                     } else {
                         // do more work
                         List<Users> objects = task.getResult();
-                        for(Users newUser:objects) {
+                        for (Users newUser : objects) {
                             Log.e(CLASS_NAME, newUser.getName());
                             Log.e(CLASS_NAME, newUser.getPassword());
                             Log.e(CLASS_NAME, newUser.getType());
-                            if(newUser.getName().equalsIgnoreCase(username) && newUser.getPassword().equals(userpass)){
-                                Log.e(CLASS_NAME,"Login successful");
-                                return true;
+                            Intent intent;
+                            String type = "D";//get from Database
+                            if (newUser.getName().equalsIgnoreCase(username) && newUser.getPassword().equals(userpass)) {
+                                Log.e(CLASS_NAME, "Login successful");
+                                if (type.equals("P"))
+                                    intent = new Intent(context, SuvidhaMember.class);
+                                else if (type.equals("D"))
+                                    intent = new Intent(context, SuvidhaDoctor.class);
+                                else
+                                    intent = new Intent(context, SuvidhaHospital.class);
+                                intent.putExtra(EXTRA_MESSAGE, username);
+                                startActivity(intent);
+                                return null;
                             }
                         }
+                        Log.e(CLASS_NAME, "Login unsuccessful");
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                        Log.e(CLASS_NAME, "Inside user received");
+                        alertDialog.setTitle("Wrong credentials");
+                        alertDialog.setMessage("Username/Password is wrong");
+                        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // here you can add functions
+                            }
+                        });
+                        AlertDialog dialog = alertDialog.create();
+                        alertDialog.show();
                         Log.e(CLASS_NAME, "Inside user received");
                     }
-                    return false;
-                }
-            }, Task.UI_THREAD_EXECUTOR).getResult();
-        }catch(IBMDataException e){
-            Log.e(CLASS_NAME,"IBM Exception");
-        }
-
-        Intent intent;
-        String type = "D";//get from Database
-
-        if(flag==true){
-            if (type.equals("P"))
-                intent = new Intent(this, SuvidhaMember.class);
-            else if (type.equals("D"))
-                intent = new Intent(this, SuvidhaDoctor.class);
-            else
-                intent = new Intent(this, SuvidhaHospital.class);
-            intent.putExtra(EXTRA_MESSAGE, username);
-            startActivity(intent);
-        }
-        else{
-            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setTitle("Wrong credentials");
-            alertDialog.setMessage("Username/Password is wrong");
-            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // here you can add functions
+                    return null;
                 }
             });
-            alertDialog.show();
+        } catch (IBMDataException e) {
+            Log.e(CLASS_NAME, "IBM Exception");
         }
     }
 
@@ -227,4 +226,5 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, EmergencyPage.class);
         startActivity(intent);
     }
+
 }
