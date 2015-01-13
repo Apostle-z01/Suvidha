@@ -32,7 +32,6 @@ public class PendingAppointments extends ActionBarActivity {
         Intent intent = getIntent();
         username = intent.getStringExtra(SuvidhaDoctor.EXTRA_MESSAGE);
         setContentView(R.layout.activity_existing_appointments);
-        //maintable = (TableLayout)this.maintable;
 
 
         Date date = new Date(2015-1900, 2-1, 1);
