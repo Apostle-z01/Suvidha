@@ -32,23 +32,23 @@ public class Appointments extends IBMDataObject{
 
 
     /*Gets the patId of the patient*/
-    public String getPatId() {
-        return (String) getObject("patId");
+    public String getPatUsername() {
+        return (String) getObject("patUsername");
     }
 
     /* Sets the patId of the patient */
-    public void setPatId(String patId) {
-        setObject("patId", (patId != null) ? patId : "");
+    public void setPatUsername(String patId) {
+        setObject("patUsername", (patId != null) ? patId : "");
     }
 
     /*Gets the docId of the doctor*/
-    public String getDocId() {
-        return (String) getObject("docId");
+    public String getDocUsername() {
+        return (String) getObject("docUsername");
     }
 
     /* Sets the docId of the doctor */
-    public void setDocId(String docId) {
-        setObject("docId", (docId != null) ? docId : "");
+    public void setDocUsername(String docId) {
+        setObject("docUsername", (docId != null) ? docId : "");
     }
 
 }

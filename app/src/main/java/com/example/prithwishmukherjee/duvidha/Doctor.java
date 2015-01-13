@@ -40,15 +40,25 @@ public class Doctor extends IBMDataObject{
         setObject("area", (docArea != null) ? docArea : "");
     }
 
-    /*Gets the regNum of the Doctor*/
-    public String getReg() {
-        return (String) getObject("registrationNumber");
+    /*Gets the lat of the doctor*/
+    public String getLat() {
+        return (String) getObject("lat");
+    }
+    /* Sets the lat of the doctor */
+    public void setLat(String docLat) {
+        setObject("lat", (docLat != null) ? docLat : "");
     }
 
-    /* Sets the regNum of the doctor */
-    public void setReg(String regNum) {
-        setObject("registrationNumber", (regNum != null) ? regNum : "");
+    /*Gets the lon of the doctor*/
+    public String getLon() {
+        return (String) getObject("lon");
     }
+
+    /* Sets the lon of the doctor */
+    public void setLon(String docLon) {
+        setObject("lon", (docLon != null) ? docLon : "");
+    }
+
 
     /*Gets the docFees of the Doctor*/
     public String getFees() {
@@ -61,26 +71,44 @@ public class Doctor extends IBMDataObject{
     }
 
     /*Gets whether the doctor takes online appointment*/
-    public String getAppointments() {
+    public String getOnlineAppointment() {
         return (String) getObject("takesAppointments");
     }
 
     /* Sets the docAppoint of the doctor */
-    public void setAppointments(String docAppoint) {
+    public void setOnlineAppointment(String docAppoint) {
         setObject("takesAppointments", (docAppoint != null) ? docAppoint : "");
     }
 
-    /*Gets the docId of the Doctor*/
-    public String getId() {
-        return (String) getObject("id");
+    /*Gets the docUsername of the Doctor*/
+    public String getUsername() {
+        return (String) getObject("username");
     }
 
-    /* Sets the docId of the doctor */
-    public void setId(String docId) {
-        setObject("id", (docId != null) ? docId : "");
+    /* Sets the docUsername of the doctor */
+    public void setUsername(String docUsername) {
+        setObject("username", (docUsername != null) ? docUsername : "");
     }
 
+    /*Gets the regNum of the doctor*/
+    public String getRegNum() {
+        return (String) getObject("regNumber");
+    }
 
+    /* Sets the regNum of the doctor */
+    public void setRegNum(String docNumber) {
+        setObject("regNumber", (docNumber != null) ? docNumber : "");
+    }
+
+    /*Gets the docRating of the doctor*/
+    public String getRating() {
+        return (String) getObject("docRating");
+    }
+
+    /* Sets the docRating of the doctor */
+    public void setRating(String docRating) {
+        setObject("docRating", (docRating != null) ? docRating : "");
+    }
 
     /**
      * When calling toString() for an item, we'd really only want the name.

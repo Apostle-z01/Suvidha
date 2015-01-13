@@ -30,15 +30,34 @@ public class Patient extends IBMDataObject{
         setObject("address", (patAddr != null) ? patAddr : "");
     }
 
-    /*Gets the patId of the patient*/
-    public String getId() {
-        return (String) getObject("id");
+    /*Gets the patUsername of the patient*/
+    public String getUsername() {
+        return (String) getObject("username");
     }
 
-    /* Sets the patId of the patient */
-    public void setId(String patId) {
-        setObject("id", (patId != null) ? patId : "");
+    /* Sets the patUsername of the patient */
+    public void setUsername(String patUsername) {
+        setObject("username", (patUsername != null) ? patUsername : "");
     }
+    /*Gets the lat of the patient*/
+    public String getLat() {
+        return (String) getObject("lat");
+    }
+    /* Sets the lat of the patient */
+    public void setLat(String patLat) {
+        setObject("lat", (patLat != null) ? patLat : "");
+    }
+
+    /*Gets the lon of the patient*/
+    public String getLon() {
+        return (String) getObject("lon");
+    }
+
+    /* Sets the lon of the patient */
+    public void setLon(String patLon) {
+        setObject("lon", (patLon != null) ? patLon : "");
+    }
+
 
     /*Gets the patAge of the patient*/
     public String getAge() {

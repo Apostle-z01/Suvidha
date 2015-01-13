@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ibm.mobile.services.data.IBMDataObject;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -29,46 +32,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import bolts.Continuation;
+import bolts.Task;
+
 
 public class RegistrationPage extends ActionBarActivity {
 
-    public static final String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";;
+    public static final String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
+    public static final String CLASS_NAME = "RegistrationPage";
+    String username;
+    String password;
+    String address;
+    String onlineApp;
+    String regNum;
+    String name;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
 
-        final RadioButton docType = (RadioButton)findViewById(R.id.regDoctor);
-        final RadioButton patientType = (RadioButton)findViewById(R.id.regPatient);
-        final RadioButton hospitalType = (RadioButton)findViewById(R.id.regHospital);
-
         String address1 = "1600 Amphitheatre Parkway, Mountain View, CA";
         //((TextView)findViewById(R.id.regAddress)).setText(address1);
 
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_registration_page, menu);
-        return true;////
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void activateRegNo(View view)
@@ -99,16 +86,64 @@ public class RegistrationPage extends ActionBarActivity {
         editText33.setVisibility(View.GONE);
     }
 
-    public void submitRegForm(View view)
-    {
+    public void submitRegForm(View view) {
         //Entry into database;
         // test address
-        EditText ttt = (EditText) findViewById(R.id.regAddress);
-        String address = String.valueOf(ttt.getText());
-        address = address.replace(' ','+');
+        EditText etAddress = (EditText) findViewById(R.id.regAddress);
+        address = String.valueOf(etAddress.getText());
+        address = address.replace(' ', '+');
         //  parse address
         //onCompletion("async");
         //address = "1600+Amphitheatre+Parkway,+Mountain+View,+CA";
+        EditText etUsername = (EditText) findViewById(R.id.regUsername);
+        EditText etPassword = (EditText) findViewById(R.id.regPassword);
+        EditText etName = (EditText) findViewById(R.id.regName);
+
+        username = etUsername.getText().toString();
+        password = etPassword.getText().toString();
+        name = etName.getText().toString();
+
+        System.out.println("HERE HERE");
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.regType);
+        int id = radioGroup.getCheckedRadioButtonId();
+        if (id == R.id.regHospital){
+            type = "H";
+            EditText etReg = (EditText) findViewById(R.id.regRegistrationNo);
+            regNum = etReg.getText().toString();
+
+            RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.regOnlineApp);
+            int id1 = radioGroup1.getCheckedRadioButtonId();
+
+            if(id1 == R.id.regDocOnlineAppYes)
+                onlineApp = "yes";
+            else
+                onlineApp = "no";
+        }
+        else if(id == R.id.regDoctor) {
+            type = "D";
+            EditText etReg = (EditText) findViewById(R.id.regRegistrationNo);
+            regNum = etReg.getText().toString();
+
+            RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.regOnlineApp);
+            int id1 = radioGroup1.getCheckedRadioButtonId();
+
+            if(id1 == R.id.regDocOnlineAppNo)
+                onlineApp = "yes";
+            else
+                onlineApp = "no";
+        }
+        else
+            type = "P";
+
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(name);
+        System.out.println(type);
+        System.out.println(address);
+        if(!type.equalsIgnoreCase("P")){
+            System.out.println(onlineApp);
+            System.out.println(regNum);
+        }
 
         new HttpAsyncTask().execute("http://maps.google.com/maps/api/geocode/json?address="+address+"&sensor=false");
 
@@ -192,7 +227,8 @@ public class RegistrationPage extends ActionBarActivity {
                 //  String.valueOf(lng) - longitude
                 //  database entry
 
-                onCompletion("latitude:" + lat + ",longitude:" + lng);
+                System.out.println("latitude:" + lat + ",longitude:" + lng);
+                onCompletion(Double.toString(lat),Double.toString(lng));
                 Log.d("latitude", "" + lat);
                 Log.d("longitude", "" + lng);
             } catch (JSONException e) {
@@ -201,11 +237,117 @@ public class RegistrationPage extends ActionBarActivity {
         }
     }
 
-    public void onCompletion(String str){
+    public void onCompletion(String lat,String lon){
+        //Create new user
+        Users user = new Users();
+        user.setName(username);
+        user.setPassword(password);
+        user.setType(type);
 
-        Intent intent = new Intent(this,SuccesfulRegistration.class);
-        intent.putExtra(EXTRA_MESSAGE,str);
-        startActivity(intent);
+        user.save().continueWith(new Continuation<IBMDataObject, Void>() {
 
+            @Override
+            public Void then(Task<IBMDataObject> task) throws Exception {
+                if (task.isFaulted()) {
+                    // Handle errors
+                    Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                    return null;
+                } else {
+                    Users myUser = (Users) task.getResult();
+                    Log.e(CLASS_NAME,myUser.getName());
+                    Log.e(CLASS_NAME,myUser.getPassword());
+                    Log.e(CLASS_NAME,myUser.getType());
+
+                    // Do more work
+                }
+                return null;
+            }
+        });
+
+        if(type.equalsIgnoreCase("P")){
+            Patient pat = new Patient();
+            pat.setName(name);
+            pat.setUsername(username);
+            pat.setAddress(address);
+            pat.setLat(lat);
+            pat.setLon(lon);
+
+            pat.save().continueWith(new Continuation<IBMDataObject, Void>() {
+
+                @Override
+                public Void then(Task<IBMDataObject> task) throws Exception {
+                    if (task.isFaulted()) {
+                        // Handle errors
+                        Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                        return null;
+                    } else {
+                        Patient myPat = (Patient) task.getResult();
+                        Log.e(CLASS_NAME,myPat.getName());
+                        // Do more work
+                    }
+                    return null;
+                }
+            });
+        }
+        else if(type.equalsIgnoreCase("D")){
+            //Doctor
+            Doctor doc = new Doctor();
+            doc.setName(name);
+            doc.setUsername(username);
+            doc.setAddress(address);
+            doc.setLat(lat);
+            doc.setLon(lon);
+            doc.setRegNum(regNum);
+            doc.setOnlineAppointment(onlineApp);
+
+            doc.save().continueWith(new Continuation<IBMDataObject, Void>() {
+
+                @Override
+                public Void then(Task<IBMDataObject> task) throws Exception {
+                    if (task.isFaulted()) {
+                        // Handle errors
+                        Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                        return null;
+                    } else {
+                        Doctor myDoc = (Doctor) task.getResult();
+                        Log.e(CLASS_NAME,myDoc.getName());
+                        // Do more work
+                    }
+                    return null;
+                }
+            });
+        }
+        else{
+            //Hospital
+            Hospital hos = new Hospital();
+            hos.setName(name);
+            hos.setUsername(username);
+            hos.setAddress(address);
+            hos.setLat(lat);
+            hos.setLon(lon);
+            hos.setRegNum(regNum);
+            hos.setOnlineAppointment(onlineApp);
+
+            hos.save().continueWith(new Continuation<IBMDataObject, Void>() {
+
+                @Override
+                public Void then(Task<IBMDataObject> task) throws Exception {
+                    if (task.isFaulted()) {
+                        // Handle errors
+                        Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                        return null;
+                    } else {
+                        Hospital myHos = (Hospital) task.getResult();
+                        Log.e(CLASS_NAME,myHos.getName());
+                        // Do more work
+                    }
+                    return null;
+                }
+            });
+        }
+
+//        Intent intent = new Intent(this,SuccesfulRegistration.class);
+//        intent.putExtra(EXTRA_MESSAGE,str);
+//        startActivity(intent);
     }
 }

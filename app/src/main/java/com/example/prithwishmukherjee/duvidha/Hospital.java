@@ -31,15 +31,54 @@ public class Hospital extends IBMDataObject{
         setObject("address", (hosAddr != null) ? hosAddr : "");
     }
 
-    /*Gets the id of the Hospital*/
-    public String getId() {
-        return (String) getObject("id");
+    /*Gets the patUsername of the hospital*/
+    public String getUsername() {
+        return (String) getObject("username");
     }
 
-    /* Sets the hosID of the Hospital */
-    public void setArea(String hosID) {
-        setObject("id", (hosID != null) ? hosID : "");
+    /* Sets the patUsername of the hospital */
+    public void setUsername(String hosUsername) {
+        setObject("username", (hosUsername != null) ? hosUsername : "");
     }
+    /*Gets the lat of the hospital*/
+    public String getLat() {
+        return (String) getObject("lat");
+    }
+    /* Sets the lat of the hospital */
+    public void setLat(String patLat) {
+        setObject("lat", (patLat != null) ? patLat : "");
+    }
+
+    /*Gets the lon of the hospital*/
+    public String getLon() {
+        return (String) getObject("lon");
+    }
+
+    /* Sets the lon of the hospital */
+    public void setLon(String patLon) {
+        setObject("lon", (patLon != null) ? patLon : "");
+    }
+
+    /*Gets the OnlineAppointment of the hospital*/
+    public String getOnlineAppointment() {
+        return (String) getObject("takesAppointment");
+    }
+
+    /* Sets the OnlineAppointment of the hospital */
+    public void setOnlineAppointment(String hosAppoint) {
+        setObject("takesAppointment", (hosAppoint != null) ? hosAppoint : "");
+    }
+
+    /*Gets the regNum of the hospital*/
+    public String getRegNum() {
+        return (String) getObject("regNumber");
+    }
+
+    /* Sets the regNum of the hospital */
+    public void setRegNum(String hosNumber) {
+        setObject("regNumber", (hosNumber != null) ? hosNumber : "");
+    }
+
 
     /*Gets the number of ambulances of the Hospital*/
     public String getNumOfAmb() {
