@@ -1,7 +1,10 @@
 package com.example.prithwishmukherjee.duvidha;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +19,9 @@ import com.example.prithwishmukherjee.duvidha.MainActivity;
 
 
 public class SuvidhaMember extends ActionBarActivity {
+
+    LocationManager myLocationManager;
+    String PROVIDER = LocationManager.GPS_PROVIDER;
 
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
 
@@ -43,8 +49,22 @@ public class SuvidhaMember extends ActionBarActivity {
     {
         //Spinner spinner = (Spinner)findViewById(R.id.spinner);
         //String selected = spinner.getSelectedItem().toString();
+        myLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        //get last known location, if available
+        Location location = myLocationManager.getLastKnownLocation(PROVIDER);
+        String lat, lng;
+        if (location == null) {
+            //  gps fix not available
+            //  error handling
+            lat = "0";
+            lng = "0";
+        } else {
+            lat = String.valueOf(location.getLatitude());
+            lng = String.valueOf(location.getLongitude());
+        }
+
         Intent intent = new Intent(this, SearchResults.class);
-        //intent.putExtra(EXTRA_MESSAGE,selected);
+        intent.putExtra(EXTRA_MESSAGE, lat + " " + lng);
         startActivity(intent);
     }
 
