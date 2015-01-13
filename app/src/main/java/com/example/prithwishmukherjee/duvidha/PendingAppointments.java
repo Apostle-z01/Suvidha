@@ -35,7 +35,7 @@ public class PendingAppointments extends ActionBarActivity {
         //maintable = (TableLayout)this.maintable;
 
 
-        Date date = new Date(2015, 2, 1);
+        Date date = new Date(2015-1900, 2-1, 1);
         Time time = new Time(20, 30, 0);
 
         TableLayout ll = (TableLayout)findViewById(R.id.mainTable);
@@ -81,7 +81,7 @@ public class PendingAppointments extends ActionBarActivity {
 
 
             ImageButton cancelAppointment = new ImageButton(this);
-            cancelAppointment.setImageResource(R.drawable.minus);
+            cancelAppointment.setImageResource(R.drawable.plus);
             cancelAppointment.setClickable(true);
             cancelAppointment.setBackgroundColor(Color.WHITE);
             cancelAppointment.setOnClickListener(new View.OnClickListener() {
