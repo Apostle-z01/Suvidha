@@ -41,10 +41,10 @@ public class SuvidhaMember extends ActionBarActivity {
 
     public void gotoSearchResults(View view)
     {
-        Spinner spinner = (Spinner)findViewById(R.id.spinner);
-        String selected = spinner.getSelectedItem().toString();
+        //Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        //String selected = spinner.getSelectedItem().toString();
         Intent intent = new Intent(this, SearchResults.class);
-        intent.putExtra(EXTRA_MESSAGE,selected);
+        //intent.putExtra(EXTRA_MESSAGE,selected);
         startActivity(intent);
     }
 

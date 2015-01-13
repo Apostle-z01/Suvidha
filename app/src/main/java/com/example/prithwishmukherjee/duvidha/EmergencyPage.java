@@ -19,8 +19,8 @@ public class EmergencyPage extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency_page);
 
-        final RadioButton current = (RadioButton)findViewById(R.id.radioButton);
-        final RadioButton home2 = (RadioButton)findViewById(R.id.radioButton2);
+        //final RadioButton current = (RadioButton)findViewById(R.id.radioButton);
+        //final RadioButton home2 = (RadioButton)findViewById(R.id.radioButton2);
 
 
     }

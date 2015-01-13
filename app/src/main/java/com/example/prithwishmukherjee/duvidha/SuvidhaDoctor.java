@@ -60,7 +60,7 @@ public class SuvidhaDoctor extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void viewExisitingAppointments(View view)
+    public void viewExistingAppointments(View view)
     {
         Intent intent = new Intent(this,ExistingAppointments.class);
         intent.putExtra(EXTRA_MESSAGE,username);

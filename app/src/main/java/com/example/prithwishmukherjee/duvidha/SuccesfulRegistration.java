@@ -7,30 +7,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
 
-public class CheckAppointmentStatus extends ActionBarActivity {
 
-    String username;
+public class SuccesfulRegistration extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_succesful_registration);
 
-        Intent intent = getIntent();
-        username = intent.getStringExtra(SuvidhaMember.EXTRA_MESSAGE);
-        TextView textView = new TextView(this);
-        textView.setTextSize(51);
-        textView.setText("Welcome " + username);
+  Intent intent = getIntent();
 
-        setContentView(textView);
-        //setContentView(R.layout.activity_check_appointment_status);
+  TextView t1 = (TextView)findViewById(R.id.successReg);
+  String tt = intent.getStringExtra(RegistrationPage.EXTRA_MESSAGE);
+  t1.setText(tt);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_check_appointment_status, menu);
+        getMenuInflater().inflate(R.menu.menu_succesful_registration, menu);
         return true;
     }
 
