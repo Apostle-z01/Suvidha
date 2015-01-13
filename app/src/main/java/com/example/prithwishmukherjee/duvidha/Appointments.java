@@ -30,7 +30,6 @@ public class Appointments extends IBMDataObject{
         setObject("date", (date != null) ? date : "");
     }
 
-
     /*Gets the patId of the patient*/
     public String getPatUsername() {
         return (String) getObject("patUsername");
@@ -40,6 +39,15 @@ public class Appointments extends IBMDataObject{
     public void setPatUsername(String patId) {
         setObject("patUsername", (patId != null) ? patId : "");
     }
+
+    public String getPatName(){return (String) getObject("patName");
+    }
+
+    /* Sets the patName of the patient */
+    public void setPatName(String patName) {
+        setObject("patName", (patName != null) ? patName : "");
+    }
+
 
     /*Gets the docId of the doctor*/
     public String getDocUsername() {
@@ -51,4 +59,13 @@ public class Appointments extends IBMDataObject{
         setObject("docUsername", (docId != null) ? docId : "");
     }
 
+    /*Gets the status of the appointment*/
+    public String getStatus() {
+        return (String) getObject("status");
+    }
+
+    /* Sets the status of the appointment */
+    public void setStatus(String status) {
+        setObject("status", (status != null) ? status : "");
+    }
 }
