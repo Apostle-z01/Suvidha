@@ -40,7 +40,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="75dp"
         android:clickable="true"
-        android:onClick="viewExistingAppointments"
+        android:onClick="viewPendingAppointments"
         android:layout_below="@+id/viewExisitngAppointments" />
 
     <TextView

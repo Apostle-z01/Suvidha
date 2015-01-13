@@ -44,7 +44,7 @@ public class RegistrationPage extends ActionBarActivity {
         final RadioButton hospitalType = (RadioButton)findViewById(R.id.regHospital);
 
         String address1 = "1600 Amphitheatre Parkway, Mountain View, CA";
-        ((EditText)findViewById(R.id.regAddress)).setText(address1);
+        //((TextView)findViewById(R.id.regAddress)).setText(address1);
 
     }
 
@@ -76,9 +76,13 @@ public class RegistrationPage extends ActionBarActivity {
         EditText editText = (EditText)findViewById(R.id.regRegistrationNo);
         EditText editText1 = (EditText)findViewById(R.id.OnlineApp);
         RadioGroup r1 = (RadioGroup)findViewById(R.id.regOnlineApp);
+        EditText editText22 = (EditText)findViewById(R.id.Specialisation);
+        EditText editText33 = (EditText)findViewById(R.id.Fees);
         editText.setVisibility(View.VISIBLE);
         editText1.setVisibility(View.VISIBLE);
         r1.setVisibility(View.VISIBLE);
+        editText22.setVisibility(View.VISIBLE);
+        editText33.setVisibility(View.VISIBLE);
     }
 
     public void deactivateRegNo(View view)
@@ -86,17 +90,20 @@ public class RegistrationPage extends ActionBarActivity {
         EditText editText = (EditText)findViewById(R.id.regRegistrationNo);
         EditText editText1 = (EditText)findViewById(R.id.OnlineApp);
         RadioGroup r1 = (RadioGroup)findViewById(R.id.regOnlineApp);
-        r1.setVisibility(View.GONE);
-        editText1.setVisibility(View.GONE);
+        EditText editText22 = (EditText)findViewById(R.id.Specialisation);
+        EditText editText33 = (EditText)findViewById(R.id.Fees);
         editText.setVisibility(View.GONE);
-        //88
+        editText1.setVisibility(View.GONE);
+        r1.setVisibility(View.GONE);
+        editText22.setVisibility(View.GONE);
+        editText33.setVisibility(View.GONE);
     }
 
     public void submitRegForm(View view)
     {
         //Entry into database;
         // test address
-        EditText ttt = (EditText)findViewById(R.id.regAddress);
+        EditText ttt = (EditText) findViewById(R.id.regAddress);
         String address = String.valueOf(ttt.getText());
         address = address.replace(' ','+');
         //  parse address

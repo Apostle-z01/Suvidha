@@ -67,6 +67,13 @@ public class SuvidhaDoctor extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void viewPendingAppointments(View view)
+    {
+        Intent intent = new Intent(this,PendingAppointments.class);
+        intent.putExtra(EXTRA_MESSAGE,username);
+        startActivity(intent);
+    }
+
     public void updateDetails(View view)
     {
         Intent intent = new Intent(this,UpdateDetails.class);
