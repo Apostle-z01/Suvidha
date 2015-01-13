@@ -71,7 +71,7 @@
         android:id="@+id/regAddress"
         android:text="Address"
         android:textSize="30dp"
-        android:nestedScrollingEnabled="true"
+        android:nestedScrollingEnabled="false"
         android:singleLine="true"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/regSubmit"
@@ -215,6 +215,7 @@
         android:layout_centerHorizontal="true"
         android:enabled="true"
         android:clickable="true"
+        android:onClick="submitRegForm"
         android:textColor="#ffffffff"
         android:textSize="@dimen/abc_action_bar_progress_bar_size"
         android:background="#d6242260" />
