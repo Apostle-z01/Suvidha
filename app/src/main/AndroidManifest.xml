@@ -12,6 +12,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    //  fucking push
+    //  pushed it
 
     <application
         android:name=".SuvidhaApplication"
@@ -76,17 +78,18 @@
             android:name=".ExistingAppointments"
             android:label="@string/title_activity_existing_appointments" >
         </activity>
-
         <activity
             android:name=".RegistrationPage"
             android:label="@string/title_activity_registration_page" >
         </activity>
-
         <activity
             android:name=".SuccesfulRegistration"
             android:label="@string/title_activity_succesful_registration" >
         </activity>
+        <activity
+            android:name=".PendingAppointments"
+            android:label="@string/title_activity_pending_appointments" >
+        </activity>
     </application>
-    //  fucking push
-    //  pushed it
+
 </manifest>
