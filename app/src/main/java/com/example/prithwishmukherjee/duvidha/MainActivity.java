@@ -227,4 +227,10 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void gotoRegistrationPage(View view){
+        Intent intent = new Intent(this, RegistrationPage.class);
+        //yyy
+        startActivity(intent);
+    }
+
 }
