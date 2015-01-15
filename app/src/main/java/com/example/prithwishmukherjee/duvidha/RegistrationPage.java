@@ -58,8 +58,16 @@ public class RegistrationPage extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
 
+        Globals.address = (EditText)findViewById(R.id.regAddress);
+
         String address1 = "1600 Amphitheatre Parkway, Mountain View, CA";
         //((TextView)findViewById(R.id.regAddress)).setText(address1);
+
+    }
+
+    public void genMap(View view){
+        Intent intent = new Intent(this,genMap.class);
+        startActivity(intent);
 
     }
 

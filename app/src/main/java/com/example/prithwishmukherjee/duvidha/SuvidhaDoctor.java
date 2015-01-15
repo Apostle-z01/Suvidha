@@ -35,6 +35,7 @@ public class SuvidhaDoctor extends ActionBarActivity {
         RatingBar rb = (RatingBar)findViewById(R.id.ratingBar);
         int rating = 4;
         rb.setRating(rating);
+        rb.setIsIndicator(true);
     }
 
 
