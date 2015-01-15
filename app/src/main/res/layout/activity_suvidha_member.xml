@@ -38,7 +38,7 @@
 
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
         android:entries= "@array/Diseases"
@@ -107,12 +107,12 @@
         android:layout_height="wrap_content"
         android:text="Check Appointments status"
         android:id="@+id/Appointment"
-        android:layout_marginTop="40dp"
         android:clickable="true"
         android:onClick="gotoCheckAppointmentStatus"
         android:textSize="20dp"
-        android:layout_below="@+id/Discuss"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/update"
+        android:layout_alignStart="@+id/textView"
+        android:layout_marginTop="40dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
         android:id="@+id/update"
         android:clickable="true"
         android:textSize="20dp"
-        android:layout_below="@+id/stline"
+        android:layout_below="@+id/Discuss"
         android:layout_alignParentStart="true"
         android:layout_marginTop="40dp" />
 

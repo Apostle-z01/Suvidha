@@ -6,27 +6,35 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.prithwishmukherjee.duvidha.SuvidhaDoctor"
     android:id="@+id/d1"
-    android:background="#fffeff62">
+    android:background="#ffd5d5d5">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView4"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         android:textSize="@dimen/abc_action_bar_progress_bar_size"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="40dp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageView2"
+        android:textColor="#ff010101" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:id="@+id/stl3"
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentStart="true" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View appointments"
         android:id="@+id/viewExisitngAppointments"
-        android:layout_marginTop="180dp"
-        android:textSize="@dimen/abc_action_bar_progress_bar_size"
-        android:layout_below="@+id/imageView2"
+        android:layout_marginTop="40dp"
+        android:textSize="25dp"
+        android:layout_below="@+id/textView15"
         android:layout_alignParentStart="true"
         android:clickable="true"
         android:onClick="viewExistingAppointments"/>
@@ -36,9 +44,9 @@
         android:layout_height="wrap_content"
         android:text="View Pending Appointments"
         android:id="@+id/pendingAppointments"
-        android:textSize="@dimen/abc_action_bar_progress_bar_size"
+        android:textSize="25dp"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="40dp"
         android:clickable="true"
         android:onClick="viewPendingAppointments"
         android:layout_below="@+id/viewExisitngAppointments" />
@@ -48,8 +56,8 @@
         android:layout_height="wrap_content"
         android:text="Update Details"
         android:id="@+id/updateDetails"
-        android:textSize="@dimen/abc_action_bar_progress_bar_size"
-        android:layout_marginTop="69dp"
+        android:textSize="25dp"
+        android:layout_marginTop="40dp"
         android:layout_below="@+id/pendingAppointments"
         android:layout_alignParentStart="true"
         android:clickable="true"
@@ -68,18 +76,21 @@
         android:layout_height="wrap_content"
         android:text="current rating: "
         android:id="@+id/textView15"
-        android:textSize="@dimen/abc_action_bar_progress_bar_size"
-        android:textColor="#ffff3147"
+        android:textSize="30dp"
+        android:textColor="#ff805259"
         android:layout_alignParentStart="true"
         android:layout_alignLeft="@+id/imageView2"
-        android:layout_below="@+id/textView4" />
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="30dp" />
 
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ratingBar"
-        android:layout_toEndOf="@+id/imageView2"
-        android:layout_below="@+id/textView15"
-        android:numStars="10" />
+        android:numStars="5"
+        android:layout_below="@+id/textView4"
+        android:layout_toEndOf="@+id/textView15"
+        android:stepSize="0.5"
+        android:layout_marginTop="25dp" />
 
 </RelativeLayout>

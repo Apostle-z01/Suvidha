@@ -112,7 +112,7 @@ public class SuvidhaMember extends ActionBarActivity {
         TableLayout temp = (TableLayout)findViewById(R.id.appointmentTable);
         temp.setVisibility(View.VISIBLE);
         TextView bb = (TextView)findViewById(R.id.Appointment);
-        bb.setClickable(true);
+        bb.setClickable(false);
 
 
 
