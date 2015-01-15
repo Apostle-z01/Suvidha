@@ -151,17 +151,14 @@
         <!-- Push Settings End -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY" />
 
         <activity
             android:name=".genMap"
-            android:label="@string/title_activity_gen_map" >
+            android:label="Google Maps" >
         </activity>
 
-        <activity
-        android:name=".MapsActivity"
-        android:label="AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY" >
-        </activity>
+
     </application>
 
 </manifest>
