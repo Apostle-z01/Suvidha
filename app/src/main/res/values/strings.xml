@@ -23,6 +23,7 @@
         <item> Top Rated Doctors </item>
         <item> Nearest First </item>
         <item> Cheapest First </item>
+        <item> By Name </item>
     </string-array>
 
     <string name="title_activity_emergency_page">EmergencyPage</string>
