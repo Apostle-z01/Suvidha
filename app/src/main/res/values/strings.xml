@@ -10,11 +10,11 @@
     <string name="google_maps_key">AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY</string>
     <string name="disease_prompt">Others</string>
     //Database                                                    <string-array name="Diseases">
-        <item> Eye doctors </item>
-        <item> ENT doctors</item>
-        <item> Skin doctors</item>
-        <item> Heart doctors</item>
-        <item> Kidney doctors</item>
+        <item> Eye </item>
+        <item> ENT </item>
+        <item> Skin </item>
+        <item> Heart </item>
+        <item> Kidney </item>
         <item> Neurologists</item>
         <item> Osteologists</item>
         <item> General physicians</item>
