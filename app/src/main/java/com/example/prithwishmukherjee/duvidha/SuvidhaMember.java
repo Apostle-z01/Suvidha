@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -65,8 +66,8 @@ public class SuvidhaMember extends ActionBarActivity {
 
     public void gotoSearchResults(View view)
     {
-        //Spinner spinner = (Spinner)findViewById(R.id.spinner);
-        //String selected = spinner.getSelectedItem().toString();
+        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        String selected = spinner.getSelectedItem().toString();
         myLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         //get last known location, if available
         Location location = myLocationManager.getLastKnownLocation(PROVIDER);
@@ -82,7 +83,7 @@ public class SuvidhaMember extends ActionBarActivity {
         }
 
         Intent intent = new Intent(this, SearchResults.class);
-        intent.putExtra("search", lat + " " + lng);
+        intent.putExtra("search", lat + " " + lng + " " + selected);
         startActivity(intent);
     }
 
