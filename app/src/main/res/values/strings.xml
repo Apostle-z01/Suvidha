@@ -7,6 +7,7 @@
     <string name="title_activity_suvidha_member">SuvidhaMember</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
+    <string name="google_maps_key">AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY</string>
     <string name="disease_prompt">Others</string>
     //Database                                                    <string-array name="Diseases">
         <item> Eye doctors </item>
