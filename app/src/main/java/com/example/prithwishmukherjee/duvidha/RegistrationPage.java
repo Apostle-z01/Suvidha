@@ -1,5 +1,7 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +75,8 @@ public class RegistrationPage extends ActionBarActivity {
         r1.setVisibility(View.VISIBLE);
         editText22.setVisibility(View.VISIBLE);
         editText33.setVisibility(View.VISIBLE);
+        Spinner sp1 = (Spinner)findViewById(R.id.specialisationSpinner);
+        sp1.setVisibility(View.VISIBLE);
     }
 
     public void deactivateRegNo(View view)
@@ -86,6 +91,25 @@ public class RegistrationPage extends ActionBarActivity {
         r1.setVisibility(View.GONE);
         editText22.setVisibility(View.GONE);
         editText33.setVisibility(View.GONE);
+        Spinner sp1 = (Spinner)findViewById(R.id.specialisationSpinner);
+        sp1.setVisibility(View.GONE);
+
+    }
+
+    public void partialActivate(View view)
+    {
+        EditText editText = (EditText)findViewById(R.id.regRegistrationNo);
+        EditText editText1 = (EditText)findViewById(R.id.OnlineApp);
+        RadioGroup r1 = (RadioGroup)findViewById(R.id.regOnlineApp);
+        EditText editText22 = (EditText)findViewById(R.id.Specialisation);
+        EditText editText33 = (EditText)findViewById(R.id.Fees);
+        editText.setVisibility(View.VISIBLE);
+        editText1.setVisibility(View.GONE);
+        r1.setVisibility(View.GONE);
+        editText22.setVisibility(View.GONE);
+        editText33.setVisibility(View.GONE);
+        Spinner sp1 = (Spinner)findViewById(R.id.specialisationSpinner);
+        sp1.setVisibility(View.GONE);
     }
 
     public void submitRegForm(View view) {
@@ -128,8 +152,8 @@ public class RegistrationPage extends ActionBarActivity {
             EditText etFees = (EditText) findViewById(R.id.Fees);
             fees = etFees.getText().toString();
 
-            EditText etArea = (EditText) findViewById(R.id.Specialisation);
-            etArea.getText().toString();
+            Spinner sp1 = (Spinner)findViewById(R.id.specialisationSpinner);
+            area = sp1.getSelectedItem().toString();
 
             RadioGroup radioGroup1 = (RadioGroup) findViewById(R.id.regOnlineApp);
             int id1 = radioGroup1.getCheckedRadioButtonId();
@@ -354,6 +378,19 @@ public class RegistrationPage extends ActionBarActivity {
                 }
             });
         }
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Succesful Registration");
+        alertDialog.setMessage("You have been successfully registered");
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+               // here you can add functions
+                finish();
+            }
+        });
+        AlertDialog dialog = alertDialog.create();
+        alertDialog.show();
+
 
 //        Intent intent = new Intent(this,SuccesfulRegistration.class);
 //        intent.putExtra(EXTRA_MESSAGE,str);

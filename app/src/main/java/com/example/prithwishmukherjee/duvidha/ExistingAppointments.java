@@ -41,7 +41,6 @@ public class ExistingAppointments extends ActionBarActivity {
 
         Intent intent = getIntent();
         username = intent.getStringExtra(SuvidhaDoctor.EXTRA_MESSAGE);
-        username="manav";
         setContentView(R.layout.activity_existing_appointments);
         //maintable = (TableLayout)this.maintable;
 

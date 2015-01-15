@@ -42,7 +42,6 @@ public class PendingAppointments extends ActionBarActivity {
 
         Intent intent = getIntent();
         username = intent.getStringExtra(SuvidhaDoctor.EXTRA_MESSAGE);
-        username = "manav";
         Log.e(CLASS_NAME,"Username is : "+username);
         setContentView(R.layout.activity_existing_appointments);
 

@@ -131,7 +131,7 @@
             android:textSize="20dp"
             android:layout_marginLeft="30dp"
             android:layout_alignTop="@+id/regPatient"
-            android:onClick="activateRegNo"
+            android:onClick="partialActivate"
             android:layout_toEndOf="@+id/regPatient" />
 
     </RadioGroup>
@@ -227,13 +227,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/Specialisation"
         android:layout_alignParentStart="true"
-        android:editable="true"
+        android:editable="false"
         android:enabled="true"
         android:layout_below="@+id/OnlineApp"
         android:layout_toStartOf="@+id/regSubmit"
         android:layout_marginTop="30dp"
         android:hint="Specialisation"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_marginRight="50dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -246,6 +247,19 @@
         android:layout_alignParentEnd="true"
         android:singleLine="false"
         android:hint="Fees"
+        android:visibility="gone" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/specialisationSpinner"
+        android:entries= "@array/Diseases"
+        android:prompt="@string/disease_prompt"
+        android:layout_alignTop="@+id/Specialisation"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="150dp"
+        android:layout_marginRight="200dp"
+        android:spinnerMode="dropdown"
         android:visibility="gone" />
 
 </RelativeLayout>

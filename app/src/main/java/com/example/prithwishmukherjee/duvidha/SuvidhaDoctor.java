@@ -22,7 +22,7 @@ public class SuvidhaDoctor extends ActionBarActivity {
         setContentView(R.layout.activity_suvidha_doctor);
 
         Intent intent = getIntent();
-        String username = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        username = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
         //Get name from database using username
         String name = username;
