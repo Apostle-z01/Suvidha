@@ -20,9 +20,18 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.ViewGroup;
 
+import com.ibm.mobile.services.cloudcode.IBMCloudCode;
+import com.ibm.mobile.services.core.http.IBMHttpResponse;
 import com.ibm.mobile.services.data.IBMDataException;
 import com.ibm.mobile.services.data.IBMQuery;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.List;
 
@@ -52,6 +61,7 @@ public class PendingAppointments extends ActionBarActivity {
         ll.setStretchAllColumns(true);
         ll.setVerticalScrollBarEnabled(true);
 
+        updateOtherDevices();
         final Context context = this;
 
         try {
@@ -158,5 +168,58 @@ public class PendingAppointments extends ActionBarActivity {
         //for (int i = 0; i <2; i++) {
 
         //}
+    }
+
+
+    /**
+     * Send a notification to all devices whenever the BlueList is modified (create, update, or delete).
+     */
+    private void updateOtherDevices() {
+
+        // Initialize and retrieve an instance of the IBM CloudCode service.
+        IBMCloudCode.initializeService();
+        IBMCloudCode myCloudCodeService = IBMCloudCode.getService();
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("key1", "value1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+		/*
+		 * Call the node.js application hosted in the IBM Cloud Code service
+		 * with a POST call, passing in a non-essential JSONObject.
+		 * The URI is relative to/appended to the BlueMix context root.
+		 */
+
+        myCloudCodeService.post("notifyOtherDevices", jsonObj).continueWith(new Continuation<IBMHttpResponse, Void>() {
+
+            @Override
+            public Void then(Task<IBMHttpResponse> task) throws Exception {
+                if (task.isCancelled()) {
+                    Log.e(CLASS_NAME, "Exception : Task" + task.isCancelled() + "was cancelled.");
+                } else if (task.isFaulted()) {
+                    Log.e(CLASS_NAME, "Exception : " + task.getError().getMessage());
+                } else {
+                    InputStream is = task.getResult().getInputStream();
+                    try {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(is));
+                        String responseString = "";
+                        String myString = "";
+                        while ((myString = in.readLine()) != null)
+                            responseString += myString;
+
+                        in.close();
+                        Log.i(CLASS_NAME, "Response Body: " + responseString);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i(CLASS_NAME, "Response Status from notifyOtherDevices: " + task.getResult().getHttpResponseCode());
+                }
+                return null;
+            }
+
+        });
+
     }
 }
