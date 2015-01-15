@@ -53,25 +53,25 @@ public class SuvidhaApplication extends Application{
                             @Override
                             public void run() {
                                 Class<? extends Activity> actClass = mActivity.getClass();
-                                if (actClass == MainActivity.class) {
-                                    Log.e(CLASS_NAME, "Notification message received: " + message.toString());
-                                    // Present the message when sent from Push notification console.
-                                    if(!message.getAlert().contains("ItemList was updated")){
-                                        mActivity.runOnUiThread(new Runnable() {
-                                            public void run() {
-                                                new AlertDialog.Builder(mActivity)
-                                                        .setTitle("Push notification received")
-                                                        .setMessage(message.getAlert())
-                                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                                            }
-                                                        })
-                                                        .show();
-                                            }
-                                        });
-
+                                //if (actClass == MainActivity.class) {
+                                Log.e(CLASS_NAME, "Notification message received: " + message.toString());
+                                // Present the message when sent from Push notification console.
+                                //if(!message.getAlert().contains("ItemList was updated")){
+                                mActivity.runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        new AlertDialog.Builder(mActivity)
+                                                .setTitle("New notification received")
+                                                .setMessage(message.getAlert())
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                                    }
+                                                })
+                                                .show();
                                     }
-                                }
+                                });
+
+                                //}
+                                //}
                             }
                         });
                     }
@@ -140,6 +140,7 @@ public class SuvidhaApplication extends Application{
         Hospital.registerSpecialization(Hospital.class);
         Patient.registerSpecialization(Patient.class);
         Appointments.registerSpecialization(Appointments.class);
+        Doctor_Time.registerSpecialization(Doctor_Time.class);
 
         //Initialize the IBM push service
         IBMPush.initializeService();

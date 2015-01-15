@@ -59,6 +59,16 @@ public class Appointments extends IBMDataObject{
         setObject("docUsername", (docId != null) ? docId : "");
     }
 
+    /*Gets the name of the doctor*/
+    public String getDocName() {
+        return (String) getObject("docName");
+    }
+
+    /* Sets the name of the doctor */
+    public void setDocName(String docName) {
+        setObject("docName", (docName != null) ? docName : "");
+    }
+
     /*Gets the status of the appointment*/
     public String getStatus() {
         return (String) getObject("status");

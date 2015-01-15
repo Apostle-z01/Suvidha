@@ -61,7 +61,6 @@ public class PendingAppointments extends ActionBarActivity {
         ll.setStretchAllColumns(true);
         ll.setVerticalScrollBarEnabled(true);
 
-        updateOtherDevices();
         final Context context = this;
 
         try {
@@ -77,7 +76,7 @@ public class PendingAppointments extends ActionBarActivity {
                     } else {
                         // do more work
                         List<Appointments> objects = task.getResult();
-                        for(Appointments app:objects){
+                        for(final Appointments app:objects){
                             Log.e(CLASS_NAME, app.getDocUsername());
                             Log.e(CLASS_NAME, app.getPatUsername());
                             if(app.getDocUsername().equalsIgnoreCase(username) && app.getStatus().equalsIgnoreCase("pending")){
@@ -110,6 +109,7 @@ public class PendingAppointments extends ActionBarActivity {
                                 acceptAppointment.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
+                                        confirmAppointment(app.getDocName(),app.getDate(),app.getTime());
                                         // row is your row, the parent of the clicked button
                                         View row = (View) v.getParent();
                                         // container contains all the rows, you could keep a variable somewhere else to the container which you can refer to here
@@ -134,6 +134,7 @@ public class PendingAppointments extends ActionBarActivity {
                                     @Override
                                     public void onClick(View v) {
                                         // row is your row, the parent of the clicked button
+                                        declineAppointment(app.getDocName(),app.getDate(),app.getTime());
                                         View row = (View) v.getParent();
                                         // container contains all the rows, you could keep a variable somewhere else to the container which you can refer to here
                                         ViewGroup container = ((ViewGroup)row.getParent());
@@ -174,14 +175,16 @@ public class PendingAppointments extends ActionBarActivity {
     /**
      * Send a notification to all devices whenever the BlueList is modified (create, update, or delete).
      */
-    private void updateOtherDevices() {
+    private void confirmAppointment(String docName, String date, String time) {
 
         // Initialize and retrieve an instance of the IBM CloudCode service.
         IBMCloudCode.initializeService();
         IBMCloudCode myCloudCodeService = IBMCloudCode.getService();
         JSONObject jsonObj = new JSONObject();
         try {
-            jsonObj.put("key1", "value1");
+            jsonObj.put("name", docName);
+            jsonObj.put("date", date);
+            jsonObj.put("time", time);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -192,7 +195,7 @@ public class PendingAppointments extends ActionBarActivity {
 		 * The URI is relative to/appended to the BlueMix context root.
 		 */
 
-        myCloudCodeService.post("notifyOtherDevices", jsonObj).continueWith(new Continuation<IBMHttpResponse, Void>() {
+        myCloudCodeService.post("confirmAppointment", jsonObj).continueWith(new Continuation<IBMHttpResponse, Void>() {
 
             @Override
             public Void then(Task<IBMHttpResponse> task) throws Exception {
@@ -214,7 +217,7 @@ public class PendingAppointments extends ActionBarActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Log.i(CLASS_NAME, "Response Status from notifyOtherDevices: " + task.getResult().getHttpResponseCode());
+                    Log.i(CLASS_NAME, "Response Status from confirmAppointment: " + task.getResult().getHttpResponseCode());
                 }
                 return null;
             }
@@ -222,4 +225,59 @@ public class PendingAppointments extends ActionBarActivity {
         });
 
     }
+
+    /**
+     * Send a notification to all devices whenever the BlueList is modified (create, update, or delete).
+     */
+    private void declineAppointment(String docName, String date, String time) {
+
+        // Initialize and retrieve an instance of the IBM CloudCode service.
+        IBMCloudCode.initializeService();
+        IBMCloudCode myCloudCodeService = IBMCloudCode.getService();
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("name", docName);
+            jsonObj.put("date", date);
+            jsonObj.put("time", time);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+		/*
+		 * Call the node.js application hosted in the IBM Cloud Code service
+		 * with a POST call, passing in a non-essential JSONObject.
+		 * The URI is relative to/appended to the BlueMix context root.
+		 */
+
+        myCloudCodeService.post("declineAppointment", jsonObj).continueWith(new Continuation<IBMHttpResponse, Void>() {
+
+            @Override
+            public Void then(Task<IBMHttpResponse> task) throws Exception {
+                if (task.isCancelled()) {
+                    Log.e(CLASS_NAME, "Exception : Task" + task.isCancelled() + "was cancelled.");
+                } else if (task.isFaulted()) {
+                    Log.e(CLASS_NAME, "Exception : " + task.getError().getMessage());
+                } else {
+                    InputStream is = task.getResult().getInputStream();
+                    try {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(is));
+                        String responseString = "";
+                        String myString = "";
+                        while ((myString = in.readLine()) != null)
+                            responseString += myString;
+
+                        in.close();
+                        Log.i(CLASS_NAME, "Response Body: " + responseString);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i(CLASS_NAME, "Response Status from declineAppointment: " + task.getResult().getHttpResponseCode());
+                }
+                return null;
+            }
+
+        });
+
+    }
+
 }
