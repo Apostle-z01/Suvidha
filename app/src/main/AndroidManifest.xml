@@ -12,7 +12,7 @@
         android:name="com.example.prithwishmukherjee.duvidha.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <!-- Push Permissions-->
+    <!-- Push Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.example.prithwishmukherjee.duvidha.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -23,6 +23,21 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!--
+ The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but are recommended.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <android:uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
         android:name=".SuvidhaApplication"
@@ -39,6 +54,7 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -106,6 +122,7 @@
             <!-- Notification Intent -->
             <intent-filter>
                 <action android:name="com.example.prithwishmukherjee.duvidha.IBMPushNotification" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <!-- Push Settings End -->
@@ -114,21 +131,37 @@
         <!-- Push Settings Start -->
         <!-- Add GCM Intent Service and intent-filters for RECEIVE and REGISTRATION of notifications -->
         <activity android:name="com.ibm.mobile.services.push.IBMUIActivity" />
+
         <service android:name="com.ibm.mobile.services.push.IBMPushIntentService" />
 
-        <receiver android:name="com.ibm.mobile.services.push.IBMPushBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+        <receiver
+            android:name="com.ibm.mobile.services.push.IBMPushBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.ibm.mbaas.push.sdk.client.android.sample" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="com.ibm.mbaas.push.sdk.client.android.sample" />
             </intent-filter>
         </receiver>
         <!-- Push Settings End -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".genMap"
+            android:label="@string/title_activity_gen_map" >
+        </activity>
+
+        <activity
+        android:name=".MapsActivity"
+        android:label="AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY" >
+        </activity>
     </application>
 
 </manifest>

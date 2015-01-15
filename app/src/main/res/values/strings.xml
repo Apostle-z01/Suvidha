@@ -8,7 +8,7 @@
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
     <string name="disease_prompt">Others</string>
-    //Database                                            <string-array name="Diseases">
+    //Database                                                    <string-array name="Diseases">
         <item> Eye doctors </item>
         <item> ENT doctors</item>
         <item> Skin doctors</item>
@@ -37,5 +37,7 @@
     <string name="title_activity_registration_page">RegistrationPage</string>
     <string name="title_activity_succesful_registration">SuccesfulRegistration</string>
     <string name="title_activity_pending_appointments">PendingAppointments</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_gen_map">genMap</string>
 
 </resources>
