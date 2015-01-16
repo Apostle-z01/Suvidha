@@ -8,16 +8,13 @@
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
     <string name="google_maps_key">AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY</string>
-    <string name="disease_prompt">Others</string>
+    <string name="disease_prompt">Eye</string>
     //Database                                                    <string-array name="Diseases">
-    <string name="disease_prompt">Eye doctors</string>
-    //Database
-    <string-array name="Diseases">
-        <item> Eye doctors </item>
-        <item> ENT doctors</item>
-        <item> Skin doctors</item>
-        <item> Heart doctors</item>
-        <item> Kidney doctors</item>
+        <item> Eye </item>
+        <item> ENT </item>
+        <item> Skin </item>
+        <item> Heart </item>
+        <item> Kidney </item>
         <item> Neurologists</item>
         <item> Osteologists</item>
         <item> General physicians</item>
@@ -27,6 +24,7 @@
         <item> Top Rated Doctors </item>
         <item> Nearest First </item>
         <item> Cheapest First </item>
+        <item> By Name </item>
     </string-array>
 
     <string-array name="Days">
