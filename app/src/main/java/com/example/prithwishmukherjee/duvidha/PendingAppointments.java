@@ -109,7 +109,7 @@ public class PendingAppointments extends ActionBarActivity {
                                 acceptAppointment.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        confirmAppointment(app.getDocName(),app.getDate(),app.getTime());
+                                        confirmAppointment(app.getDocName(),app.getDate(),app.getTime(),app.getPatUsername());
                                         // row is your row, the parent of the clicked button
                                         View row = (View) v.getParent();
                                         // container contains all the rows, you could keep a variable somewhere else to the container which you can refer to here
@@ -134,7 +134,7 @@ public class PendingAppointments extends ActionBarActivity {
                                     @Override
                                     public void onClick(View v) {
                                         // row is your row, the parent of the clicked button
-                                        declineAppointment(app.getDocName(),app.getDate(),app.getTime());
+                                        declineAppointment(app.getDocName(),app.getDate(),app.getTime(),app.getPatUsername());
                                         View row = (View) v.getParent();
                                         // container contains all the rows, you could keep a variable somewhere else to the container which you can refer to here
                                         ViewGroup container = ((ViewGroup)row.getParent());
@@ -175,7 +175,7 @@ public class PendingAppointments extends ActionBarActivity {
     /**
      * Send a notification to all devices whenever the BlueList is modified (create, update, or delete).
      */
-    private void confirmAppointment(String docName, String date, String time) {
+    private void confirmAppointment(String docName, String date, String time, String idName) {
 
         // Initialize and retrieve an instance of the IBM CloudCode service.
         IBMCloudCode.initializeService();
@@ -185,6 +185,7 @@ public class PendingAppointments extends ActionBarActivity {
             jsonObj.put("name", docName);
             jsonObj.put("date", date);
             jsonObj.put("time", time);
+            jsonObj.put("consumerId",idName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -229,7 +230,7 @@ public class PendingAppointments extends ActionBarActivity {
     /**
      * Send a notification to all devices whenever the BlueList is modified (create, update, or delete).
      */
-    private void declineAppointment(String docName, String date, String time) {
+    private void declineAppointment(String docName, String date, String time, String idName) {
 
         // Initialize and retrieve an instance of the IBM CloudCode service.
         IBMCloudCode.initializeService();
@@ -239,6 +240,7 @@ public class PendingAppointments extends ActionBarActivity {
             jsonObj.put("name", docName);
             jsonObj.put("date", date);
             jsonObj.put("time", time);
+            jsonObj.put("consumerId",idName);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.ibm.mobile.services.data.IBMDataException;
 import com.ibm.mobile.services.data.IBMQuery;
+import com.ibm.mobile.services.push.IBMPush;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class MainActivity extends ActionBarActivity {
 
     //Defining global variables here
     SuvidhaApplication svdApplication;
+    private static final String deviceAlias = "TargetDevice";
+    private static final String consumerID = "MBaaSListApp";
     int flag;
     public static final String CLASS_NAME="MainActivity";
 
@@ -184,6 +187,27 @@ public class MainActivity extends ActionBarActivity {
                             String type = newUser.getType();//get from Database
                             if (newUser.getName().equalsIgnoreCase(username) && newUser.getPassword().equals(userpass)) {
                                 Log.e(CLASS_NAME, "Login successful");
+
+                                IBMPush.initializeService();
+                                svdApplication.push = IBMPush.getService();
+                                svdApplication.push.register(deviceAlias, username).continueWith(new Continuation<String, Void>() {
+
+                                    @Override
+                                    public Void then(Task<String> task) throws Exception {
+                                        if (task.isCancelled()) {
+                                            Log.e(CLASS_NAME, "Exception : Task " + task.toString() + " was cancelled.");
+                                        } else if (task.isFaulted()) {
+                                            Log.e(CLASS_NAME, "Exception : " + task.getError().getMessage());
+                                        } else {
+                                            Log.d(CLASS_NAME, "Device Successfully Registered");
+                                        }
+
+                                        return null;
+                                    }
+
+                                });
+                                //svdApplication.push.subscribe(username);
+
                                 if (type.equals("P"))
                                     intent = new Intent(context, SuvidhaMember.class);
                                 else if (type.equals("D"))

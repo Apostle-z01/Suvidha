@@ -20,7 +20,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ibm.mobile.services.cloudcode.IBMCloudCode;
+import com.ibm.mobile.services.core.http.IBMHttpResponse;
 import com.ibm.mobile.services.data.IBMDataObject;
+import com.ibm.mobile.services.push.IBMPush;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -43,6 +46,9 @@ public class RegistrationPage extends ActionBarActivity {
 
     public static final String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
     public static final String CLASS_NAME = "RegistrationPage";
+    private static final String deviceAlias = "TargetDevice";
+    private static final String consumerID = "MBaaSListApp";
+    SuvidhaApplication svdApplication;
     String username;
     String password;
     String address;
@@ -57,6 +63,7 @@ public class RegistrationPage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
+        svdApplication = (SuvidhaApplication) getApplication();
 
         Globals.address = (EditText)findViewById(R.id.regAddress);
 
@@ -387,6 +394,29 @@ public class RegistrationPage extends ActionBarActivity {
             });
         }
 
+        //Initialize push
+        IBMPush.initializeService();
+        svdApplication.push = IBMPush.getService();
+        svdApplication.push.register(deviceAlias, username).continueWith(new Continuation<String, Void>() {
+
+            @Override
+            public Void then(Task<String> task) throws Exception {
+                if (task.isCancelled()) {
+                    Log.e(CLASS_NAME, "Exception : Task " + task.toString() + " was cancelled.");
+                } else if (task.isFaulted()) {
+                    Log.e(CLASS_NAME, "Exception : " + task.getError().getMessage());
+                } else {
+                    Log.d(CLASS_NAME, "Device Successfully Registered");
+                }
+
+                return null;
+            }
+
+        });
+
+        //Create new tag
+        //createTag(username);
+        //svdApplication.push.subscribe(username);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
         alertDialog.setTitle("Succesful Registration");
         alertDialog.setMessage("You have been successfully registered");
@@ -399,9 +429,55 @@ public class RegistrationPage extends ActionBarActivity {
         AlertDialog dialog = alertDialog.create();
         alertDialog.show();
 
-
 //        Intent intent = new Intent(this,SuccesfulRegistration.class);
 //        intent.putExtra(EXTRA_MESSAGE,str);
 //        startActivity(intent);
     }
+
+    /**
+     * Send a notification to all devices whenever the BlueList is modified (create, update, or delete).
+     */
+    private void createTag(String tagName) {
+
+        // Initialize and retrieve an instance of the IBM CloudCode service.
+        IBMCloudCode.initializeService();
+        IBMCloudCode myCloudCodeService = IBMCloudCode.getService();
+        JSONObject jsonObj = new JSONObject();
+        try {
+            jsonObj.put("name", tagName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        myCloudCodeService.post("createTag", jsonObj).continueWith(new Continuation<IBMHttpResponse, Void>() {
+
+            @Override
+            public Void then(Task<IBMHttpResponse> task) throws Exception {
+                if (task.isCancelled()) {
+                    Log.e(CLASS_NAME, "Exception : Task" + task.isCancelled() + "was cancelled.");
+                } else if (task.isFaulted()) {
+                    Log.e(CLASS_NAME, "Exception : " + task.getError().getMessage());
+                } else {
+                    InputStream is = task.getResult().getInputStream();
+                    try {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(is));
+                        String responseString = "";
+                        String myString = "";
+                        while ((myString = in.readLine()) != null)
+                            responseString += myString;
+
+                        in.close();
+                        Log.i(CLASS_NAME, "Response Body: " + responseString);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i(CLASS_NAME, "Response Status from createTag: " + task.getResult().getHttpResponseCode());
+                }
+                return null;
+            }
+
+        });
+
+    }
+
 }

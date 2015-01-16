@@ -103,7 +103,7 @@ public class ExistingAppointments extends ActionBarActivity {
                                     @Override
                                     public void onClick(View v) {
                                         String name = "Dr. "+app.getDocName();
-                                        cancelAppointment(name,app.getDate(),app.getTime());
+                                        cancelAppointment(name,app.getDate(),app.getTime(),app.getPatUsername());
                                         // row is your row, the parent of the clicked button
                                         View row = (View) v.getParent();
                                         // container contains all the rows, you could keep a variable somewhere else to the container which you can refer to here
@@ -148,7 +148,7 @@ public class ExistingAppointments extends ActionBarActivity {
     /**
      * Send a notification to all devices whenever the BlueList is modified (create, update, or delete).
      */
-    private void cancelAppointment(String docName, String date, String time) {
+    private void cancelAppointment(String docName, String date, String time,String idName) {
 
         // Initialize and retrieve an instance of the IBM CloudCode service.
         IBMCloudCode.initializeService();
@@ -158,6 +158,7 @@ public class ExistingAppointments extends ActionBarActivity {
             jsonObj.put("name", docName);
             jsonObj.put("date", date);
             jsonObj.put("time", time);
+            jsonObj.put("consumerId",idName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
