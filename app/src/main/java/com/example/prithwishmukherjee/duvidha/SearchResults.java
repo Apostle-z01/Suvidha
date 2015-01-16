@@ -104,7 +104,6 @@ public class SearchResults extends ActionBarActivity {
                                 }
                             }
                         });
-
                     }
                     else if(search_type.get(arg2).equals("Cheapest First")) {
                         Collections.sort(doctors, new Comparator<Doctor>() {

@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class Ambulance extends ActionBarActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_ambulance);
 

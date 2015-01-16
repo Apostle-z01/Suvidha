@@ -3,6 +3,7 @@ package com.example.prithwishmukherjee.duvidha;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -13,14 +14,15 @@ public class SuvidhaHospital extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_suvidha_hospital);
 
         Intent intent = getIntent();
         String name = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        Log.e("SuvidhaHospital",name);
 
         TextView textView = (TextView)findViewById(R.id.textView11);
         textView.setText(name + " Hospital");
 
-        setContentView(R.layout.activity_suvidha_hospital);
     }
 
 

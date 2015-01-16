@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import com.ibm.mobile.services.cloudcode.IBMCloudCode;
 import com.ibm.mobile.services.core.http.IBMHttpResponse;
 import com.ibm.mobile.services.data.IBMDataException;
+import com.ibm.mobile.services.data.IBMDataObject;
 import com.ibm.mobile.services.data.IBMQuery;
 
 import org.json.JSONException;
@@ -113,7 +114,25 @@ public class ExistingAppointments extends ActionBarActivity {
                                         String username = (String) temptextview.getText();
 
                                         //Delete from Database
+                                        //Delete from this pending database
+                                        app.delete().continueWith(new Continuation<IBMDataObject, Object>() {
+                                            @Override
+                                            public Object then(Task<IBMDataObject> task) throws Exception {
+                                                if (task.isFaulted()) {
+                                                    // Handle errors
+                                                    Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                                                    return null;
+                                                } else {
+                                                    Appointments myApp = (Appointments) task.getResult();
+                                                    Log.e(CLASS_NAME,myApp.getStatus());
+                                                    Log.e(CLASS_NAME,myApp.getDocUsername());
+                                                    Log.e(CLASS_NAME,myApp.getPatUsername());
 
+                                                    // Do more work
+                                                }
+                                                return null;
+                                            }
+                                        });
 
 
                                         container.removeView(row);
