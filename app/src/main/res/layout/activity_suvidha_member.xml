@@ -110,25 +110,14 @@
         android:clickable="true"
         android:onClick="gotoCheckAppointmentStatus"
         android:textSize="20dp"
-        android:layout_below="@+id/update"
-        android:layout_alignStart="@+id/textView"
-        android:layout_marginTop="40dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Update Details"
-        android:id="@+id/update"
-        android:clickable="true"
-        android:textSize="20dp"
-        android:layout_below="@+id/Discuss"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp" />
+        android:layout_alignStart="@+id/textViewss"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/Discuss" />
 
         <TextView android:text="Your appointments are:" android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25dp"
-            android:id="@+id/textView"
+            android:id="@+id/textViewss"
             android:layout_below="@+id/Appointment"
             android:layout_alignParentStart="true"
             android:layout_marginTop="10dp"
@@ -138,7 +127,7 @@
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:background="@android:color/black"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/textViewss"
             android:layout_alignParentStart="true"
             android:id="@+id/stline"
             android:visibility="gone" />
@@ -161,7 +150,7 @@
             android:layout_height="wrap_content"
             android:text="Close"
             android:id="@+id/close"
-            android:layout_alignTop="@+id/textView"
+            android:layout_alignTop="@+id/textViewss"
             android:layout_alignEnd="@+id/stline"
             android:textColor="#ff753b37"
             android:clickable="true"

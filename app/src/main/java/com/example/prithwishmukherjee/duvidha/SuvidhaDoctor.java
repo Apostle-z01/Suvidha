@@ -1,19 +1,35 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.ibm.mobile.services.data.IBMDataException;
+import com.ibm.mobile.services.data.IBMQuery;
+
+import java.util.List;
+
+import bolts.Continuation;
+import bolts.Task;
 
 
 public class SuvidhaDoctor extends ActionBarActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
+    public final static String CLASS_NAME = "SuvidhaDoctor";
 
     String username;
     @Override
@@ -77,8 +93,14 @@ public class SuvidhaDoctor extends ActionBarActivity {
 
     public void updateDetails(View view)
     {
-        Intent intent = new Intent(this,UpdateDetails.class);
-        intent.putExtra(EXTRA_MESSAGE,username);
-        startActivity(intent);
+    //    Intent intent = new Intent(this,UpdateDetails.class);
+    //    intent.putExtra(EXTRA_MESSAGE,username);
+    //    startActivity(intent);
+        //pass username to forum page
+
+
+
+        //        intent.putExtra(EXTRA_MESSAGE,username);
+        //        startActivity(intent);
     }
 }

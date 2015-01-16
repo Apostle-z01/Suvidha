@@ -30,7 +30,7 @@ public class SuvidhaMember extends ActionBarActivity {
     String PROVIDER = LocationManager.GPS_PROVIDER;
 
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
-    public static final String CLASS_NAME = "ExistingAppointments";
+    public static final String CLASS_NAME = "SuvidhaMember";
 
 
     String username;
@@ -51,7 +51,7 @@ public class SuvidhaMember extends ActionBarActivity {
 
         TableLayout temp = (TableLayout)findViewById(R.id.appointmentTable);
         temp.setVisibility(View.GONE);
-        TextView t1 = (TextView)findViewById(R.id.textView);
+        TextView t1 = (TextView)findViewById(R.id.textViewss);
         t1.setVisibility(View.GONE);
         TextView t2 = (TextView)findViewById(R.id.close);
         t2.setVisibility(View.GONE);
@@ -103,7 +103,7 @@ public class SuvidhaMember extends ActionBarActivity {
     public void gotoCheckAppointmentStatus(View view)
     {
         //pass username to forum page
-        TextView t1 = (TextView)findViewById(R.id.textView);
+        TextView t1 = (TextView)findViewById(R.id.textViewss);
         t1.setVisibility(View.VISIBLE);
         TextView t2 = (TextView)findViewById(R.id.close);
         t2.setVisibility(View.VISIBLE);
@@ -214,7 +214,7 @@ public class SuvidhaMember extends ActionBarActivity {
         TableLayout temp = (TableLayout)findViewById(R.id.appointmentTable);
         temp.removeAllViews();
         temp.setVisibility(View.GONE);
-        TextView t1 = (TextView)findViewById(R.id.textView);
+        TextView t1 = (TextView)findViewById(R.id.textViewss);
         t1.setVisibility(View.GONE);
         TextView t2 = (TextView)findViewById(R.id.close);
         t2.setVisibility(View.GONE);

@@ -10,6 +10,9 @@
     <string name="google_maps_key">AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY</string>
     <string name="disease_prompt">Others</string>
     //Database                                                    <string-array name="Diseases">
+    <string name="disease_prompt">Eye doctors</string>
+    //Database
+    <string-array name="Diseases">
         <item> Eye doctors </item>
         <item> ENT doctors</item>
         <item> Skin doctors</item>
@@ -19,11 +22,24 @@
         <item> Osteologists</item>
         <item> General physicians</item>
     </string-array>
+
     <string-array name="Search_Options">
         <item> Top Rated Doctors </item>
         <item> Nearest First </item>
         <item> Cheapest First </item>
     </string-array>
+
+    <string-array name="Days">
+        <item>Monday </item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <string name="day_prompt">Monday</string>
 
     <string name="title_activity_emergency_page">EmergencyPage</string>
     <string name="title_activity_ambulance">Ambulance</string>
