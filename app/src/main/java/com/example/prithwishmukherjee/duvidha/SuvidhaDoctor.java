@@ -1,19 +1,40 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.ibm.mobile.services.data.IBMDataException;
+import com.ibm.mobile.services.data.IBMQuery;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
+
+import bolts.Continuation;
+import bolts.Task;
 
 
 public class SuvidhaDoctor extends ActionBarActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
+    public final static String CLASS_NAME = "SuvidhaDoctor";
 
     String username;
     @Override
@@ -28,9 +49,6 @@ public class SuvidhaDoctor extends ActionBarActivity {
         String name = username;
         TextView textView = (TextView)findViewById(R.id.textView4);
         textView.setText("Welcome Dr." + name);
-        ImageView iv = (ImageView)findViewById(R.id.imageView2);
-
-        iv.setImageResource(R.drawable.ic_launcher);
 
         RatingBar rb = (RatingBar)findViewById(R.id.ratingBar);
         int rating = 4;
@@ -75,10 +93,153 @@ public class SuvidhaDoctor extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void deactivateDocAppointmentTable(View view)
+    {
+        TextView temp = (TextView)findViewById(R.id.textViewss);
+        temp.setVisibility(View.GONE);
+        View stt = (View)findViewById(R.id.stline5);
+        stt.setVisibility(View.GONE);
+        Button t1 = (Button)findViewById(R.id.addAppointment);
+        t1.setVisibility(View.GONE);
+        TextView b1= (TextView)findViewById(R.id.done);
+        b1.setVisibility(View.GONE);
+
+
+        TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
+        ll.setVisibility(View.GONE);
+
+        Spinner sp1 = (Spinner)findViewById(R.id.dayspinner);
+        sp1.setVisibility(View.GONE);
+        Spinner time_hour = (Spinner)findViewById(R.id.doctime_hour);
+        time_hour.setVisibility(View.GONE);
+        Spinner time_min = (Spinner)findViewById(R.id.doctime_min);
+        time_min.setVisibility(View.GONE);
+        ImageButton tick = (ImageButton)findViewById(R.id.addb);
+        tick.setVisibility(View.GONE);
+        ImageButton cross = (ImageButton)findViewById(R.id.cancelb);
+        cross.setVisibility(View.GONE);
+
+    }
+
+    public void showOptiontoAdd(View view)
+    {
+        TextView temp = (TextView)findViewById(R.id.textViewss);
+        temp.setVisibility(View.VISIBLE);
+        View stt = (View)findViewById(R.id.stline5);
+        stt.setVisibility(View.VISIBLE);
+        Button t1 = (Button)findViewById(R.id.addAppointment);
+        t1.setVisibility(View.GONE);
+
+        TextView b1= (TextView)findViewById(R.id.done);
+        b1.setVisibility(View.GONE);
+
+
+        TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
+        ll.setVisibility(View.VISIBLE);
+
+        Spinner sp1 = (Spinner)findViewById(R.id.dayspinner);
+        String appDay = sp1.getSelectedItem().toString();
+        Spinner time_hour = (Spinner)findViewById(R.id.doctime_hour);
+        time_hour.setVisibility(View.VISIBLE);
+        Spinner time_min = (Spinner)findViewById(R.id.doctime_min);
+        time_min.setVisibility(View.VISIBLE);
+        sp1.setVisibility(View.VISIBLE);
+        ImageButton tick = (ImageButton)findViewById(R.id.addb);
+        tick.setVisibility(View.VISIBLE);
+        ImageButton cross = (ImageButton)findViewById(R.id.cancelb);
+        cross.setVisibility(View.VISIBLE);
+
+    }
+
+    public void removeOptiontoadd(View view)
+    {
+        TextView temp = (TextView)findViewById(R.id.textViewss);
+        temp.setVisibility(View.VISIBLE);
+        View stt = (View)findViewById(R.id.stline5);
+        stt.setVisibility(View.VISIBLE);
+        Button t1 = (Button)findViewById(R.id.addAppointment);
+        t1.setVisibility(View.VISIBLE);
+
+        TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
+        ll.setVisibility(View.VISIBLE);
+
+        TextView b1= (TextView)findViewById(R.id.done);
+        b1.setVisibility(View.VISIBLE);
+
+        Spinner sp1 = (Spinner)findViewById(R.id.dayspinner);
+        sp1.setVisibility(View.GONE);
+        Spinner time_hour = (Spinner)findViewById(R.id.doctime_hour);
+        time_hour.setVisibility(View.GONE);
+        Spinner time_min = (Spinner)findViewById(R.id.doctime_min);
+        time_min.setVisibility(View.GONE);
+        ImageButton tick = (ImageButton)findViewById(R.id.addb);
+        tick.setVisibility(View.GONE);
+        ImageButton cross = (ImageButton)findViewById(R.id.cancelb);
+        cross.setVisibility(View.GONE);
+
+    }
+
+    public void addAppointmentDoc(View view)
+    {
+        Spinner sp1 = (Spinner)findViewById(R.id.dayspinner);
+        String appDay = sp1.getSelectedItem().toString();
+        Spinner time_hour = (Spinner)findViewById(R.id.doctime_hour);
+        time_hour.setVisibility(View.GONE);
+        Spinner time_min = (Spinner)findViewById(R.id.doctime_min);
+        time_min.setVisibility(View.GONE);
+        sp1.setVisibility(View.GONE);
+
+        ImageButton tick = (ImageButton)findViewById(R.id.addb);
+        tick.setVisibility(View.GONE);
+        ImageButton cross = (ImageButton)findViewById(R.id.cancelb);
+        cross.setVisibility(View.GONE);
+
+        TextView b1= (TextView)findViewById(R.id.done);
+        b1.setVisibility(View.VISIBLE);
+
+        TextView temp = (TextView)findViewById(R.id.textViewss);
+        temp.setVisibility(View.VISIBLE);
+        View stt = (View)findViewById(R.id.stline5);
+        stt.setVisibility(View.VISIBLE);
+        Button t1 = (Button)findViewById(R.id.addAppointment);
+        t1.setVisibility(View.VISIBLE);
+        TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
+        ll.setVisibility(View.VISIBLE);
+
+        //Add to database using appDay,appTime
+    }
+
     public void updateDetails(View view)
     {
-        Intent intent = new Intent(this,UpdateDetails.class);
-        intent.putExtra(EXTRA_MESSAGE,username);
-        startActivity(intent);
+    //    Intent intent = new Intent(this,UpdateDetails.class);
+    //    intent.putExtra(EXTRA_MESSAGE,username);
+    //    startActivity(intent);
+        //pass username to forum page
+
+        TextView temp = (TextView)findViewById(R.id.textViewss);
+        temp.setVisibility(View.VISIBLE);
+        View stt = (View)findViewById(R.id.stline5);
+        stt.setVisibility(View.VISIBLE);
+        Button t1 = (Button)findViewById(R.id.addAppointment);
+        t1.setVisibility(View.VISIBLE);
+        TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
+        ll.setVisibility(View.VISIBLE);
+
+        TextView b1= (TextView)findViewById(R.id.done);
+        b1.setVisibility(View.VISIBLE);
+
+        Spinner sp1 = (Spinner)findViewById(R.id.dayspinner);
+        String appDay = sp1.getSelectedItem().toString();
+        Spinner time_hour = (Spinner)findViewById(R.id.doctime_hour);
+        time_hour.setVisibility(View.GONE);
+        Spinner time_min = (Spinner)findViewById(R.id.doctime_min);
+        time_min.setVisibility(View.GONE);
+        sp1.setVisibility(View.GONE);
+        ImageButton tick = (ImageButton)findViewById(R.id.addb);
+        tick.setVisibility(View.GONE);
+        ImageButton cross = (ImageButton)findViewById(R.id.cancelb);
+        cross.setVisibility(View.GONE);
+        //        intent.putExtra(EXTRA_MESSAGE,username);
+        //        startActivity(intent);
     }
 }

@@ -8,22 +8,76 @@
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
     <string name="google_maps_key">AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY</string>
-    <string name="disease_prompt">Others</string>
+    <string name="disease_prompt">Eye</string>
     //Database                                                    <string-array name="Diseases">
-        <item> Eye doctors </item>
-        <item> ENT doctors</item>
-        <item> Skin doctors</item>
-        <item> Heart doctors</item>
-        <item> Kidney doctors</item>
+        <item> Eye </item>
+        <item> ENT </item>
+        <item> Skin </item>
+        <item> Heart </item>
+        <item> Kidney </item>
         <item> Neurologists</item>
         <item> Osteologists</item>
         <item> General physicians</item>
     </string-array>
+
     <string-array name="Search_Options">
         <item> Top Rated Doctors </item>
         <item> Nearest First </item>
         <item> Cheapest First </item>
+        <item> By Name </item>
     </string-array>
+
+    <string-array name="Days">
+        <item>Monday </item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+
+    <string name="day_prompt">Monday</string>
+
+    <string-array name="Time_hour">
+        <item>00</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+    </string-array>
+
+    <string name="time_hour_prompt">12</string>
+
+
+    <string-array name="Time_min">
+        <item>00</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+    </string-array>
+
+    <string name="time_min_prompt">00</string>
+
 
     <string name="title_activity_emergency_page">EmergencyPage</string>
     <string name="title_activity_ambulance">Ambulance</string>
@@ -40,5 +94,6 @@
     <string name="title_activity_pending_appointments">PendingAppointments</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_gen_map">genMap</string>
+    <string name="title_activity_doctor__page">Doctor_Page</string>
 
 </resources>

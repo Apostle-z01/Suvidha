@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.ibm.mobile.services.data.IBMDataException;
 import com.ibm.mobile.services.data.IBMQuery;
@@ -28,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
     private static final String consumerID = "MBaaSListApp";
     int flag;
     public static final String CLASS_NAME="MainActivity";
-
+    int click = 1;
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
 
     @Override
@@ -39,6 +40,23 @@ public class MainActivity extends ActionBarActivity {
         /* Use application class to maintain global state. */
         svdApplication = (SuvidhaApplication) getApplication();
         //itemList = blApplication.getItemList();
+
+        final Context context = this;
+
+        ImageView emergency = (ImageView) findViewById(R.id.imageView);
+        emergency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(click == 2){
+                    Intent intent = new Intent(context, EmergencyPage.class);
+                    startActivity(intent);
+                    click = 1;
+                }
+                else {
+                    click++;
+                }
+            }
+        });
 
         //Code to add new doctor to the database
         /*
@@ -232,6 +250,7 @@ public class MainActivity extends ActionBarActivity {
                         AlertDialog dialog = alertDialog.create();
                         alertDialog.show();
                         Log.e(CLASS_NAME, "Inside user received");
+
                     }
                     return null;
                 }
@@ -241,10 +260,10 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void gotoEmergencyPage(View view){
-        Intent intent = new Intent(this, EmergencyPage.class);
-        startActivity(intent);
-    }
+//    public void gotoEmergencyPage(View view){
+//        Intent intent = new Intent(this, EmergencyPage.class);
+//        startActivity(intent);
+//    }
 
     public void gotoRegistrationPage(View view){
         Intent intent = new Intent(this, RegistrationPage.class);
