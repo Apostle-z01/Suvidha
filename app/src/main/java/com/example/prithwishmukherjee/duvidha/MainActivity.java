@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.ibm.mobile.services.data.IBMDataException;
 import com.ibm.mobile.services.data.IBMQuery;
@@ -25,7 +26,7 @@ public class MainActivity extends ActionBarActivity {
     SuvidhaApplication svdApplication;
     int flag;
     public static final String CLASS_NAME="MainActivity";
-
+    int click = 1;
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
 
     @Override
@@ -36,6 +37,23 @@ public class MainActivity extends ActionBarActivity {
         /* Use application class to maintain global state. */
         svdApplication = (SuvidhaApplication) getApplication();
         //itemList = blApplication.getItemList();
+
+        final Context context = this;
+
+        ImageView emergency = (ImageView) findViewById(R.id.imageView);
+        emergency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(click == 2){
+                    Intent intent = new Intent(context, EmergencyPage.class);
+                    startActivity(intent);
+                    click = 1;
+                }
+                else {
+                    click++;
+                }
+            }
+        });
 
         //Code to add new doctor to the database
         /*
@@ -174,40 +192,41 @@ public class MainActivity extends ActionBarActivity {
                         // Handle errors
                         Log.e(CLASS_NAME, "Error in retrieving");
                     } else {
-                        // do more work
-                        List<Users> objects = task.getResult();
-                        for (Users newUser : objects) {
-                            Log.e(CLASS_NAME, newUser.getName());
-                            Log.e(CLASS_NAME, newUser.getPassword());
-                            Log.e(CLASS_NAME, newUser.getType());
-                            Intent intent;
-                            String type = newUser.getType();//get from Database
-                            if (newUser.getName().equalsIgnoreCase(username) && newUser.getPassword().equals(userpass)) {
-                                Log.e(CLASS_NAME, "Login successful");
-                                if (type.equals("P"))
-                                    intent = new Intent(context, SuvidhaMember.class);
-                                else if (type.equals("D"))
-                                    intent = new Intent(context, SuvidhaDoctor.class);
-                                else
-                                    intent = new Intent(context, SuvidhaHospital.class);
-                                intent.putExtra(EXTRA_MESSAGE, username);
-                                startActivity(intent);
-                                return null;
+                            // do more work
+                            List<Users> objects = task.getResult();
+                            for (Users newUser : objects) {
+                                Log.e(CLASS_NAME, newUser.getName());
+                                Log.e(CLASS_NAME, newUser.getPassword());
+                                Log.e(CLASS_NAME, newUser.getType());
+                                Intent intent;
+                                String type = newUser.getType();//get from Database
+                                if (newUser.getName().equalsIgnoreCase(username) && newUser.getPassword().equals(userpass)) {
+                                    Log.e(CLASS_NAME, "Login successful");
+                                    if (type.equals("P"))
+                                        intent = new Intent(context, SuvidhaMember.class);
+                                    else if (type.equals("D"))
+                                        intent = new Intent(context, SuvidhaDoctor.class);
+                                    else
+                                        intent = new Intent(context, SuvidhaHospital.class);
+                                    intent.putExtra(EXTRA_MESSAGE, username);
+                                    startActivity(intent);
+                                    return null;
+                                }
                             }
-                        }
-                        Log.e(CLASS_NAME, "Login unsuccessful");
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                        Log.e(CLASS_NAME, "Inside user received");
-                        alertDialog.setTitle("Wrong credentials");
-                        alertDialog.setMessage("Username/Password is wrong");
-                        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // here you can add functions
-                            }
-                        });
-                        AlertDialog dialog = alertDialog.create();
-                        alertDialog.show();
-                        Log.e(CLASS_NAME, "Inside user received");
+                            Log.e(CLASS_NAME, "Login unsuccessful");
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                            Log.e(CLASS_NAME, "Inside user received");
+                            alertDialog.setTitle("Wrong credentials");
+                            alertDialog.setMessage("Username/Password is wrong");
+                            alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // here you can add functions
+                                }
+                            });
+                            AlertDialog dialog = alertDialog.create();
+                            alertDialog.show();
+                            Log.e(CLASS_NAME, "Inside user received");
+
                     }
                     return null;
                 }
@@ -217,10 +236,10 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void gotoEmergencyPage(View view){
-        Intent intent = new Intent(this, EmergencyPage.class);
-        startActivity(intent);
-    }
+//    public void gotoEmergencyPage(View view){
+//        Intent intent = new Intent(this, EmergencyPage.class);
+//        startActivity(intent);
+//    }
 
     public void gotoRegistrationPage(View view){
         Intent intent = new Intent(this, RegistrationPage.class);

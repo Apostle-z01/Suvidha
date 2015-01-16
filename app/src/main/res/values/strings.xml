@@ -9,7 +9,7 @@
     <string name="button_send">Send</string>
     <string name="google_maps_key">AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY</string>
     <string name="disease_prompt">Others</string>
-    //Database                                                    <string-array name="Diseases">
+    //Database                                                        <string-array name="Diseases">
         <item> Eye </item>
         <item> ENT </item>
         <item> Skin </item>
@@ -41,5 +41,6 @@
     <string name="title_activity_pending_appointments">PendingAppointments</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_gen_map">genMap</string>
+    <string name="title_activity_doctor__page">Doctor_Page</string>
 
 </resources>
