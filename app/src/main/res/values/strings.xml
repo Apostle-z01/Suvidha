@@ -54,5 +54,6 @@
     <string name="title_activity_pending_appointments">PendingAppointments</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_gen_map">genMap</string>
+    <string name="title_activity_doctor__page">Doctor_Page</string>
 
 </resources>
