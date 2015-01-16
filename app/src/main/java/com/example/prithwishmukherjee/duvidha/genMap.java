@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -166,6 +167,7 @@ public class genMap extends ActionBarActivity implements GoogleMap.OnMapClickLis
                 jsonObject = new JSONObject(result);
                 String address = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
                         .getString("formatted_address");
+                Globals.add = address;
                 Globals.address.setText(address);
                 dispAdd(address);
 

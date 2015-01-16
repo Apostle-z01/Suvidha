@@ -12,4 +12,5 @@ public class Globals {
     public static String[] state;
     public static double latitude;
     public static double longitude;
+    public static String add;
 }
