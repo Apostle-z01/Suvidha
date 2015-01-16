@@ -100,7 +100,7 @@
         android:id="@+id/textViewss"
         android:layout_below="@+id/updateDetails"
         android:layout_alignParentStart="true"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <View
         android:layout_width="fill_parent"
@@ -109,18 +109,19 @@
         android:layout_below="@+id/textViewss"
         android:layout_alignParentStart="true"
         android:id="@+id/stline5"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <TableLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/docAppointmentTable"
         android:stretchColumns="0"
         android:divider="#ffffffff"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="gone">
+        android:layout_alignParentEnd="false"
+        android:visibility="visible"
+        android:layout_below="@+id/addAppointment">
     </TableLayout>
 
     <TextView
@@ -148,7 +149,7 @@
         android:textColor="#ffffffff"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:clickable="true"
         android:onClick="showOptiontoAdd"/>
 
