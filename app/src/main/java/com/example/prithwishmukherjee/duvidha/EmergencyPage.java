@@ -1,6 +1,9 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,15 +12,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import com.google.android.gms.maps.model.LatLng;
+
 
 public class EmergencyPage extends ActionBarActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
+    LocationManager myLocationManager;
+    String PROVIDER = LocationManager.GPS_PROVIDER;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency_page);
+
+        myLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        //get last known location, if available
+        Location location = myLocationManager.getLastKnownLocation(PROVIDER);
+        Globals.latitude = location.getLatitude();
+        Globals.longitude = location.getLongitude();
 
         //final RadioButton current = (RadioButton)findViewById(R.id.radioButton);
         //final RadioButton home2 = (RadioButton)findViewById(R.id.radioButton2);
@@ -48,6 +62,13 @@ public class EmergencyPage extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void genMap(View view){
+        Globals.address = (EditText)findViewById(R.id.enterAddress);
+        Intent intent = new Intent(this,genMap.class);
+        startActivity(intent);
+    }
+
+
     public void activateAddressEntry(View view)
     {
         EditText editText = (EditText)findViewById(R.id.enterAddress);
@@ -58,6 +79,11 @@ public class EmergencyPage extends ActionBarActivity {
 
     public void deactivateAddressEntry(View view)
     {
+        //get last known location, if available
+        Location location = myLocationManager.getLastKnownLocation(PROVIDER);
+        Globals.latitude = location.getLatitude();
+        Globals.longitude = location.getLongitude();
+
         EditText editText = (EditText)findViewById(R.id.enterAddress);
         editText.setText(null);
         editText.setVisibility(View.GONE);

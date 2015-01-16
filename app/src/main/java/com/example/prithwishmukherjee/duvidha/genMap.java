@@ -97,6 +97,9 @@ public class genMap extends ActionBarActivity implements GoogleMap.OnMapClickLis
     @Override
     public void onMapClick(LatLng point) {
         map.animateCamera(CameraUpdateFactory.newLatLng(point));
+        Globals.latitude = point.latitude;
+        Globals.longitude = point.longitude;
+
         new HttpAsyncTask().execute("https://maps.googleapis.com/maps/api/geocode/json?latlng="+point.latitude+","+point.longitude);
     }
 
