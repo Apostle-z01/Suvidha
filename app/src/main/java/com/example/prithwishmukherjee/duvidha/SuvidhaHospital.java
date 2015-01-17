@@ -16,8 +16,10 @@ import android.widget.TextView;
 import android.view.View;
 
 import com.ibm.mobile.services.data.IBMDataException;
+import com.ibm.mobile.services.data.IBMDataObject;
 import com.ibm.mobile.services.data.IBMQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bolts.Continuation;
@@ -28,6 +30,8 @@ public class SuvidhaHospital extends ActionBarActivity {
 
     public static final String CLASS_NAME = "SuvidhaHospital";
     String username;
+    String hosName;
+    List<Doctor> doctors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +40,12 @@ public class SuvidhaHospital extends ActionBarActivity {
 
         Intent intent = getIntent();
         username = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        hosName = intent.getStringExtra(MainActivity.EXTRA_MESSAGE_NAME);
 
         TextView textView = (TextView)findViewById(R.id.textView11);
         textView.setText(username + " Hospital");
 
-        setContentView(R.layout.activity_suvidha_hospital);
+        doctors = new ArrayList<Doctor>();
     }
 
 
@@ -76,42 +81,35 @@ public class SuvidhaHospital extends ActionBarActivity {
 
         try {
             //To retrieve from the database
-            IBMQuery<Appointments> query = IBMQuery.queryForClass(Appointments.class);
-            query.find().continueWith(new Continuation<List<Appointments>, Void>() {
+            doctors.clear();
+            IBMQuery<Doctor> query = IBMQuery.queryForClass(Doctor.class);
+            query.find().continueWith(new Continuation<List<Doctor>, Void>() {
 
                 @Override
-                public Void then(Task<List<Appointments>> task) throws Exception {
+                public Void then(Task<List<Doctor>> task) throws Exception {
                     int index=0;
                     if (task.isFaulted()) {
                         // Handle errors
                     } else {
                         // do more work
-                        List<Appointments> objects = task.getResult();
-                        for(final Appointments app:objects){
-                            Log.e(CLASS_NAME, app.getDocUsername());
-                            Log.e(CLASS_NAME, app.getPatUsername());
-                            if(app.getDocUsername().equalsIgnoreCase(username) && app.getStatus().equalsIgnoreCase("pending")){
+                        List<Doctor> objects = task.getResult();
+                        for(final Doctor doc:objects){
+                            Log.e(CLASS_NAME, doc.getUsername());
+                            Log.e(CLASS_NAME, doc.getName());
+                            Log.e(CLASS_NAME, doc.getArea());
+                            //doctors.add(doc);
 
-                                //Add the appointments here, and the patients username
-                                Log.e(CLASS_NAME,app.getPatName());
-                                Log.e(CLASS_NAME,app.getDocUsername());
-                                Log.e(CLASS_NAME,app.getTime());
-                                Log.e(CLASS_NAME,app.getDate());
-                                Log.e(CLASS_NAME,app.getStatus());
-
+                            //if(!doc.getHosUsername().equalsIgnoreCase(username)){
                                 TableRow row = new TableRow(context);
                                 TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                                 row.setLayoutParams(lp);
 
                                 //Get from Database
-                                TextView pname = new TextView(context);
-                                pname.setText(app.getPatName());
+                                TextView dname = new TextView(context);
+                                dname.setText(doc.getName());
 
-                                TextView adate = new TextView(context);
-                                adate.setText(app.getDate());
-
-                                TextView atime = new TextView(context);
-                                atime.setText(app.getTime());
+                                TextView darea = new TextView(context);
+                                darea.setText(doc.getArea());
 
                                 ImageButton acceptAppointment = new ImageButton(context);
                                 acceptAppointment.setImageResource(R.drawable.plus);
@@ -129,7 +127,33 @@ public class SuvidhaHospital extends ActionBarActivity {
                                         TextView temptextview= (TextView) ((ViewGroup)row).getChildAt(0);
                                         String username = (String) temptextview.getText();
 
-                                        //Change status from pending to existing
+                                        //Add to hospital_Doctor
+                                        Hospital_Doctor hos_doc = new Hospital_Doctor();
+                                        hos_doc.setDocName(doc.getName());
+                                        hos_doc.setHosName(hosName);
+                                        hos_doc.setDocUsername(doc.getUsername());
+                                        hos_doc.setArea(doc.getArea());
+                                        hos_doc.setHosUsername(username);
+
+                                        hos_doc.save().continueWith(new Continuation<IBMDataObject, Void>() {
+
+                                            @Override
+                                            public Void then(Task<IBMDataObject> task) throws Exception {
+                                                if (task.isFaulted()) {
+                                                    // Handle errors
+                                                    Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                                                    return null;
+                                                } else {
+                                                    Hospital_Doctor myHos = (Hospital_Doctor) task.getResult();
+                                                    Log.e(CLASS_NAME,myHos.getDocName());
+                                                    Log.e(CLASS_NAME,myHos.getArea());
+                                                    Log.e(CLASS_NAME,myHos.getHosUsername());
+
+                                                    // Do more work
+                                                }
+                                                return null;
+                                            }
+                                        });
 
                                         container.removeView(row);
                                         container.invalidate();
@@ -140,10 +164,10 @@ public class SuvidhaHospital extends ActionBarActivity {
 
                                 row.setBackgroundColor(Color.WHITE);
 
-                                row.addView(pname);row.addView(adate);row.addView(atime);row.addView(acceptAppointment);
+                                row.addView(dname);row.addView(darea);row.addView(acceptAppointment);
                                 ll.addView(row, index);
                                 index++;
-                            }
+                            //}
                         }
                     }
                     return null;
