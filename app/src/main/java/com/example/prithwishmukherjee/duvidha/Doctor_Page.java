@@ -1,8 +1,10 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -21,8 +24,6 @@ import com.ibm.mobile.services.data.IBMDataException;
 import com.ibm.mobile.services.data.IBMDataObject;
 import com.ibm.mobile.services.data.IBMQuery;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -75,6 +76,8 @@ public class Doctor_Page extends ActionBarActivity {
         lat = doc[3];
         lon = doc[4];
         pat_user_name = doc[5];
+
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.rl1);
 
         try {
             //To retrieve from the database
@@ -155,16 +158,60 @@ public class Doctor_Page extends ActionBarActivity {
                         else {
                             Collections.sort(appointments, new Comparator<Appointments>() {
                                 public int compare(Appointments a1, Appointments a2) {
-                                    if (Date.valueOf(a1.getDate()).compareTo(Date.valueOf(a2.getDate())) > 0)
+                                    String[] dateobtained1 = a1.getDate().split(".", 3);
+                                    int day1 = Integer.parseInt(dateobtained1[0]);
+                                    int month1 = Integer.parseInt(dateobtained1[1]);
+                                    int year1 = Integer.parseInt(dateobtained1[2]);
+                                    String[] timeobtained1 = a1.getTime().split(":",2);
+                                    int hour1 = Integer.parseInt(timeobtained1[0]);
+                                    int minute1 = Integer.parseInt(timeobtained1[1]);
+                                    String[] dateobtained2 = a2.getDate().split(".", 3);
+                                    int day2 = Integer.parseInt(dateobtained2[0]);
+                                    int month2 = Integer.parseInt(dateobtained2[1]);
+                                    int year2 = Integer.parseInt(dateobtained2[2]);
+                                    String[] timeobtained2 = a2.getTime().split(":",2);
+                                    int hour2 = Integer.parseInt(timeobtained2[0]);
+                                    int minute2 = Integer.parseInt(timeobtained2[1]);
+                                    if (year1 > year2) {
                                         return -1;
-                                    if (Date.valueOf(a1.getDate()).compareTo(Date.valueOf(a2.getDate())) < 0)
+                                    }
+                                    else if (year1 < year2) {
                                         return 1;
+                                    }
                                     else {
-                                        if (Time.valueOf(a1.getTime()).compareTo(Time.valueOf(a2.getTime())) > 0)
+                                        if(month1 > month2){
                                             return -1;
-                                        if (Date.valueOf(a1.getTime()).compareTo(Date.valueOf(a2.getTime())) < 0)
+                                        }
+                                        else if(month1 < month2){
                                             return 1;
-                                        else return 0;
+                                        }
+                                        else {
+                                            if(day1 > day2){
+                                                return -1;
+                                            }
+                                            else if(day1 < day2){
+                                                return 1;
+                                            }
+                                            else {
+                                                if(hour1 > hour2){
+                                                    return -1;
+                                                }
+                                                else if(hour1 < hour2){
+                                                    return 1;
+                                                }
+                                                else {
+                                                    if(minute1 > minute2){
+                                                       return -1;
+                                                    }
+                                                    else if(minute1 < minute2){
+                                                        return 1;
+                                                    }
+                                                    else {
+                                                        return 0;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             });
@@ -188,6 +235,8 @@ public class Doctor_Page extends ActionBarActivity {
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         day = c.get(Calendar.DAY_OF_MONTH);
+
+        final Context context = this;
 
         final TimePickerDialog.OnTimeSetListener timePickerListener =
                 new TimePickerDialog.OnTimeSetListener() {
@@ -214,8 +263,8 @@ public class Doctor_Page extends ActionBarActivity {
                                         System.out.println("Here");
                                         final List<Patient> objects = task.getResult();
                                         System.out.println("After here");
-                                        for(Patient pat:objects){
-                                            if(pat.getUsername().equals(pat_user_name)){
+                                        for (Patient pat : objects) {
+                                            if (pat.getUsername().equals(pat_user_name)) {
                                                 patient = pat;
                                                 break;
                                             }
@@ -227,9 +276,34 @@ public class Doctor_Page extends ActionBarActivity {
                                         app.setStatus("pending");
                                         app.setDocName(doc_name);
                                         app.setDocUsername(doc_user_name);
-                                        String setdate = "" + myCalendar.get(Calendar.DAY_OF_MONTH)  + myCalendar.get(Calendar.MONTH) +  myCalendar.get(Calendar.YEAR);
+                                        String setdate = "";
+                                        if (myCalendar.get(Calendar.DAY_OF_MONTH) <= 9){
+                                            setdate += "0" + myCalendar.get(Calendar.DAY_OF_MONTH) + ".";
+                                        }
+                                        else {
+                                            setdate += myCalendar.get(Calendar.DAY_OF_MONTH) + ".";
+                                        }
+                                        if (myCalendar.get(Calendar.MONTH) < 9){
+                                            setdate += "0" + (myCalendar.get(Calendar.MONTH) + 1) + ".";
+                                        }
+                                        else {
+                                            setdate += (myCalendar.get(Calendar.MONTH) + 1) + ".";
+                                        }
+                                        setdate += myCalendar.get(Calendar.YEAR);
                                         app.setDate(setdate);
-                                        String settime = "" + myCalendar.get(Calendar.HOUR) + ":" + myCalendar.get(Calendar.MINUTE);
+                                        String settime = "";
+                                        if (myCalendar.get(Calendar.HOUR) <= 9){
+                                            settime += "0" + myCalendar.get(Calendar.HOUR) + ":";
+                                        }
+                                        else {
+                                            settime += myCalendar.get(Calendar.HOUR) + ":";
+                                        }
+                                        if (myCalendar.get(Calendar.MINUTE) <= 9){
+                                            settime += "0" + myCalendar.get(Calendar.MINUTE);
+                                        }
+                                        else {
+                                            settime += myCalendar.get(Calendar.MINUTE);
+                                        }
                                         app.setTime(settime);
 
                                         app.save().continueWith(new Continuation<IBMDataObject, Void>() {
@@ -250,6 +324,19 @@ public class Doctor_Page extends ActionBarActivity {
                                             }
                                         });
 
+                                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                                        Log.e(CLASS_NAME, "Inside user received");
+                                        alertDialog.setTitle("Appointment Accepted");
+                                        alertDialog.setMessage("Request for Appointment Notified to Doctor");
+                                        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // here you can add functions
+                                            }
+                                        });
+                                        AlertDialog dialog = alertDialog.create();
+                                        alertDialog.show();
+
+
 
                                     }
                                     return null;
@@ -262,14 +349,11 @@ public class Doctor_Page extends ActionBarActivity {
                     }
                 };
 
-        final Context context = this;
-
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);

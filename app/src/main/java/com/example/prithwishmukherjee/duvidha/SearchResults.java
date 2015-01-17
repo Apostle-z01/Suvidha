@@ -797,11 +797,42 @@ public class SearchResults extends ActionBarActivity {
     public void populate(){
 
         //  populate Globals.state here
+        final ArrayList<Doctor> doct = new ArrayList<Doctor>();
+        try {
+            //To retrieve from the database
+            IBMQuery<Doctor> query = IBMQuery.queryForClass(Doctor.class);
 
-        Globals.doctors = new String[3];
-        Globals.doctors[0] = "Adhuna";
-        Globals.doctors[1] = "Samrajni";
-        Globals.doctors[2] = "Sneha";
+            query.find().continueWith(new Continuation<List<Doctor>, Void>() {
 
+                @Override
+                public Void then(Task<List<Doctor>> task) throws Exception {
+                    ll = (LinearLayout) findViewById(R.id.li);
+                    if (task.isFaulted()) {
+                        // Handle errors
+                        System.out.println("Entered");
+                    } else {
+                        // do more work
+                        System.out.println("Here");
+                        final List<Doctor> objects = task.getResult();
+                        System.out.println("After here");
+                        for (Doctor doc : objects) {
+                            Log.e(CLASS_NAME, doc.getName());
+                            Log.e(CLASS_NAME, doc.getAddress());
+                            doct.add(doc);
+                        }
+                        Log.e(CLASS_NAME, "HERE");
+                    }
+
+                    return null;
+                }
+            }, Task.UI_THREAD_EXECUTOR);
+        } catch (IBMDataException error) {
+            Log.e(CLASS_NAME, "Exception : " + error.getMessage());
+        }
+
+        Globals.doctors = new String[doct.size()];
+        for(int i = 0;i < doct.size();i++){
+            Globals.doctors[i] = doct.get(i).getName();
+        }
     }
 }
