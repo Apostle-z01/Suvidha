@@ -1,6 +1,8 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
@@ -98,7 +100,7 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
 
                             if(app.getPatUsername().equalsIgnoreCase(username) && app.getStatus().equalsIgnoreCase("confirmed")){
                                 //Add the appointments here, and the patients username
-                                Log.e(CLASS_NAME,"Patient visited this doctor");
+                                Log.e(CLASS_NAME, "Patient visited this doctor");
                                 Log.e(CLASS_NAME,app.getDocName());
                                 if(!appList.contains(app))
                                     appList.add(app);
@@ -144,6 +146,20 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
             editReview.setVisibility(View.INVISIBLE);
             buttonPost.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void submit(View view){
+        AlertDialog.Builder alertDialog =  new AlertDialog.Builder(this);
+        AlertDialog dialog = alertDialog.create();
+        alertDialog.setTitle("Reviewed!");
+        alertDialog.setMessage("Your review has been submitted");
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        dialog = alertDialog.create();
+        alertDialog.show();
     }
 
     public void onNothingSelected(AdapterView<?> arg0){
