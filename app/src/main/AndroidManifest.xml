@@ -60,7 +60,7 @@
         </activity>
         <activity
             android:name=".SuvidhaMember"
-            android:label="@string/title_activity_suvidha_member"
+            android:label="Suvidha"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -68,55 +68,55 @@
         </activity>
         <activity
             android:name=".EmergencyPage"
-            android:label="@string/title_activity_emergency_page" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".Ambulance"
-            android:label="@string/title_activity_ambulance" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".SearchResults"
-            android:label="@string/title_activity_seach_results" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".RateDoctors"
-            android:label="@string/title_activity_rate_doctors" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".Forum"
-            android:label="@string/title_activity_forum" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".CheckAppointmentStatus"
-            android:label="@string/title_activity_check_appointment_status" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".SuvidhaDoctor"
-            android:label="@string/title_activity_suvidha_doctor" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".SuvidhaHospital"
-            android:label="@string/title_activity_suvidha_hospital" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".UpdateDetails"
-            android:label="@string/title_activity_update_details" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".ExistingAppointments"
-            android:label="@string/title_activity_existing_appointments" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".RegistrationPage"
-            android:label="@string/title_activity_registration_page" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".SuccesfulRegistration"
-            android:label="@string/title_activity_succesful_registration" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".PendingAppointments"
-            android:label="@string/title_activity_pending_appointments" >
+            android:label="Suvidha" >
 
             <!-- Push Settings Start -->
             <!-- Notification Intent -->
@@ -159,15 +159,15 @@
         </activity>
         <activity
             android:name=".Doctor_Page"
-            android:label="@string/title_activity_doctor__page" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".Hospital_Page"
-            android:label="@string/title_activity_hospital__page" >
+            android:label="Suvidha" >
         </activity>
         <activity
             android:name=".DoctorReview"
-            android:label="@string/title_activity_doctor_review" >
+            android:label="Suvidha" >
         </activity>
     </application>
 

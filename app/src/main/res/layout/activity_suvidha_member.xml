@@ -90,19 +90,7 @@
         android:layout_below="@+id/searchHospitals"
         android:layout_marginTop="40dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Discuss in forum"
-        android:id="@+id/Discuss"
-        android:clickable="true"
-        android:onClick="gotoForum"
-        android:textSize="20dp"
-        android:layout_below="@+id/RateDoctors"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp" />
-
-    <TextView
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Check Appointments status"
@@ -112,7 +100,7 @@
         android:textSize="20dp"
         android:layout_alignStart="@+id/textViewss"
         android:layout_marginTop="40dp"
-        android:layout_below="@+id/Discuss" />
+        android:layout_below="@+id/RateDoctors" />
 
         <TextView android:text="Your appointments are:" android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -108,9 +108,11 @@ public class SuvidhaHospital extends ActionBarActivity {
                                 //Get from Database
                                 TextView dname = new TextView(context);
                                 dname.setText(doc.getName());
+                                dname.setTextSize(30);
 
                                 TextView darea = new TextView(context);
                                 darea.setText(doc.getArea());
+                                darea.setTextSize(30);
 
                                 ImageButton acceptAppointment = new ImageButton(context);
                                 acceptAppointment.setImageResource(R.drawable.plus);
@@ -214,9 +216,11 @@ public class SuvidhaHospital extends ActionBarActivity {
                             //Get from Database
                             TextView dname = new TextView(context);
                             dname.setText(doc.getDocName());
+                            dname.setTextSize(30);
 
                             TextView darea = new TextView(context);
                             darea.setText(doc.getArea());
+                            darea.setTextSize(30);
 
                             row.setBackgroundColor(Color.WHITE);
 
