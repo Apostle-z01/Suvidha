@@ -49,6 +49,7 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
         setContentView(R.layout.activity_rate_doctors);
         Intent intent = getIntent();
         username = intent.getStringExtra(SuvidhaDoctor.EXTRA_MESSAGE);
+
         spinner = (Spinner)findViewById(R.id.spinner3);
         ratingBar2 = (RatingBar)findViewById(R.id.ratingBar2);
         editReview = (EditText)findViewById(R.id.editReview);
@@ -69,12 +70,6 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
         //  connect to database and invoke populate
 
         populate();
-
-        ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, Globals.state);
-        adapter_state
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter_state);
 
         spinner.setOnItemSelectedListener(this);
     }
@@ -99,27 +94,35 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
                         for(final Appointments app:objects){
                             Log.e(CLASS_NAME, app.getDocUsername());
                             Log.e(CLASS_NAME, app.getPatUsername());
+                            Log.e(CLASS_NAME, app.getStatus());
+
                             if(app.getPatUsername().equalsIgnoreCase(username) && app.getStatus().equalsIgnoreCase("confirmed")){
                                 //Add the appointments here, and the patients username
-                                appList.add(app);
+                                Log.e(CLASS_NAME,"Patient visited this doctor");
+                                Log.e(CLASS_NAME,app.getDocName());
+                                if(!appList.contains(app))
+                                    appList.add(app);
                             }
                         }
                     }
+                    Globals.state = new String[appList.size()+1];
+                    Globals.state[0] = "Select Doctor";
+                    int index=1;
+                    for(Appointments app:appList) {
+                        Globals.state[index] = "Dr. "+ appList.get(index-1).getDocName();
+                        index++;
+                    }
+                    Log.e(CLASS_NAME,"Populate done");
+
+                    ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_item, Globals.state);
+                    adapter_state.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter_state);
                     return null;
                 }
             }, Task.UI_THREAD_EXECUTOR);
         } catch (IBMDataException error) {
             Log.e(CLASS_NAME,"Exception : " +error.getMessage());
         }
-
-        Globals.state = new String[appList.size()+1];
-        Globals.state[0] = "Select Doctor";
-        int index=1;
-        for(Appointments app:appList) {
-            Globals.state[index] = "Dr. "+ appList.get(index-1).getDocName();
-            index++;
-        }
-        Log.e(CLASS_NAME,"Populate done");
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,

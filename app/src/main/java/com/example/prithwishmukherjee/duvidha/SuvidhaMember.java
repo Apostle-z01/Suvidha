@@ -35,6 +35,7 @@ public class SuvidhaMember extends ActionBarActivity {
 
 
     String username;
+    String patName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,11 +45,12 @@ public class SuvidhaMember extends ActionBarActivity {
         // Get the message from the intent
         Intent intent = getIntent();
         username = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        patName = intent.getStringExtra(MainActivity.EXTRA_MESSAGE_NAME);
 
         // Create the text view
         TextView welcomelogo = (TextView)findViewById(R.id.Welcomelogo);
 
-        welcomelogo.setText("Hi " + username);
+        welcomelogo.setText("Hi " + patName);
 
         TableLayout temp = (TableLayout)findViewById(R.id.appointmentTable);
         temp.setVisibility(View.GONE);
@@ -90,6 +92,7 @@ public class SuvidhaMember extends ActionBarActivity {
     public void gotoRateDoctors(View view)
     {
         Intent intent = new Intent(this, RateDoctors.class);
+        intent.putExtra(MainActivity.EXTRA_MESSAGE,username);
         startActivity(intent);
     }
 
