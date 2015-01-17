@@ -50,6 +50,8 @@ public class SearchResults extends ActionBarActivity {
     ArrayList<Doctor> doctors = new ArrayList<Doctor>();
     public static final String CLASS_NAME = "Search_Results";
     Spinner sp;
+    EditText text;
+    String pat_user_name = new String();
     int num_doctors;
     int num_views = 0;
     int queried = 0;
@@ -78,10 +80,12 @@ public class SearchResults extends ActionBarActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra("search");
-        String[] lat_lon = message.split(" ", 3);
+        String[] lat_lon = message.split(" ", 4);
         final double lat = Double.parseDouble(lat_lon[0]);
         final double lon = Double.parseDouble(lat_lon[1]);
         final String area = lat_lon[2];
+        pat_user_name = lat_lon[3];
+
 
         sp = (Spinner) findViewById(R.id.spinner2);
 
@@ -100,7 +104,7 @@ public class SearchResults extends ActionBarActivity {
                         num_views = 0;
 
                         final TextView textview = new TextView(SearchResults.this);
-                        textview.setText("Search For");
+                        textview.setText("Search Name");
 
                         textview.setTextColor(Color.BLACK);
                         ll.addView(textview);
@@ -142,7 +146,7 @@ public class SearchResults extends ActionBarActivity {
                             @Override
                             public void onClick(View v) {
 
-                                ArrayList<Doctor> new_doctors = new ArrayList<Doctor>();
+                                final ArrayList<Doctor> new_doctors = new ArrayList<Doctor>();
                                 System.out.println("Size = " + doctors.size());
                                 for (int i = 0; i < doctors.size(); i++) {
                                     System.out.println(doctors.get(i).getName() + " " + autoDoctorNames.getText());
@@ -152,14 +156,25 @@ public class SearchResults extends ActionBarActivity {
                                 }
 
                                 autoDoctorNames.setText("Type Name here");
+                                Collections.sort(new_doctors, new Comparator<Doctor>() {
+                                    public int compare(Doctor d1, Doctor d2) {
+                                        if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating()))
+                                            return -1;
+                                        if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating()))
+                                            return 1;
+                                        else return 0;
+                                    }
+                                });
+
+
                                 System.out.println("Checking now" + num_views);
                                 for (int i = num_views; i > 3; i--) {
-                                    System.out.println("Checking" + i);
+                                    System.out.println("Checking again " + i);
                                     ll.removeViewAt(i);
                                 }
 
                                 num_views = 3;
-                                for (int i = 0; i < doctors.size(); i++) {
+                                for (int i = 0; i < new_doctors.size(); i++) {
 
                                     final TextView grid = new TextView(SearchResults.this);
                                     if (i % 2 == 0) {
@@ -169,14 +184,14 @@ public class SearchResults extends ActionBarActivity {
                                     }
                                     grid.setId(i);
                                     grid.setTextColor(Color.WHITE);
-                                    grid.setText("Name - " + doctors.get(i).getName() + " Fees - " + doctors.get(i).getFees());
+                                    grid.setText("Name - " + new_doctors.get(i).getName() + " Fees - " + new_doctors.get(i).getFees());
 
                                     grid.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             if(click == 1) {
                                                 Intent intent = new Intent(context, Doctor_Page.class);
-                                                intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                                intent.putExtra("doctor", new_doctors.get(grid.getId()).getName() + "#" + new_doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                                 startActivity(intent);
                                                 click = 1;
                                             }
@@ -196,7 +211,7 @@ public class SearchResults extends ActionBarActivity {
 
                                     rating.setNumStars(5);
                                     rating.setStepSize((float) 0.5);
-                                    rating.setRating((float) Double.parseDouble(doctors.get(i).getRating()));
+                                    rating.setRating((float) Double.parseDouble(new_doctors.get(i).getRating()));
                                     rating.setId(i);
                                     rating.setIsIndicator(true);
 
@@ -217,7 +232,7 @@ public class SearchResults extends ActionBarActivity {
                                         public void onClick(View v) {
                                             if(click == 1) {
                                                 Intent intent = new Intent(context, Doctor_Page.class);
-                                                intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                                intent.putExtra("doctor", new_doctors.get(rating.getId()).getName() + "#" + new_doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                                 startActivity(intent);
                                                 click = 1;
                                             }
@@ -234,7 +249,7 @@ public class SearchResults extends ActionBarActivity {
                                         textviews1.setBackgroundColor(Color.rgb(120,120,120));
                                     }
                                     textviews1.setWidth(420);
-                                    textviews1.setHeight(115);
+                                    textviews1.setHeight(75);
                                     textviews1.setId(i);
 
                                     textviews1.setOnClickListener(new View.OnClickListener() {
@@ -242,7 +257,7 @@ public class SearchResults extends ActionBarActivity {
                                         public void onClick(View v) {
                                             if(click == 1) {
                                                 Intent intent = new Intent(context, Doctor_Page.class);
-                                                intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                                intent.putExtra("doctor", new_doctors.get(textviews1.getId()).getName() + "#" + new_doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                                 startActivity(intent);
                                                 click = 1;
                                             }
@@ -261,7 +276,7 @@ public class SearchResults extends ActionBarActivity {
                                         textviews.setBackgroundColor(Color.rgb(120,120,120));
                                     }
                                     textviews.setWidth(300);
-                                    textviews.setHeight(115);
+                                    textviews.setHeight(75);
                                     textviews.setId(i);
                                     lil.addView(textviews);
 
@@ -270,7 +285,7 @@ public class SearchResults extends ActionBarActivity {
                                         public void onClick(View v) {
                                             if(click == 1) {
                                                 Intent intent = new Intent(context, Doctor_Page.class);
-                                                intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                                intent.putExtra("doctor", new_doctors.get(textviews.getId()).getName() + "#" + new_doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                                 startActivity(intent);
                                                 click = 1;
                                             }
@@ -375,7 +390,7 @@ public class SearchResults extends ActionBarActivity {
                                 public void onClick(View v) {
                                     if(click == 1) {
                                         Intent intent = new Intent(context, Doctor_Page.class);
-                                        intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                        intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                         startActivity(intent);
                                         click = 1;
                                     }
@@ -416,7 +431,7 @@ public class SearchResults extends ActionBarActivity {
                                 public void onClick(View v) {
                                     if(click == 1) {
                                         Intent intent = new Intent(context, Doctor_Page.class);
-                                        intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                        intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                         startActivity(intent);
                                         click = 1;
                                     }
@@ -433,7 +448,7 @@ public class SearchResults extends ActionBarActivity {
                                 textviews1.setBackgroundColor(Color.rgb(120,120,120));
                             }
                             textviews1.setWidth(420);
-                            textviews1.setHeight(115);
+                            textviews1.setHeight(75);
                             textviews1.setId(i);
 
                             textviews1.setOnClickListener(new View.OnClickListener() {
@@ -441,7 +456,7 @@ public class SearchResults extends ActionBarActivity {
                                 public void onClick(View v) {
                                     if(click == 1) {
                                         Intent intent = new Intent(context, Doctor_Page.class);
-                                        intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                        intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                         startActivity(intent);
                                         click = 1;
                                     }
@@ -460,7 +475,7 @@ public class SearchResults extends ActionBarActivity {
                                 textviews.setBackgroundColor(Color.rgb(120,120,120));
                             }
                             textviews.setWidth(300);
-                            textviews.setHeight(115);
+                            textviews.setHeight(75);
                             textviews.setId(i);
                             lil.addView(textviews);
 
@@ -469,7 +484,7 @@ public class SearchResults extends ActionBarActivity {
                                 public void onClick(View v) {
                                     if(click == 1) {
                                         Intent intent = new Intent(context, Doctor_Page.class);
-                                        intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                        intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                         startActivity(intent);
                                         click = 1;
                                     }
@@ -582,7 +597,7 @@ public class SearchResults extends ActionBarActivity {
                             public void onClick(View v) {
                                 if(click == 1) {
                                     Intent intent = new Intent(context, Doctor_Page.class);
-                                    intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                    intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                     startActivity(intent);
                                     click = 1;
                                 }
@@ -602,6 +617,8 @@ public class SearchResults extends ActionBarActivity {
 
                         rating.setNumStars(5);
                         rating.setStepSize((float) 0.5);
+                        rating.setMinimumHeight(200);
+                        rating.setMinimumWidth(200);
                         rating.setRating((float) Double.parseDouble(doctors.get(i).getRating()));
                         rating.setId(i);
                         rating.setIsIndicator(true);
@@ -623,7 +640,7 @@ public class SearchResults extends ActionBarActivity {
                             public void onClick(View v) {
                                 if(click == 1) {
                                     Intent intent = new Intent(context, Doctor_Page.class);
-                                    intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                    intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                     startActivity(intent);
                                     click = 1;
                                 }
@@ -640,7 +657,7 @@ public class SearchResults extends ActionBarActivity {
                             textviews1.setBackgroundColor(Color.rgb(120,120,120));
                         }
                         textviews1.setWidth(420);
-                        textviews1.setHeight(115);
+                        textviews1.setHeight(75);
                         textviews1.setId(i);
 
                         textviews1.setOnClickListener(new View.OnClickListener() {
@@ -648,7 +665,7 @@ public class SearchResults extends ActionBarActivity {
                             public void onClick(View v) {
                                 if(click == 1) {
                                     Intent intent = new Intent(context, Doctor_Page.class);
-                                    intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                    intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                     startActivity(intent);
                                     click = 1;
                                 }
@@ -667,7 +684,7 @@ public class SearchResults extends ActionBarActivity {
                             textviews.setBackgroundColor(Color.rgb(120,120,120));
                         }
                         textviews.setWidth(300);
-                        textviews.setHeight(115);
+                        textviews.setHeight(75);
                         textviews.setId(i);
                         lil.addView(textviews);
 
@@ -676,7 +693,7 @@ public class SearchResults extends ActionBarActivity {
                             public void onClick(View v) {
                                 if(click == 1) {
                                     Intent intent = new Intent(context, Doctor_Page.class);
-                                    intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                    intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                     startActivity(intent);
                                     click = 1;
                                 }
@@ -712,6 +729,9 @@ public class SearchResults extends ActionBarActivity {
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     System.out.println(result.get(0) + " Said\n");
+                    if(sp.getSelectedItem().toString().equals("By Name")){
+                       text.setText(result.get(0));
+                    }
                     for(int i = 0;i < 4;i++){
                         if(sp.getItemAtPosition(i).toString().toLowerCase().contains(result.get(0))){
                             System.out.println(sp.getItemAtPosition(i).toString());

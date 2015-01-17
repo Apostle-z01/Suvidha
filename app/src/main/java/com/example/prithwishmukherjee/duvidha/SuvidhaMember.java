@@ -85,7 +85,7 @@ public class SuvidhaMember extends ActionBarActivity {
         }
 
         Intent intent = new Intent(this, SearchResults.class);
-        intent.putExtra("search", lat + " " + lng + " " + selected);
+        intent.putExtra("search", lat + " " + lng + " " + selected + " " + username);
         startActivity(intent);
     }
 
