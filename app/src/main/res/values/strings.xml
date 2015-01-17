@@ -9,10 +9,11 @@
     <string name="button_send">Send</string>
     <string name="google_maps_key">AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY</string>
     <string name="disease_prompt">Eye</string>
-    //Database                                                    <string-array name="Diseases">
+    //Database
     <string name="speech_prompt">Say something&#8230;</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
-    //Database                                                        <string-array name="Diseases">
+    //Database
+    <string-array name="Diseases">
         <item> Eye </item>
         <item> ENT </item>
         <item> Skin </item>
