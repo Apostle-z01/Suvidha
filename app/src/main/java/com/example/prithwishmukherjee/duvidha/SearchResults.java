@@ -1,23 +1,29 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.app.ActionBar;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ibm.mobile.services.data.IBMDataException;
@@ -27,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import bolts.Continuation;
 import bolts.Task;
@@ -39,10 +46,13 @@ public class SearchResults extends ActionBarActivity {
     List<String> list1;
     List<String> search_type;
     ArrayList<Doctor> doctors = new ArrayList<Doctor>();
-    public static final String CLASS_NAME="Search_Results";
+    public static final String CLASS_NAME = "Search_Results";
+    Spinner sp;
     int num_doctors;
-    int num_views = 1;
+    int num_views = 0;
     int queried = 0;
+    int click = 1;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +62,7 @@ public class SearchResults extends ActionBarActivity {
         //Intent intent = getIntent();
         //String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
-        ll=(LinearLayout) findViewById(R.id.li);
+        ll = (LinearLayout) findViewById(R.id.li);
 
         num_doctors = 3;
 
@@ -62,185 +72,411 @@ public class SearchResults extends ActionBarActivity {
         search_type.add("Top Rated Doctors");
         search_type.add("Nearest First");
         search_type.add("Cheapest First");
+        search_type.add("By Name");
 
-        Spinner sp = (Spinner) findViewById(R.id.spinner2);
+        Intent intent = getIntent();
+        String message = intent.getStringExtra("search");
+        String[] lat_lon = message.split(" ", 3);
+        final double lat = Double.parseDouble(lat_lon[0]);
+        final double lon = Double.parseDouble(lat_lon[1]);
+        final String area = lat_lon[2];
+
+        sp = (Spinner) findViewById(R.id.spinner2);
+
         sp.setOnItemSelectedListener(new OnItemSelectedListener() {
 
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
 
-                if(queried == 1) {
-                    for (int i = num_views - 1; i > 0; i--) {
-                        ll.removeViewAt(i);
-                    }
-                    num_views = 1;
-
-                    if(search_type.get(arg2).equals("Nearest First")){
-                        Intent intent = getIntent();
-                        String message = intent.getStringExtra("search");
-                        String[] lat_lon = message.split(" ",2);
-                        final double lat = Double.parseDouble(lat_lon[0]);
-                        final double lon = Double.parseDouble(lat_lon[1]);
-                        Collections.sort(doctors, new Comparator<Doctor>() {
-                            public int compare(Doctor d1, Doctor d2) {
-                                float dist1 = distFrom((float)Double.parseDouble(d1.getLat()),(float)Double.parseDouble(d1.getLon()),(float)lat,(float)lon);
-                                float dist2 = distFrom((float)Double.parseDouble(d2.getLat()),(float)Double.parseDouble(d2.getLon()),(float)lat,(float)lon);
-                                if (dist1 > dist2) {
-                                    return -1;
-                                }
-                                if (dist1 < dist2) {
-                                    return 1;
-                                }
-                                else {
-                                    if(Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating())){
-                                        return -1;
-                                    }
-                                    if(Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating())){
-                                        return 1;
-                                    }
-                                    else {
-                                        return 0;
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    else if(search_type.get(arg2).equals("Cheapest First")) {
-                        Collections.sort(doctors, new Comparator<Doctor>() {
-                            public int compare(Doctor d1, Doctor d2) {
-                                if (Integer.parseInt(d1.getFees()) > Integer.parseInt(d2.getFees())) {
-                                    return -1;
-                                }
-                                if (Integer.parseInt(d1.getFees()) < Integer.parseInt(d2.getFees())) {
-                                    return 1;
-                                }
-                                else {
-                                    if(Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating())){
-                                        return -1;
-                                    }
-                                    if(Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating())){
-                                        return 1;
-                                    }
-                                    else {
-                                        return 0;
-                                    }
-                                }
-                            }
-                        });
-
-                    }
-                    else if(search_type.get(arg2).equals("Top Rated Doctors")) {
-                        Collections.sort(doctors, new Comparator<Doctor>() {
-                            public int compare(Doctor d1, Doctor d2) {
-                                if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating()))
-                                    return -1;
-                                if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating()))
-                                    return 1;
-                                else return 0;
-                            }
-                        });
-
-                    }
-
-                    list1 = new ArrayList<String>();
-
-                    list1.add("List of Doctors for ");
-
-                    ArrayAdapter<String> adp1 = new ArrayAdapter<String>(context,
-                            android.R.layout.simple_dropdown_item_1line, list1);
-                    GridView grid1 = new GridView(SearchResults.this);
-                    grid1.setNumColumns(1);
-                    grid1.setBackgroundColor(Color.GREEN);
-                    grid1.setAdapter(adp1);
-
-                    grid1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                                long arg3) {
-
-                            Toast.makeText(getBaseContext(), list1.get(arg2),
-                                    Toast.LENGTH_SHORT).show();
+                if (search_type.get(arg2).equals("By Name")) {
+                    if (queried == 1) {
+                        System.out.println(num_views);
+                        for (int i = num_views; i > 0; i--) {
+                            System.out.println("Different" + i);
+                            ll.removeViewAt(i);
                         }
-                    });
+                        num_views = 0;
 
-                    ll.addView(grid1);
-                    num_views++;
+                        final TextView textview = new TextView(SearchResults.this);
+                        textview.setText("Search For");
 
-                    for (int i = 0; i < num_doctors; i++) {
-                        System.out.println(i);
-                        GridView gridview = new GridView(SearchResults.this);
-                        gridview.setNumColumns(1);
-                        gridview.setAdapter(new ImageAdapter(context));
-
-
-                        if(i % 2 == 0) {
-                            gridview.setBackgroundColor(Color.argb(255, 213, 213, 213));
-                        }
-                        else {
-                            gridview.setBackgroundColor(Color.YELLOW);
-                        }
-
-                        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                                Toast.makeText(SearchResults.this, "" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        ll.addView(gridview);
+                        textview.setTextColor(Color.BLACK);
+                        ll.addView(textview);
                         num_views++;
 
-                        list = new ArrayList<String>();
+                        final EditText edittext = new EditText(SearchResults.this);
+                        edittext.setText("Type Name here");
 
-                        list.add("Doctor - " + doctors.get(i).getName() + "\n Fees - " + doctors.get(i).getFees() + "\n");
-
-                        ArrayAdapter<String> adp = new ArrayAdapter<String>(context,
-                                android.R.layout.simple_dropdown_item_1line, list);
-                        GridView grid = new GridView(SearchResults.this);
-                        grid.setNumColumns(1);
-                        if(i % 2 == 0) {
-                            grid.setBackgroundColor(Color.argb(255, 213, 213, 213));
-                        }
-                        else {
-                            grid.setBackgroundColor(Color.YELLOW);
-                        }
-
-                        grid.setAdapter(adp);
-
-                        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+                        edittext.setOnTouchListener(new View.OnTouchListener() {
                             @Override
-                            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                                    long arg3) {
-
-                                Toast.makeText(getBaseContext(), list.get(arg2),
-                                        Toast.LENGTH_SHORT).show();
+                            public boolean onTouch(View v, MotionEvent event) {
+                                edittext.setText("");
+                                return false;
                             }
                         });
 
-                        ll.addView(grid);
+                        edittext.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                edittext.setText("");
+                            }
+                        });
+
+
+                        ll.addView(edittext);
                         num_views++;
 
-                        RatingBar rating = new RatingBar(SearchResults.this);
+                        Button button = new Button(SearchResults.this);
+                        button.setText("Go");
+                        button.setBackgroundColor(Color.YELLOW);
+                        button.setHeight(100);
+                        button.setWidth(200);
+                        button.setLayoutParams(new ActionBar.LayoutParams(200, 100));
+                        button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
-                                ((int) ViewGroup.LayoutParams.WRAP_CONTENT, (int) ViewGroup.LayoutParams.WRAP_CONTENT);
+                                ArrayList<Doctor> new_doctors = new ArrayList<Doctor>();
+                                System.out.println("Size = " + doctors.size());
+                                for (int i = 0; i < doctors.size(); i++) {
+                                    System.out.println(doctors.get(i).getName() + " " + edittext.getText());
+                                    if (doctors.get(i).getName().toLowerCase().matches("(.*)" + edittext.getText().toString().toLowerCase() + "(.*)")) {
+                                        new_doctors.add(doctors.get(i));
+                                    }
+                                }
 
-                        rating.setLayoutParams(params);
+                                edittext.setText("Type Name here");
+                                System.out.println("Checking now" + num_views);
+                                for (int i = num_views; i > 3; i--) {
+                                    System.out.println("Checking" + i);
+                                    ll.removeViewAt(i);
+                                }
 
-                        if(i % 2 == 0) {
-                            rating.setBackgroundColor(Color.argb(255, 213, 213, 213));
-                        }
-                        else {
-                            rating.setBackgroundColor(Color.YELLOW);
-                        }
+                                num_views = 3;
+                                for (int i = 0; i < doctors.size(); i++) {
 
-                        ll.addView(rating);
+                                    final TextView grid = new TextView(SearchResults.this);
+                                    if (i % 2 == 0) {
+                                        grid.setBackgroundColor(Color.rgb(180,180,180));
+                                    } else {
+                                        grid.setBackgroundColor(Color.rgb(120,120,120));
+                                    }
+                                    grid.setId(i);
+                                    grid.setTextColor(Color.WHITE);
+                                    grid.setText("Name - " + doctors.get(i).getName() + " Fees - " + doctors.get(i).getFees());
+
+                                    grid.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(click == 1) {
+                                                Intent intent = new Intent(context, Doctor_Page.class);
+                                                intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                                startActivity(intent);
+                                                click = 1;
+                                            }
+                                            else {
+                                                click++;
+                                            }
+                                        }
+                                    });
+
+                                    ll.addView(grid);
+                                    num_views++;
+
+                                    LinearLayout lil = new LinearLayout(SearchResults.this);
+                                    lil.setOrientation(LinearLayout.HORIZONTAL);
+
+                                    final RatingBar rating = new RatingBar(SearchResults.this);
+
+                                    rating.setNumStars(5);
+                                    rating.setStepSize((float) 0.5);
+                                    rating.setRating((float) Double.parseDouble(doctors.get(i).getRating()));
+                                    rating.setId(i);
+                                    rating.setIsIndicator(true);
+
+                                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                                            ((int) ViewGroup.LayoutParams.WRAP_CONTENT, (int) ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                                    rating.setLayoutParams(params);
+
+                                    if (i % 2 == 0) {
+                                        rating.setBackgroundColor(Color.rgb(180,180,180));
+                                    } else {
+                                        rating.setBackgroundColor(Color.rgb(120,120,120));
+                                    }
+                                    lil.addView(rating);
+
+                                    rating.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(click == 1) {
+                                                Intent intent = new Intent(context, Doctor_Page.class);
+                                                intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                                startActivity(intent);
+                                                click = 1;
+                                            }
+                                            else {
+                                                click++;
+                                            }
+                                        }
+                                    });
+
+                                    final TextView textviews1 = new TextView(SearchResults.this);
+                                    if (i % 2 == 0) {
+                                        textviews1.setBackgroundColor(Color.rgb(180,180,180));
+                                    } else {
+                                        textviews1.setBackgroundColor(Color.rgb(120,120,120));
+                                    }
+                                    textviews1.setWidth(420);
+                                    textviews1.setHeight(115);
+                                    textviews1.setId(i);
+
+                                    textviews1.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(click == 1) {
+                                                Intent intent = new Intent(context, Doctor_Page.class);
+                                                intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                                startActivity(intent);
+                                                click = 1;
+                                            }
+                                            else {
+                                                click++;
+                                            }
+                                        }
+                                    });
+
+                                    lil.addView(textviews1);
+
+                                    final TextView textviews = new TextView(SearchResults.this);
+                                    if (i % 2 == 0) {
+                                        textviews.setBackgroundColor(Color.rgb(180,180,180));
+                                    } else {
+                                        textviews.setBackgroundColor(Color.rgb(120,120,120));
+                                    }
+                                    textviews.setWidth(300);
+                                    textviews.setHeight(115);
+                                    textviews.setId(i);
+                                    lil.addView(textviews);
+
+                                    textviews.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(click == 1) {
+                                                Intent intent = new Intent(context, Doctor_Page.class);
+                                                intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                                startActivity(intent);
+                                                click = 1;
+                                            }
+                                            else {
+                                                click++;
+                                            }
+                                        }
+                                    });
+
+                                    ll.addView(lil);
+                                    num_views++;
+
+                                }
+                            }
+                        });
+                        ll.addView(button);
                         num_views++;
 
-                        rating.setNumStars(10);
-                        rating.setStepSize((float) 0.5);
-                        rating.setRating((float) Double.parseDouble(doctors.get(i).getRating()));
+
+
+                    }
+                } else {
+                    if (queried == 1) {
+                        System.out.println(num_views);
+                        for (int i = num_views; i > 0; i--) {
+                            System.out.println("Different" + i);
+                            ll.removeViewAt(i);
+                        }
+                        num_views = 0;
+
+                        if (search_type.get(arg2).equals("Nearest First")) {
+                            Collections.sort(doctors, new Comparator<Doctor>() {
+                                public int compare(Doctor d1, Doctor d2) {
+                                    float dist1 = distFrom((float) Double.parseDouble(d1.getLat()), (float) Double.parseDouble(d1.getLon()), (float) lat, (float) lon);
+                                    float dist2 = distFrom((float) Double.parseDouble(d2.getLat()), (float) Double.parseDouble(d2.getLon()), (float) lat, (float) lon);
+                                    if (dist1 > dist2) {
+                                        return 1;
+                                    }
+                                    if (dist1 < dist2) {
+                                        return -1;
+                                    } else {
+                                        if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating())) {
+                                            return -1;
+                                        }
+                                        if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating())) {
+                                            return 1;
+                                        } else {
+                                            return 0;
+                                        }
+                                    }
+                                }
+                            });
+
+                        } else if (search_type.get(arg2).equals("Cheapest First")) {
+                            Collections.sort(doctors, new Comparator<Doctor>() {
+                                public int compare(Doctor d1, Doctor d2) {
+                                    if (Integer.parseInt(d1.getFees()) > Integer.parseInt(d2.getFees())) {
+                                        return 1;
+                                    }
+                                    if (Integer.parseInt(d1.getFees()) < Integer.parseInt(d2.getFees())) {
+                                        return -1;
+                                    } else {
+                                        if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating())) {
+                                            return -1;
+                                        }
+                                        if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating())) {
+                                            return 1;
+                                        } else {
+                                            return 0;
+                                        }
+                                    }
+                                }
+                            });
+
+                        } else if (search_type.get(arg2).equals("Top Rated Doctors")) {
+                            Collections.sort(doctors, new Comparator<Doctor>() {
+                                public int compare(Doctor d1, Doctor d2) {
+                                    if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating()))
+                                        return -1;
+                                    if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating()))
+                                        return 1;
+                                    else return 0;
+                                }
+                            });
+
+                        }
+
+                        for (int i = 0; i < doctors.size(); i++) {
+
+                            final TextView grid = new TextView(SearchResults.this);
+                            if (i % 2 == 0) {
+                                grid.setBackgroundColor(Color.rgb(180,180,180));
+                            } else {
+                                grid.setBackgroundColor(Color.rgb(120,120,120));
+                            }
+                            grid.setId(i);
+                            grid.setTextColor(Color.WHITE);
+                            grid.setText("Name - " + doctors.get(i).getName() + " Fees - " + doctors.get(i).getFees());
+
+                            grid.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(click == 1) {
+                                        Intent intent = new Intent(context, Doctor_Page.class);
+                                        intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                        startActivity(intent);
+                                        click = 1;
+                                    }
+                                    else {
+                                        click++;
+                                    }
+                                }
+                            });
+
+                            ll.addView(grid);
+                            num_views++;
+
+                            LinearLayout lil = new LinearLayout(SearchResults.this);
+                            lil.setOrientation(LinearLayout.HORIZONTAL);
+
+                            final RatingBar rating = new RatingBar(SearchResults.this);
+
+                            rating.setNumStars(5);
+                            rating.setStepSize((float) 0.5);
+                            rating.setRating((float) Double.parseDouble(doctors.get(i).getRating()));
+                            rating.setId(i);
+                            rating.setIsIndicator(true);
+
+                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                                    ((int) ViewGroup.LayoutParams.WRAP_CONTENT, (int) ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                            rating.setLayoutParams(params);
+
+                            if (i % 2 == 0) {
+                                rating.setBackgroundColor(Color.rgb(180,180,180));
+                            } else {
+                                rating.setBackgroundColor(Color.rgb(120,120,120));
+                            }
+                            lil.addView(rating);
+
+                            rating.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(click == 1) {
+                                        Intent intent = new Intent(context, Doctor_Page.class);
+                                        intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                        startActivity(intent);
+                                        click = 1;
+                                    }
+                                    else {
+                                        click++;
+                                    }
+                                }
+                            });
+
+                            final TextView textviews1 = new TextView(SearchResults.this);
+                            if (i % 2 == 0) {
+                                textviews1.setBackgroundColor(Color.rgb(180,180,180));
+                            } else {
+                                textviews1.setBackgroundColor(Color.rgb(120,120,120));
+                            }
+                            textviews1.setWidth(420);
+                            textviews1.setHeight(115);
+                            textviews1.setId(i);
+
+                            textviews1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(click == 1) {
+                                        Intent intent = new Intent(context, Doctor_Page.class);
+                                        intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                        startActivity(intent);
+                                        click = 1;
+                                    }
+                                    else {
+                                        click++;
+                                    }
+                                }
+                            });
+
+                            lil.addView(textviews1);
+
+                            final TextView textviews = new TextView(SearchResults.this);
+                            if (i % 2 == 0) {
+                                textviews.setBackgroundColor(Color.rgb(180,180,180));
+                            } else {
+                                textviews.setBackgroundColor(Color.rgb(120,120,120));
+                            }
+                            textviews.setWidth(300);
+                            textviews.setHeight(115);
+                            textviews.setId(i);
+                            lil.addView(textviews);
+
+                            textviews.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if(click == 1) {
+                                        Intent intent = new Intent(context, Doctor_Page.class);
+                                        intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                        startActivity(intent);
+                                        click = 1;
+                                    }
+                                    else {
+                                        click++;
+                                    }
+                                }
+                            });
+
+                            ll.addView(lil);
+                            num_views++;
+
+                        }
                     }
                 }
             }
@@ -250,6 +486,27 @@ public class SearchResults extends ActionBarActivity {
             }
         });
 
+        ImageButton button = (ImageButton) findViewById(R.id.imageButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                        getString(R.string.speech_prompt));
+                try {
+                    startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+                } catch (ActivityNotFoundException a) {
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.speech_not_supported),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
         Log.e(CLASS_NAME, "Inside onCreate");
@@ -261,8 +518,8 @@ public class SearchResults extends ActionBarActivity {
 
                 @Override
                 public Void then(Task<List<Doctor>> task) throws Exception {
-                    ll = (LinearLayout)findViewById(R.id.li);
-                    if(task.isFaulted()) {
+                    ll = (LinearLayout) findViewById(R.id.li);
+                    if (task.isFaulted()) {
                         // Handle errors
                         System.out.println("Entered");
                     } else {
@@ -270,20 +527,22 @@ public class SearchResults extends ActionBarActivity {
                         System.out.println("Here");
                         final List<Doctor> objects = task.getResult();
                         System.out.println("After here");
-                        for(Doctor doc:objects){
+                        for (Doctor doc : objects) {
                             System.out.println("Entered here");
                             Log.e(CLASS_NAME, doc.getName());
-                            Log.e(CLASS_NAME,doc.getArea());
-                            Log.e(CLASS_NAME,doc.getAddress());
-                            Log.e(CLASS_NAME,doc.getRating());
-                            doctors.add(doc);
+                            Log.e(CLASS_NAME, doc.getArea());
+                            Log.e(CLASS_NAME, doc.getAddress());
+                            Log.e(CLASS_NAME, doc.getRating());
+                            if (doc.getArea().matches(area)) {
+                                doctors.add(doc);
+                            }
                         }
-                        Log.e(CLASS_NAME,"HERE");
+                        Log.e(CLASS_NAME, "HERE");
                     }
 
                     System.out.println("Before Sorting");
 
-                    for(int i = 0;i < doctors.size();i++){
+                    for (int i = 0; i < doctors.size(); i++) {
                         System.out.println(doctors.get(i).getRating());
                     }
 
@@ -299,101 +558,131 @@ public class SearchResults extends ActionBarActivity {
 
                     System.out.println("After Sorting");
 
-                    list1 = new ArrayList<String>();
+                    for (int i = 0; i < doctors.size(); i++) {
 
-                    list1.add("List of Doctors for " );
-
-                    ArrayAdapter<String> adp1 = new ArrayAdapter<String>(context,
-                            android.R.layout.simple_dropdown_item_1line, list1);
-                    GridView grid1 = new GridView(SearchResults.this);
-                    grid1.setNumColumns(1);
-                    grid1.setBackgroundColor(Color.GREEN);
-                    grid1.setAdapter(adp1);
-
-                    grid1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                                long arg3) {
-
-                            Toast.makeText(getBaseContext(), list1.get(arg2),
-                                    Toast.LENGTH_SHORT).show();
+                        final TextView grid = new TextView(SearchResults.this);
+                        if (i % 2 == 0) {
+                            grid.setBackgroundColor(Color.rgb(180,180,180));
+                        } else {
+                            grid.setBackgroundColor(Color.rgb(120,120,120));
                         }
-                    });
+                        grid.setId(i);
+                        grid.setTextColor(Color.WHITE);
 
-                    ll.addView(grid1);
-                    num_views++;
+                        grid.setText("Name - " + doctors.get(i).getName() + " Fees - " + doctors.get(i).getFees());
 
-                    for(int i = 0;i < num_doctors;i++) {
-                        System.out.println(i);
-                        GridView gridview = new GridView(SearchResults.this);
-                        gridview.setNumColumns(1);
-                        gridview.setAdapter(new ImageAdapter(context));
-
-                        if(i % 2 == 0) {
-                            gridview.setBackgroundColor(Color.argb(255,213,213,213));
-                        }
-                        else {
-                            gridview.setBackgroundColor(Color.YELLOW);
-                        }
-
-                        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                                Toast.makeText(SearchResults.this, "" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        ll.addView(gridview);
-                        num_views++;
-
-                        list = new ArrayList<String>();
-
-                        list.add("Doctor - " + doctors.get(i).getName() + "\n Fees - " + doctors.get(i).getFees() + "\n");
-
-                        ArrayAdapter<String> adp = new ArrayAdapter<String>(context,
-                                android.R.layout.simple_dropdown_item_1line, list);
-                        GridView grid = new GridView(SearchResults.this);
-                        grid.setNumColumns(1);
-                        if(i % 2 == 0) {
-                            grid.setBackgroundColor(Color.argb(255,213,213,213));
-                        }
-                        else {
-                            grid.setBackgroundColor(Color.YELLOW);
-                        }
-                        grid.setAdapter(adp);
-
-                        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+                        grid.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                                    long arg3) {
-
-                                Toast.makeText(getBaseContext(), list.get(arg2),
-                                        Toast.LENGTH_SHORT).show();
+                            public void onClick(View v) {
+                                if(click == 1) {
+                                    Intent intent = new Intent(context, Doctor_Page.class);
+                                    intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                    startActivity(intent);
+                                    click = 1;
+                                }
+                                else {
+                                    click++;
+                                }
                             }
                         });
 
                         ll.addView(grid);
                         num_views++;
 
-                        RatingBar rating = new RatingBar(SearchResults.this);
+                        LinearLayout lil = new LinearLayout(SearchResults.this);
+                        lil.setOrientation(LinearLayout.HORIZONTAL);
 
-//                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
-//                                ((int) ViewGroup.LayoutParams.WRAP_CONTENT, (int) ViewGroup.LayoutParams.WRAP_CONTENT);
-//
-//                        rating.setLayoutParams(params);
-                        if(i % 2 == 0) {
-                            rating.setBackgroundColor(Color.argb(255,213,213,213));
+                        final RatingBar rating = new RatingBar(SearchResults.this);
+
+                        rating.setNumStars(5);
+                        rating.setStepSize((float) 0.5);
+                        rating.setRating((float) Double.parseDouble(doctors.get(i).getRating()));
+                        rating.setId(i);
+                        rating.setIsIndicator(true);
+
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
+                                ((int) ViewGroup.LayoutParams.WRAP_CONTENT, (int) ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                        rating.setLayoutParams(params);
+
+                        if (i % 2 == 0) {
+                            rating.setBackgroundColor(Color.rgb(180,180,180));
+                        } else {
+                            rating.setBackgroundColor(Color.rgb(120,120,120));
                         }
-                        else {
-                            rating.setBackgroundColor(Color.YELLOW);
+                        lil.addView(rating);
+
+                        rating.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(click == 1) {
+                                    Intent intent = new Intent(context, Doctor_Page.class);
+                                    intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                    startActivity(intent);
+                                    click = 1;
+                                }
+                                else {
+                                    click++;
+                                }
+                            }
+                        });
+
+                        final TextView textviews1 = new TextView(SearchResults.this);
+                        if (i % 2 == 0) {
+                            textviews1.setBackgroundColor(Color.rgb(180,180,180));
+                        } else {
+                            textviews1.setBackgroundColor(Color.rgb(120,120,120));
                         }
-                        ll.addView(rating);
+                        textviews1.setWidth(420);
+                        textviews1.setHeight(115);
+                        textviews1.setId(i);
+
+                        textviews1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(click == 1) {
+                                    Intent intent = new Intent(context, Doctor_Page.class);
+                                    intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                    startActivity(intent);
+                                    click = 1;
+                                }
+                                else {
+                                    click++;
+                                }
+                            }
+                        });
+
+                        lil.addView(textviews1);
+
+                        final TextView textviews = new TextView(SearchResults.this);
+                        if (i % 2 == 0) {
+                            textviews.setBackgroundColor(Color.rgb(180,180,180));
+                        } else {
+                            textviews.setBackgroundColor(Color.rgb(120,120,120));
+                        }
+                        textviews.setWidth(300);
+                        textviews.setHeight(115);
+                        textviews.setId(i);
+                        lil.addView(textviews);
+
+                        textviews.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(click == 1) {
+                                    Intent intent = new Intent(context, Doctor_Page.class);
+                                    intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon));
+                                    startActivity(intent);
+                                    click = 1;
+                                }
+                                else {
+                                    click++;
+                                }
+                            }
+                        });
+
+                        ll.addView(lil);
                         num_views++;
 
-                        rating.setNumStars(10);
-                        rating.setStepSize((float) 0.5);
-                        rating.setRating((float)Double.parseDouble(doctors.get(i).getRating()));
                         queried = 1;
 
                     }
@@ -401,9 +690,47 @@ public class SearchResults extends ActionBarActivity {
                 }
             }, Task.UI_THREAD_EXECUTOR);
         } catch (IBMDataException error) {
-            Log.e(CLASS_NAME,"Exception : " + error.getMessage());
+            Log.e(CLASS_NAME, "Exception : " + error.getMessage());
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    System.out.println(result.get(0) + " Said\n");
+                    for(int i = 0;i < 4;i++){
+                        if(sp.getItemAtPosition(i).toString().toLowerCase().contains(result.get(0))){
+                            System.out.println(sp.getItemAtPosition(i).toString());
+
+                            sp.setSelection(i);
+                            break;
+                        }
+                    }
+//                    if(result.get(0).matches("Rate")){
+//                        sp.setSelection(0);
+//                    }
+//                    else if(result.get(0).matches("Near")){
+//                        sp.setSelection(1);
+//                    }
+//                    else if(result.get(0).matches("Cheap")){
+//                        sp.setSelection(2);
+//                    }
+//                    else if(result.get(0).matches("Name")){
+//                        sp.setSelection(3);
+//                    }
+                }
+                break;
+            }
+
+        }
     }
 
     @Override
@@ -430,12 +757,12 @@ public class SearchResults extends ActionBarActivity {
 
     public static float distFrom(float lat1, float lng1, float lat2, float lng2) {
         double earthRadius = 6371; //kilometers
-        double dLat = Math.toRadians(lat2-lat1);
-        double dLng = Math.toRadians(lng2-lng1);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLng = Math.toRadians(lng2 - lng1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                 Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                        Math.sin(dLng/2) * Math.sin(dLng/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         float dist = (float) (earthRadius * c);
 
         return dist;
