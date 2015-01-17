@@ -157,8 +157,10 @@
             android:name=".genMap"
             android:label="Google Maps" >
         </activity>
-
-
+        <activity
+            android:name=".Doctor_Page"
+            android:label="@string/title_activity_doctor__page" >
+        </activity>
     </application>
 
 </manifest>

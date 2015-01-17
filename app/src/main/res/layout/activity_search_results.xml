@@ -4,19 +4,19 @@
     android:layout_height="fill_parent"
     android:fillViewport="false"
     android:id="@+id/search_result"
-    android:background="#ffffcc7d">
+    android:background="#ccd5d5d5">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/li"
         android:orientation = "vertical"
-        android:background="#ffffcc7d">
+        android:background="#ccd5d5d5">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="122dp"
-            android:background="#ffffcc7d">
+            android:layout_height="204dp"
+            android:background="#ccd5d5d5">
 
             <TextView
                 android:layout_width="match_parent"
@@ -27,11 +27,11 @@
                 android:layout_alignParentStart="true"
                 android:layout_above="@+id/spinner2"
                 android:textColor="#ff000000"
-                android:background="#ffffcc7d"
+                android:background="#ccd5d5d5"
                 android:textStyle="bold" />
 
             <Spinner
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="27dp"
                 android:id="@+id/spinner2"
                 android:entries= "@array/Search_Options"
@@ -41,9 +41,8 @@
                 android:layout_marginRight="60dp"
                 android:minHeight="@dimen/abc_action_bar_icon_vertical_padding_material"
                 android:layout_gravity="right"
-                android:layout_marginEnd="60dp"
                 android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_toStartOf="@+id/imageButton" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -55,6 +54,16 @@
                 android:layout_alignBottom="@+id/spinner2"
                 android:textColor="#ff000000"
                 android:textStyle="bold" />
+
+            <ImageButton
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/imageButton"
+                android:maxHeight="10dp"
+                android:maxWidth="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/textView"
+                android:src="@drawable/picmic" />
         </RelativeLayout>
 
     </LinearLayout>
