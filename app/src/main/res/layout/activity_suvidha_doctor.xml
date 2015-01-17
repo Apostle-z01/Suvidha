@@ -120,8 +120,9 @@
         android:divider="#ffffffff"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="false"
-        android:visibility="visible"
-        android:layout_below="@+id/addAppointment">
+        android:visibility="gone"
+        android:layout_alignTop="@+id/addAppointment"
+        android:layout_marginTop="100dp">
     </TableLayout>
 
     <TextView
