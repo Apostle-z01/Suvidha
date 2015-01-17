@@ -236,6 +236,7 @@ public class MainActivity extends ActionBarActivity {
                                 intent.putExtra(EXTRA_MESSAGE, username);
                                 intent.putExtra(EXTRA_MESSAGE_NAME,newUser.getName());
                                 startActivity(intent);
+                                finish();
                                 return null;
                             }
                         }
