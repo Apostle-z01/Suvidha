@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Rating;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,18 +40,21 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
 
     Spinner spinner;
     String username;
+    String patName;
     RatingBar ratingBar2;
     EditText editReview;
     Button buttonPost;
     TextView textDcotorName;
     public static final String CLASS_NAME="RateDoctors";
+    final List<Appointments> appList = new ArrayList<Appointments>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_doctors);
         Intent intent = getIntent();
-        username = intent.getStringExtra(SuvidhaDoctor.EXTRA_MESSAGE);
+        username = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        patName = intent.getStringExtra(MainActivity.EXTRA_MESSAGE_NAME);
 
         spinner = (Spinner)findViewById(R.id.spinner3);
         ratingBar2 = (RatingBar)findViewById(R.id.ratingBar2);
@@ -79,7 +83,6 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
     public void populate(){
 
         //  populate Globals.state here
-        final List<Appointments> appList = new ArrayList<Appointments>();
         final Context context = this;
         try {
             //To retrieve from the database
@@ -102,8 +105,9 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
                                 //Add the appointments here, and the patients username
                                 Log.e(CLASS_NAME, "Patient visited this doctor");
                                 Log.e(CLASS_NAME,app.getDocName());
-                                if(!appList.contains(app))
+                                if(!appList.contains(app)) {
                                     appList.add(app);
+                                }
                             }
                         }
                     }
@@ -167,6 +171,90 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
     }
 
     public void postReview(View v){
+        String reviewMessage = editReview.getText().toString();
 
+        //Add to hospital_Doctor
+        Reviews rev = new Reviews();
+        rev.setPatUsername(username);
+        rev.setPatName(patName);
+        rev.setDocName(appList.get(spinner.getSelectedItemPosition() - 1).getDocName());
+        final String docUsername = appList.get(spinner.getSelectedItemPosition()-1).getDocUsername();
+        rev.setDocUsername(docUsername);
+        rev.setReview(reviewMessage);
+
+        rev.save().continueWith(new Continuation<IBMDataObject, Void>() {
+
+            @Override
+            public Void then(Task<IBMDataObject> task) throws Exception {
+                if (task.isFaulted()) {
+                    // Handle errors
+                    Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                    return null;
+                } else {
+                    Reviews review = (Reviews) task.getResult();
+                    Log.e(CLASS_NAME,review.getDocName());
+                    Log.e(CLASS_NAME,review.getReview());
+
+                    // Do more work
+                }
+                return null;
+            }
+        });
+
+        final Context context = this;
+        try {
+            //To retrieve from the database
+            IBMQuery<Doctor> query = IBMQuery.queryForClass(Doctor.class);
+            query.find().continueWith(new Continuation<List<Doctor>, Void>() {
+
+                @Override
+                public Void then(Task<List<Doctor>> task) throws Exception {
+                    if (task.isFaulted()) {
+                        // Handle errors
+                    } else {
+                        // do more work
+                        List<Doctor> objects = task.getResult();
+                        for(final Doctor doc:objects){
+                            Log.e(CLASS_NAME, doc.getName());
+                            Log.e(CLASS_NAME, doc.getUsername());
+                            Log.e(CLASS_NAME, doc.getArea());
+
+                            if(doc.getUsername().equalsIgnoreCase(docUsername)){
+                                //Add the appointments here, and the patients username
+                                float rating = Float.parseFloat(doc.getRating());
+                                float numRating = Float.parseFloat(doc.getNumRating());
+                                rating = ratingBar2.getRating()+rating*numRating;
+                                numRating+=1;
+                                rating/=numRating;
+                                doc.setNumRating(Float.toString(numRating));
+                                doc.setRating(Float.toString(rating));
+
+                                doc.save().continueWith(new Continuation<IBMDataObject, Void>() {
+
+                                    @Override
+                                    public Void then(Task<IBMDataObject> task) throws Exception {
+                                        if (task.isFaulted()) {
+                                            // Handle errors
+                                            Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                                            return null;
+                                        } else {
+                                            Doctor doc1 = (Doctor) task.getResult();
+                                            Log.e(CLASS_NAME,doc1.getRating());
+                                            Log.e(CLASS_NAME,doc1.getNumRating());
+                                            Log.e(CLASS_NAME,doc1.getName());
+                                            // Do more work
+                                        }
+                                        return null;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    return null;
+                }
+            }, Task.UI_THREAD_EXECUTOR);
+        } catch (IBMDataException error) {
+            Log.e(CLASS_NAME,"Exception : " +error.getMessage());
+        }
     }
 }

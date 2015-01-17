@@ -93,6 +93,7 @@ public class SuvidhaMember extends ActionBarActivity {
     {
         Intent intent = new Intent(this, RateDoctors.class);
         intent.putExtra(MainActivity.EXTRA_MESSAGE,username);
+        intent.putExtra(MainActivity.EXTRA_MESSAGE_NAME,patName);
         startActivity(intent);
     }
 

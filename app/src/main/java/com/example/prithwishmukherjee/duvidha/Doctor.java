@@ -110,6 +110,16 @@ public class Doctor extends IBMDataObject{
         setObject("rating", (docRating != null) ? docRating : "");
     }
 
+    /*Gets the number of ratings of the doctor*/
+    public String getNumRating() {
+        return (String) getObject("numRating");
+    }
+
+    /* Sets the number of rating of the doctor */
+    public void setNumRating(String numRating) {
+        setObject("numRating", (numRating != null) ? numRating : "");
+    }
+
     /**
      * When calling toString() for an item, we'd really only want the name.
      * @return String theItemName

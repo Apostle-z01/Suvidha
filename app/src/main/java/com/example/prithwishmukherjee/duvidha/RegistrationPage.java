@@ -347,6 +347,8 @@ public class RegistrationPage extends ActionBarActivity {
             doc.setOnlineAppointment(onlineApp);
             doc.setArea(area);
             doc.setFees(fees);
+            doc.setRating("1");
+            doc.setNumRating("0");
 
             doc.save().continueWith(new Continuation<IBMDataObject, Void>() {
 

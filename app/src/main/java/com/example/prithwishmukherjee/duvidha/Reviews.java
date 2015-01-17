@@ -2,33 +2,13 @@ package com.example.prithwishmukherjee.duvidha;
 
 import com.ibm.mobile.services.data.IBMDataObject;
 import com.ibm.mobile.services.data.IBMDataObjectSpecialization;
+
 /**
- * Created by Manav on 1/12/2015.
+ * Created by Manav on 1/17/2015.
  */
-
-@IBMDataObjectSpecialization("Appointments")
-public class Appointments extends IBMDataObject{
-    public static final String CLASS_NAME = "Appointments";
-
-    /*Gets the time of the appointment*/
-    public String getTime() {
-        return (String) getObject("time");
-    }
-
-    /* Sets the time of the appointment */
-    public void setTime(String time) {
-        setObject("time", (time != null) ? time : "");
-    }
-
-    /*Gets the date of the appointment*/
-    public String getDate() {
-        return (String) getObject("date");
-    }
-
-    /* Sets the date of the appointment */
-    public void setDate(String date) {
-        setObject("date", (date != null) ? date : "");
-    }
+@IBMDataObjectSpecialization("Reviews")
+public class Reviews extends IBMDataObject{
+    public static final String CLASS_NAME = "Reviews";
 
     /*Gets the patId of the patient*/
     public String getPatUsername() {
@@ -59,23 +39,24 @@ public class Appointments extends IBMDataObject{
         setObject("docUsername", (docId != null) ? docId : "");
     }
 
-    /*Gets the name of the doctor*/
+    /*Gets the docId of the doctor*/
     public String getDocName() {
         return (String) getObject("docName");
     }
 
-    /* Sets the name of the doctor */
+    /* Sets the docId of the doctor */
     public void setDocName(String docName) {
         setObject("docName", (docName != null) ? docName : "");
     }
 
-    /*Gets the status of the appointment*/
-    public String getStatus() {
-        return (String) getObject("status");
+    /*Gets the review of the doctor*/
+    public String getReview() {
+        return (String) getObject("review");
     }
 
-    /* Sets the status of the appointment */
-    public void setStatus(String status) {
-        setObject("status", (status != null) ? status : "");
+    /* Sets the review of the doctor */
+    public void setReview(String review) {
+        setObject("review", (review != null) ? review : "");
     }
+
 }
