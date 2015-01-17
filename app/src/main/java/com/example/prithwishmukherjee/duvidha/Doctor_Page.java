@@ -227,10 +227,10 @@ public class Doctor_Page extends ActionBarActivity {
                                         app.setStatus("pending");
                                         app.setDocName(doc_name);
                                         app.setDocUsername(doc_user_name);
-                                        Date setdate = new Date(myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
-                                        app.setDate(setdate.toString());
-                                        Time settime = new Time(myCalendar.get(Calendar.HOUR),myCalendar.get(Calendar.MINUTE),0);
-                                        app.setTme(settime.toString());
+                                        String setdate = "" + myCalendar.get(Calendar.DAY_OF_MONTH)  + myCalendar.get(Calendar.MONTH) +  myCalendar.get(Calendar.YEAR);
+                                        app.setDate(setdate);
+                                        String settime = "" + myCalendar.get(Calendar.HOUR) + ":" + myCalendar.get(Calendar.MINUTE);
+                                        app.setTme(settime);
 
                                         app.save().continueWith(new Continuation<IBMDataObject, Void>() {
 
