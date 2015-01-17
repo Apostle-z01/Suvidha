@@ -1,5 +1,7 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,15 +12,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.ibm.mobile.services.data.IBMDataException;
+import com.ibm.mobile.services.data.IBMDataObject;
 import com.ibm.mobile.services.data.IBMQuery;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -31,11 +37,14 @@ public class Doctor_Page extends ActionBarActivity {
 
     String doc_name = new String();
     Doctor doctor = new Doctor();
+    Patient patient = new Patient();
     String doc_user_name = new String();
     String doc_specialization = new String();
     String lat = new String();
     String lon = new String();
+    String pat_user_name = new String();
     final String CLASS_NAME = "Doctor_Page";
+    int year,month,day,hour,minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +67,14 @@ public class Doctor_Page extends ActionBarActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra("doctor");
-        String[] doc = message.split("#", 5);;
+        String[] doc = message.split("#", 6);
 
         doc_name = doc[0];
         doc_user_name = doc[1];
         doc_specialization = doc[2];
         lat = doc[3];
         lon = doc[4];
+        pat_user_name = doc[5];
 
         try {
             //To retrieve from the database
@@ -133,7 +143,7 @@ public class Doctor_Page extends ActionBarActivity {
                         final List<Appointments> objects = task.getResult();
                         List<Appointments> appointments = new ArrayList<Appointments>();
                         for (Appointments app : objects) {
-                            if (app.getDocName().equals(doc_name) && app.getDocUsername().equals(doc_user_name)) {
+                            if (app.getDocName().equals(doc_name) && app.getDocUsername().equals(doc_user_name) && app.getStatus().equals("confirmed")) {
                                 appointments.add(app);
                             }
                         }
@@ -173,21 +183,124 @@ public class Doctor_Page extends ActionBarActivity {
             Log.e(CLASS_NAME,"Exception : " + error.getMessage());
         }
 
+        final Calendar myCalendar = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+
+        final TimePickerDialog.OnTimeSetListener timePickerListener =
+                new TimePickerDialog.OnTimeSetListener() {
+                    public void onTimeSet(TimePicker view, int selectedHour,
+                                          int selectedMinute) {
+                        hour = selectedHour;
+                        minute = selectedMinute;
+                        myCalendar.set(Calendar.HOUR, selectedHour);
+                        myCalendar.set(Calendar.MINUTE, selectedMinute);
+
+                        try {
+                            //To retrieve from the database
+                            IBMQuery<Patient> query = IBMQuery.queryForClass(Patient.class);
+
+                            query.find().continueWith(new Continuation<List<Patient>, Void>() {
+
+                                @Override
+                                public Void then(Task<List<Patient>> task) throws Exception {
+                                    if(task.isFaulted()) {
+                                        // Handle errors
+                                        System.out.println("Entered");
+                                    } else {
+                                        // do more work
+                                        System.out.println("Here");
+                                        final List<Patient> objects = task.getResult();
+                                        System.out.println("After here");
+                                        for(Patient pat:objects){
+                                            if(pat.getUsername().equals(pat_user_name)){
+                                                patient = pat;
+                                                break;
+                                            }
+                                        }
+                                        Log.e(CLASS_NAME, "HERE");
+                                        Appointments app = new Appointments();
+                                        app.setPatUsername(pat_user_name);
+                                        app.setPatName(patient.getName());
+                                        app.setStatus("pending");
+                                        app.setDocName(doc_name);
+                                        app.setDocUsername(doc_user_name);
+                                        String setdate = "" + myCalendar.get(Calendar.DAY_OF_MONTH)  + myCalendar.get(Calendar.MONTH) +  myCalendar.get(Calendar.YEAR);
+                                        app.setDate(setdate);
+                                        String settime = "" + myCalendar.get(Calendar.HOUR) + ":" + myCalendar.get(Calendar.MINUTE);
+                                        app.setTme(settime);
+
+                                        app.save().continueWith(new Continuation<IBMDataObject, Void>() {
+
+                                            @Override
+                                            public Void then(Task<IBMDataObject> task) throws Exception {
+                                                if (task.isFaulted()) {
+                                                    // Handle errors
+                                                    Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                                                    return null;
+                                                } else {
+                                                    Appointments myapp = (Appointments) task.getResult();
+                                                    Log.e(CLASS_NAME,myapp.getDocName());
+                                                    Log.e(CLASS_NAME,myapp.getPatName());
+                                                    // Do more work
+                                                }
+                                                return null;
+                                            }
+                                        });
+
+
+                                    }
+                                    return null;
+                                }
+                            }, Task.UI_THREAD_EXECUTOR);
+                        } catch (IBMDataException error) {
+                            Log.e(CLASS_NAME,"Exception : " + error.getMessage());
+                        }
+
+                    }
+                };
+
+        final Context context = this;
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                view.setMinDate(System.currentTimeMillis() - 1000);
+                TimePickerDialog time_picker = new TimePickerDialog(context,
+                        timePickerListener, hour, minute,false);
+                time_picker.show();
+
+            }
+
+        };
+
+
+
         take_appointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                DatePickerDialog date_picker = new DatePickerDialog(Doctor_Page.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                date_picker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                date_picker.show();
             }
         });
-
-        final Context context = this;
 
         Button back = (Button) findViewById(R.id.button3);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, SearchResults.class);
-                intent.putExtra("search", lat + " " + lon + " " + doc_specialization);
+                intent.putExtra("search", lat + " " + lon + " " + doc_specialization + " " + pat_user_name);
                 startActivity(intent);
             }
         });
