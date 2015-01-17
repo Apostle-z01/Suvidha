@@ -66,6 +66,8 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
             }
         });
 
+        //  connect to database and invoke populate
+
         populate();
 
         ArrayAdapter<String> adapter_state = new ArrayAdapter<String>(this,
