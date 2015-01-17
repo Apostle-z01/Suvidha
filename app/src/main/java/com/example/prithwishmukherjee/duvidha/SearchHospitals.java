@@ -47,7 +47,7 @@ public class SearchHospitals extends ActionBarActivity {
     List<String> list;
     List<String> list1;
     List<String> search_type;
-    ArrayList<Doctor> doctors = new ArrayList<Doctor>();
+    ArrayList<Hospital> hospitals = new ArrayList<Hospital>();
     public static final String CLASS_NAME = "Search_Results";
     Spinner sp;
     EditText text;
@@ -73,9 +73,7 @@ public class SearchHospitals extends ActionBarActivity {
         final Context context = this;
 
         search_type = new ArrayList<String>();
-        search_type.add("Top Rated Hospitals");
         search_type.add("Nearest First");
-        search_type.add("Cheapest First");
         search_type.add("By Name");
 
         Intent intent = getIntent();
@@ -110,30 +108,30 @@ public class SearchHospitals extends ActionBarActivity {
                         ll.addView(textview);
                         num_views++;
 
-                        final AutoCompleteTextView autoDoctorNames = new AutoCompleteTextView(SearchHospitals.this);
+                        final AutoCompleteTextView autoHospitalNames = new AutoCompleteTextView(SearchHospitals.this);
                         populate();
-                        autoDoctorNames.setText("Type Name here");
+                        autoHospitalNames.setText("Type Name here");
 
-                        autoDoctorNames.setOnTouchListener(new View.OnTouchListener() {
+                        autoHospitalNames.setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View v, MotionEvent event) {
-                                autoDoctorNames.setText("");
+                                autoHospitalNames.setText("");
                                 return false;
                             }
                         });
 
-                        autoDoctorNames.setOnClickListener(new View.OnClickListener() {
+                        autoHospitalNames.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                autoDoctorNames.setText("");
+                                autoHospitalNames.setText("");
                             }
                         });
 
                         ArrayAdapter adapter = new ArrayAdapter
                                 (SearchHospitals.this,android.R.layout.simple_list_item_1,Globals.doctors);
-                        autoDoctorNames.setAdapter(adapter);
+                        autoHospitalNames.setAdapter(adapter);
 
-                        ll.addView(autoDoctorNames);
+                        ll.addView(autoHospitalNames);
                         num_views++;
 
                         Button button = new Button(SearchHospitals.this);
@@ -146,25 +144,16 @@ public class SearchHospitals extends ActionBarActivity {
                             @Override
                             public void onClick(View v) {
 
-                                final ArrayList<Doctor> new_doctors = new ArrayList<Doctor>();
-                                System.out.println("Size = " + doctors.size());
-                                for (int i = 0; i < doctors.size(); i++) {
-                                    System.out.println(doctors.get(i).getName() + " " + autoDoctorNames.getText());
-                                    if (doctors.get(i).getName().toLowerCase().matches("(.*)" + autoDoctorNames.getText().toString().toLowerCase() + "(.*)")) {
-                                        new_doctors.add(doctors.get(i));
+                                final ArrayList<Hospital> new_hospitals = new ArrayList<Hospital>();
+                                System.out.println("Size = " + hospitals.size());
+                                for (int i = 0; i < hospitals.size(); i++) {
+                                    System.out.println(hospitals.get(i).getName() + " " + autoHospitalNames.getText());
+                                    if (hospitals.get(i).getName().toLowerCase().matches("(.*)" + autoHospitalNames.getText().toString().toLowerCase() + "(.*)")) {
+                                        new_hospitals.add(hospitals.get(i));
                                     }
                                 }
 
-                                autoDoctorNames.setText("Type Name here");
-                                Collections.sort(new_doctors, new Comparator<Doctor>() {
-                                    public int compare(Doctor d1, Doctor d2) {
-                                        if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating()))
-                                            return -1;
-                                        if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating()))
-                                            return 1;
-                                        else return 0;
-                                    }
-                                });
+                                autoHospitalNames.setText("Type Name here");
 
 
                                 System.out.println("Checking now" + num_views);
@@ -174,7 +163,7 @@ public class SearchHospitals extends ActionBarActivity {
                                 }
 
                                 num_views = 3;
-                                for (int i = 0; i < new_doctors.size(); i++) {
+                                for (int i = 0; i < new_hospitals.size(); i++) {
 
                                     final TextView grid = new TextView(SearchHospitals.this);
                                     if (i % 2 == 0) {
@@ -184,14 +173,14 @@ public class SearchHospitals extends ActionBarActivity {
                                     }
                                     grid.setId(i);
                                     grid.setTextColor(Color.WHITE);
-                                    grid.setText("Name - " + new_doctors.get(i).getName() + " Fees - " + new_doctors.get(i).getFees());
+                                    grid.setText("Name - " + new_hospitals.get(i).getName());
 
                                     grid.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             if(click == 1) {
-                                                Intent intent = new Intent(context, Doctor_Page.class);
-                                                intent.putExtra("doctor", new_doctors.get(grid.getId()).getName() + "#" + new_doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
+                                                Intent intent = new Intent(context, Hospital_Page.class);
+                                                intent.putExtra("hospital", new_hospitals.get(grid.getId()).getName() + "#" + new_hospitals.get(grid.getId()).getUsername() + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                                 startActivity(intent);
                                                 click = 1;
                                             }
@@ -202,100 +191,6 @@ public class SearchHospitals extends ActionBarActivity {
                                     });
 
                                     ll.addView(grid);
-                                    num_views++;
-
-                                    LinearLayout lil = new LinearLayout(SearchHospitals.this);
-                                    lil.setOrientation(LinearLayout.HORIZONTAL);
-
-                                    final RatingBar rating = new RatingBar(SearchHospitals.this);
-
-                                    rating.setNumStars(5);
-                                    rating.setStepSize((float) 0.5);
-                                    rating.setRating((float) Double.parseDouble(new_doctors.get(i).getRating()));
-                                    rating.setId(i);
-                                    rating.setIsIndicator(true);
-
-                                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
-                                            ((int) ViewGroup.LayoutParams.WRAP_CONTENT, (int) ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                                    rating.setLayoutParams(params);
-
-                                    if (i % 2 == 0) {
-                                        rating.setBackgroundColor(Color.rgb(180,180,180));
-                                    } else {
-                                        rating.setBackgroundColor(Color.rgb(120,120,120));
-                                    }
-                                    lil.addView(rating);
-
-                                    rating.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if(click == 1) {
-                                                Intent intent = new Intent(context, Doctor_Page.class);
-                                                intent.putExtra("doctor", new_doctors.get(rating.getId()).getName() + "#" + new_doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
-                                                startActivity(intent);
-                                                click = 1;
-                                            }
-                                            else {
-                                                click++;
-                                            }
-                                        }
-                                    });
-
-                                    final TextView textviews1 = new TextView(SearchHospitals.this);
-                                    if (i % 2 == 0) {
-                                        textviews1.setBackgroundColor(Color.rgb(180,180,180));
-                                    } else {
-                                        textviews1.setBackgroundColor(Color.rgb(120,120,120));
-                                    }
-                                    textviews1.setWidth(420);
-                                    textviews1.setHeight(75);
-                                    textviews1.setId(i);
-
-                                    textviews1.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if(click == 1) {
-                                                Intent intent = new Intent(context, Doctor_Page.class);
-                                                intent.putExtra("doctor", new_doctors.get(textviews1.getId()).getName() + "#" + new_doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
-                                                startActivity(intent);
-                                                click = 1;
-                                            }
-                                            else {
-                                                click++;
-                                            }
-                                        }
-                                    });
-
-                                    lil.addView(textviews1);
-
-                                    final TextView textviews = new TextView(SearchHospitals.this);
-                                    if (i % 2 == 0) {
-                                        textviews.setBackgroundColor(Color.rgb(180,180,180));
-                                    } else {
-                                        textviews.setBackgroundColor(Color.rgb(120,120,120));
-                                    }
-                                    textviews.setWidth(300);
-                                    textviews.setHeight(75);
-                                    textviews.setId(i);
-                                    lil.addView(textviews);
-
-                                    textviews.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if(click == 1) {
-                                                Intent intent = new Intent(context, Doctor_Page.class);
-                                                intent.putExtra("doctor", new_doctors.get(textviews.getId()).getName() + "#" + new_doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
-                                                startActivity(intent);
-                                                click = 1;
-                                            }
-                                            else {
-                                                click++;
-                                            }
-                                        }
-                                    });
-
-                                    ll.addView(lil);
                                     num_views++;
 
                                 }
@@ -317,8 +212,8 @@ public class SearchHospitals extends ActionBarActivity {
                         num_views = 0;
 
                         if (search_type.get(arg2).equals("Nearest First")) {
-                            Collections.sort(doctors, new Comparator<Doctor>() {
-                                public int compare(Doctor d1, Doctor d2) {
+                            Collections.sort(hospitals, new Comparator<Hospital>() {
+                                public int compare(Hospital d1, Hospital d2) {
                                     float dist1 = distFrom((float) Double.parseDouble(d1.getLat()), (float) Double.parseDouble(d1.getLon()), (float) lat, (float) lon);
                                     float dist2 = distFrom((float) Double.parseDouble(d2.getLat()), (float) Double.parseDouble(d2.getLon()), (float) lat, (float) lon);
                                     if (dist1 > dist2) {
@@ -327,53 +222,14 @@ public class SearchHospitals extends ActionBarActivity {
                                     if (dist1 < dist2) {
                                         return -1;
                                     } else {
-                                        if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating())) {
-                                            return -1;
-                                        }
-                                        if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating())) {
-                                            return 1;
-                                        } else {
-                                            return 0;
-                                        }
+                                        return 0;
                                     }
-                                }
-                            });
-
-                        } else if (search_type.get(arg2).equals("Cheapest First")) {
-                            Collections.sort(doctors, new Comparator<Doctor>() {
-                                public int compare(Doctor d1, Doctor d2) {
-                                    if (Integer.parseInt(d1.getFees()) > Integer.parseInt(d2.getFees())) {
-                                        return 1;
-                                    }
-                                    if (Integer.parseInt(d1.getFees()) < Integer.parseInt(d2.getFees())) {
-                                        return -1;
-                                    } else {
-                                        if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating())) {
-                                            return -1;
-                                        }
-                                        if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating())) {
-                                            return 1;
-                                        } else {
-                                            return 0;
-                                        }
-                                    }
-                                }
-                            });
-
-                        } else if (search_type.get(arg2).equals("Top Rated Doctors")) {
-                            Collections.sort(doctors, new Comparator<Doctor>() {
-                                public int compare(Doctor d1, Doctor d2) {
-                                    if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating()))
-                                        return -1;
-                                    if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating()))
-                                        return 1;
-                                    else return 0;
                                 }
                             });
 
                         }
 
-                        for (int i = 0; i < doctors.size(); i++) {
+                        for (int i = 0; i < hospitals.size(); i++) {
 
                             final TextView grid = new TextView(SearchHospitals.this);
                             if (i % 2 == 0) {
@@ -383,14 +239,14 @@ public class SearchHospitals extends ActionBarActivity {
                             }
                             grid.setId(i);
                             grid.setTextColor(Color.WHITE);
-                            grid.setText("Name - " + doctors.get(i).getName() + " Fees - " + doctors.get(i).getFees());
+                            grid.setText("Name - " + hospitals.get(i).getName());
 
                             grid.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     if(click == 1) {
-                                        Intent intent = new Intent(context, Doctor_Page.class);
-                                        intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
+                                        Intent intent = new Intent(context, Hospital_Page.class);
+                                        intent.putExtra("hospital", hospitals.get(grid.getId()).getName() + "#" + hospitals.get(grid.getId()).getUsername() + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                         startActivity(intent);
                                         click = 1;
                                     }
@@ -403,99 +259,6 @@ public class SearchHospitals extends ActionBarActivity {
                             ll.addView(grid);
                             num_views++;
 
-                            LinearLayout lil = new LinearLayout(SearchHospitals.this);
-                            lil.setOrientation(LinearLayout.HORIZONTAL);
-
-                            final RatingBar rating = new RatingBar(SearchHospitals.this);
-
-                            rating.setNumStars(5);
-                            rating.setStepSize((float) 0.5);
-                            rating.setRating((float) Double.parseDouble(doctors.get(i).getRating()));
-                            rating.setId(i);
-                            rating.setIsIndicator(true);
-
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
-                                    ((int) ViewGroup.LayoutParams.WRAP_CONTENT, (int) ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                            rating.setLayoutParams(params);
-
-                            if (i % 2 == 0) {
-                                rating.setBackgroundColor(Color.rgb(180,180,180));
-                            } else {
-                                rating.setBackgroundColor(Color.rgb(120,120,120));
-                            }
-                            lil.addView(rating);
-
-                            rating.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(click == 1) {
-                                        Intent intent = new Intent(context, Doctor_Page.class);
-                                        intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
-                                        startActivity(intent);
-                                        click = 1;
-                                    }
-                                    else {
-                                        click++;
-                                    }
-                                }
-                            });
-
-                            final TextView textviews1 = new TextView(SearchHospitals.this);
-                            if (i % 2 == 0) {
-                                textviews1.setBackgroundColor(Color.rgb(180,180,180));
-                            } else {
-                                textviews1.setBackgroundColor(Color.rgb(120,120,120));
-                            }
-                            textviews1.setWidth(420);
-                            textviews1.setHeight(75);
-                            textviews1.setId(i);
-
-                            textviews1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(click == 1) {
-                                        Intent intent = new Intent(context, Doctor_Page.class);
-                                        intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
-                                        startActivity(intent);
-                                        click = 1;
-                                    }
-                                    else {
-                                        click++;
-                                    }
-                                }
-                            });
-
-                            lil.addView(textviews1);
-
-                            final TextView textviews = new TextView(SearchHospitals.this);
-                            if (i % 2 == 0) {
-                                textviews.setBackgroundColor(Color.rgb(180,180,180));
-                            } else {
-                                textviews.setBackgroundColor(Color.rgb(120,120,120));
-                            }
-                            textviews.setWidth(300);
-                            textviews.setHeight(75);
-                            textviews.setId(i);
-                            lil.addView(textviews);
-
-                            textviews.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(click == 1) {
-                                        Intent intent = new Intent(context, Doctor_Page.class);
-                                        intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
-                                        startActivity(intent);
-                                        click = 1;
-                                    }
-                                    else {
-                                        click++;
-                                    }
-                                }
-                            });
-
-                            ll.addView(lil);
-                            num_views++;
 
                         }
                     }
@@ -533,12 +296,12 @@ public class SearchHospitals extends ActionBarActivity {
         Log.e(CLASS_NAME, "Inside onCreate");
         try {
             //To retrieve from the database
-            IBMQuery<Doctor> query = IBMQuery.queryForClass(Doctor.class);
+            IBMQuery<Hospital> query = IBMQuery.queryForClass(Hospital.class);
 
-            query.find().continueWith(new Continuation<List<Doctor>, Void>() {
+            query.find().continueWith(new Continuation<List<Hospital>, Void>() {
 
                 @Override
-                public Void then(Task<List<Doctor>> task) throws Exception {
+                public Void then(Task<List<Hospital>> task) throws Exception {
                     ll = (LinearLayout) findViewById(R.id.li);
                     if (task.isFaulted()) {
                         // Handle errors
@@ -546,40 +309,39 @@ public class SearchHospitals extends ActionBarActivity {
                     } else {
                         // do more work
                         System.out.println("Here");
-                        final List<Doctor> objects = task.getResult();
+                        final List<Hospital> objects = task.getResult();
                         System.out.println("After here");
-                        for (Doctor doc : objects) {
+                        for (Hospital hos : objects) {
                             System.out.println("Entered here");
-                            Log.e(CLASS_NAME, doc.getName());
-                            Log.e(CLASS_NAME, doc.getArea());
-                            Log.e(CLASS_NAME, doc.getAddress());
-                            Log.e(CLASS_NAME, doc.getRating());
-                            if (doc.getArea().matches(area)) {
-                                doctors.add(doc);
-                            }
+                            Log.e(CLASS_NAME, hos.getName());
+                            Log.e(CLASS_NAME, hos.getAddress());
+                            hospitals.add(hos);
                         }
                         Log.e(CLASS_NAME, "HERE");
                     }
 
                     System.out.println("Before Sorting");
 
-                    for (int i = 0; i < doctors.size(); i++) {
-                        System.out.println(doctors.get(i).getRating());
-                    }
-
-                    Collections.sort(doctors, new Comparator<Doctor>() {
-                        public int compare(Doctor d1, Doctor d2) {
-                            if (Double.parseDouble(d1.getRating()) > Double.parseDouble(d2.getRating()))
-                                return -1;
-                            if (Double.parseDouble(d1.getRating()) < Double.parseDouble(d2.getRating()))
-                                return 1;
-                            else return 0;
-                        }
-                    });
 
                     System.out.println("After Sorting");
 
-                    for (int i = 0; i < doctors.size(); i++) {
+                    Collections.sort(hospitals, new Comparator<Hospital>() {
+                        public int compare(Hospital d1, Hospital d2) {
+                            float dist1 = distFrom((float) Double.parseDouble(d1.getLat()), (float) Double.parseDouble(d1.getLon()), (float) lat, (float) lon);
+                            float dist2 = distFrom((float) Double.parseDouble(d2.getLat()), (float) Double.parseDouble(d2.getLon()), (float) lat, (float) lon);
+                            if (dist1 > dist2) {
+                                return 1;
+                            }
+                            if (dist1 < dist2) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    });
+
+
+                    for (int i = 0; i < hospitals.size(); i++) {
 
                         final TextView grid = new TextView(SearchHospitals.this);
                         if (i % 2 == 0) {
@@ -590,14 +352,14 @@ public class SearchHospitals extends ActionBarActivity {
                         grid.setId(i);
                         grid.setTextColor(Color.WHITE);
 
-                        grid.setText("Name - " + doctors.get(i).getName() + " Fees - " + doctors.get(i).getFees());
+                        grid.setText("Name - " + hospitals.get(i).getName() );
 
                         grid.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 if(click == 1) {
-                                    Intent intent = new Intent(context, Doctor_Page.class);
-                                    intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
+                                    Intent intent = new Intent(context, Hospital_Page.class);
+                                    intent.putExtra("hospital", hospitals.get(grid.getId()).getName() + "#" + hospitals.get(grid.getId()).getUsername() + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                     startActivity(intent);
                                     click = 1;
                                 }
@@ -608,102 +370,6 @@ public class SearchHospitals extends ActionBarActivity {
                         });
 
                         ll.addView(grid);
-                        num_views++;
-
-                        LinearLayout lil = new LinearLayout(SearchHospitals.this);
-                        lil.setOrientation(LinearLayout.HORIZONTAL);
-
-                        final RatingBar rating = new RatingBar(SearchHospitals.this);
-
-                        rating.setNumStars(5);
-                        rating.setStepSize((float) 0.5);
-                        rating.setMinimumHeight(200);
-                        rating.setMinimumWidth(200);
-                        rating.setRating((float) Double.parseDouble(doctors.get(i).getRating()));
-                        rating.setId(i);
-                        rating.setIsIndicator(true);
-
-                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams
-                                ((int) ViewGroup.LayoutParams.WRAP_CONTENT, (int) ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                        rating.setLayoutParams(params);
-
-                        if (i % 2 == 0) {
-                            rating.setBackgroundColor(Color.rgb(180,180,180));
-                        } else {
-                            rating.setBackgroundColor(Color.rgb(120,120,120));
-                        }
-                        lil.addView(rating);
-
-                        rating.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if(click == 1) {
-                                    Intent intent = new Intent(context, Doctor_Page.class);
-                                    intent.putExtra("doctor", doctors.get(rating.getId()).getName() + "#" + doctors.get(rating.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
-                                    startActivity(intent);
-                                    click = 1;
-                                }
-                                else {
-                                    click++;
-                                }
-                            }
-                        });
-
-                        final TextView textviews1 = new TextView(SearchHospitals.this);
-                        if (i % 2 == 0) {
-                            textviews1.setBackgroundColor(Color.rgb(180,180,180));
-                        } else {
-                            textviews1.setBackgroundColor(Color.rgb(120,120,120));
-                        }
-                        textviews1.setWidth(420);
-                        textviews1.setHeight(75);
-                        textviews1.setId(i);
-
-                        textviews1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if(click == 1) {
-                                    Intent intent = new Intent(context, Doctor_Page.class);
-                                    intent.putExtra("doctor", doctors.get(textviews1.getId()).getName() + "#" + doctors.get(textviews1.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
-                                    startActivity(intent);
-                                    click = 1;
-                                }
-                                else {
-                                    click++;
-                                }
-                            }
-                        });
-
-                        lil.addView(textviews1);
-
-                        final TextView textviews = new TextView(SearchHospitals.this);
-                        if (i % 2 == 0) {
-                            textviews.setBackgroundColor(Color.rgb(180,180,180));
-                        } else {
-                            textviews.setBackgroundColor(Color.rgb(120,120,120));
-                        }
-                        textviews.setWidth(300);
-                        textviews.setHeight(75);
-                        textviews.setId(i);
-                        lil.addView(textviews);
-
-                        textviews.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if(click == 1) {
-                                    Intent intent = new Intent(context, Doctor_Page.class);
-                                    intent.putExtra("doctor", doctors.get(textviews.getId()).getName() + "#" + doctors.get(textviews.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
-                                    startActivity(intent);
-                                    click = 1;
-                                }
-                                else {
-                                    click++;
-                                }
-                            }
-                        });
-
-                        ll.addView(lil);
                         num_views++;
 
                         queried = 1;
@@ -797,11 +463,43 @@ public class SearchHospitals extends ActionBarActivity {
     public void populate(){
 
         //  populate Globals.state here
+        final ArrayList<Hospital> hospit = new ArrayList<Hospital>();
+        try {
+            //To retrieve from the database
+            IBMQuery<Hospital> query = IBMQuery.queryForClass(Hospital.class);
 
-        Globals.doctors = new String[3];
-        Globals.doctors[0] = "Adhuna";
-        Globals.doctors[1] = "Samrajni";
-        Globals.doctors[2] = "Sneha";
+            query.find().continueWith(new Continuation<List<Hospital>, Void>() {
 
+                @Override
+                public Void then(Task<List<Hospital>> task) throws Exception {
+                    ll = (LinearLayout) findViewById(R.id.li);
+                    if (task.isFaulted()) {
+                        // Handle errors
+                        System.out.println("Entered");
+                    } else {
+                        // do more work
+                        System.out.println("Here");
+                        final List<Hospital> objects = task.getResult();
+                        System.out.println("After here");
+                        for (Hospital hos : objects) {
+                            System.out.println("Entered here");
+                            Log.e(CLASS_NAME, hos.getName());
+                            Log.e(CLASS_NAME, hos.getAddress());
+                            hospit.add(hos);
+                        }
+                        Log.e(CLASS_NAME, "HERE");
+                    }
+
+                    return null;
+                }
+            }, Task.UI_THREAD_EXECUTOR);
+        } catch (IBMDataException error) {
+            Log.e(CLASS_NAME, "Exception : " + error.getMessage());
+        }
+
+        Globals.hospitals = new String[hospit.size()];
+        for(int i = 0;i < hospit.size();i++){
+            Globals.hospitals[i] = hospit.get(i).getName();
+        }
     }
 }

@@ -161,6 +161,10 @@
             android:name=".Doctor_Page"
             android:label="@string/title_activity_doctor__page" >
         </activity>
+        <activity
+            android:name=".Hospital_Page"
+            android:label="@string/title_activity_hospital__page" >
+        </activity>
     </application>
 
 </manifest>

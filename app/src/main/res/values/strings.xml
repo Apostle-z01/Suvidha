@@ -9,11 +9,9 @@
     <string name="button_send">Send</string>
     <string name="google_maps_key">AIzaSyAyKXVVgqdd-UqD8hNhL7P_E-us--716aY</string>
     <string name="disease_prompt">Eye</string>
-    //Database
-    <string name="speech_prompt">Say something&#8230;</string>
+    //Database    <string name="speech_prompt">Say something…</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
-    //Database
-    <string-array name="Diseases">
+    //Database    <string-array name="Diseases">
         <item> Eye </item>
         <item> ENT </item>
         <item> Skin </item>
@@ -23,14 +21,12 @@
         <item> Osteologists</item>
         <item> General physicians</item>
     </string-array>
-
     <string-array name="Search_Options">
         <item> Top Rated Doctors </item>
         <item> Nearest First </item>
         <item> Cheapest First </item>
         <item> By Name </item>
     </string-array>
-
     <string-array name="Days">
         <item>Monday </item>
         <item>Tuesday</item>
@@ -72,7 +68,6 @@
 
     <string name="time_hour_prompt">12</string>
 
-
     <string-array name="Time_min">
         <item>00</item>
         <item>15</item>
@@ -81,8 +76,6 @@
     </string-array>
 
     <string name="time_min_prompt">00</string>
-
-
     <string name="title_activity_emergency_page">EmergencyPage</string>
     <string name="title_activity_ambulance">Ambulance</string>
     <string name="title_activity_seach_results">SeachResults</string>
@@ -99,5 +92,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_gen_map">genMap</string>
     <string name="title_activity_doctor__page">Doctor_Page</string>
+    <string name="title_activity_hospital__page">Hospital_Page</string>
 
 </resources>

@@ -107,6 +107,8 @@ public class SuvidhaMember extends ActionBarActivity {
 
     public void searchHospitals()
     {
+        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        String selected = spinner.getSelectedItem().toString();
         myLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         //get last known location, if available
         Location location = myLocationManager.getLastKnownLocation(PROVIDER);
@@ -122,7 +124,7 @@ public class SuvidhaMember extends ActionBarActivity {
         }
 
         Intent intent = new Intent(this, SearchHospitals.class);
-        intent.putExtra("search", lat + " " + lng + " ");
+        intent.putExtra("search", lat + " " + lng + " " + selected + " " + username);
         startActivity(intent);
     }
 
