@@ -162,8 +162,8 @@ public class SuvidhaDoctor extends ActionBarActivity {
         t1.setVisibility(View.VISIBLE);
 
         TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
-        ll.setVisibility(View.GONE);
-        //formTable();
+        ll.setVisibility(View.VISIBLE);
+        formTable();
 
         TextView b1= (TextView)findViewById(R.id.done);
         b1.setVisibility(View.VISIBLE);

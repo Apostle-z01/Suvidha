@@ -87,7 +87,7 @@
         android:clickable="true"
         android:onClick="gotoRateDoctors"
         android:textSize="20dp"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/searchHospitals"
         android:layout_marginTop="40dp" />
 
     <TextView
@@ -157,6 +157,18 @@
             android:onClick="deactiveAppointmentTable"
             android:textSize="20dp"
             android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search Hospitals"
+            android:id="@+id/searchHospitals"
+            android:layout_below="@+id/button"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:onClick="searchHospitals"
+            android:textSize="20dp" />
 
 
     </RelativeLayout>

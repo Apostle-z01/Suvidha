@@ -104,6 +104,27 @@ public class SuvidhaMember extends ActionBarActivity {
         startActivity(intent);
     }
 
+    public void searchHospitals()
+    {
+        myLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        //get last known location, if available
+        Location location = myLocationManager.getLastKnownLocation(PROVIDER);
+        String lat, lng;
+        if (location == null) {
+            //  gps fix not available
+            //  error handling
+            lat = "0";
+            lng = "0";
+        } else {
+            lat = String.valueOf(location.getLatitude());
+            lng = String.valueOf(location.getLongitude());
+        }
+
+        Intent intent = new Intent(this, SearchHospitals.class);
+        intent.putExtra("search", lat + " " + lng + " ");
+        startActivity(intent);
+    }
+
     public void gotoCheckAppointmentStatus(View view)
     {
         //pass username to forum page
