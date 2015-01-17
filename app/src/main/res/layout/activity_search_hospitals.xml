@@ -1,0 +1,71 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="false"
+    android:id="@+id/search_hospitals"
+    android:background="#ccd5d5d5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lii"
+        android:orientation = "vertical"
+        android:background="#ccd5d5d5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="204dp"
+            android:background="#ccd5d5d5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="List of Hospitals"
+                android:id="@+id/textView28"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_above="@+id/spinner5"
+                android:textColor="#ff000000"
+                android:background="#ccd5d5d5"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:layout_width="200dp"
+                android:layout_height="27dp"
+                android:id="@+id/spinner5"
+                android:entries= "@array/Hospital_Search_Options"
+                android:spinnerMode="dropdown"
+                android:background="#ffffffff"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:minHeight="@dimen/abc_action_bar_icon_vertical_padding_material"
+                android:layout_gravity="right"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/imageButton" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search For"
+                android:id="@+id/textView25"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/spinner5"
+                android:layout_alignBottom="@+id/spinner5"
+                android:textColor="#ff000000"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:id="@+id/imageButton2"
+                android:maxHeight="10dp"
+                android:maxWidth="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/textView28"
+                android:src="@drawable/picmic" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

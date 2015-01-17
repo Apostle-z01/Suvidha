@@ -216,6 +216,7 @@ public class Doctor_Page extends ActionBarActivity {
                                 }
                             });
 
+                            System.out.println("Doctor Available after Date :- " + appointments.get(0).getDate() + " and Time :- " + appointments.get(0).getTime());
                             textview4.setTextColor(Color.RED);
                             textview4.setText("Doctor Available after Date :- " + appointments.get(0).getDate() + " and Time :- " + appointments.get(0).getTime());
 
@@ -366,7 +367,15 @@ public class Doctor_Page extends ActionBarActivity {
 
         };
 
-
+        Button reviews = (Button) findViewById(R.id.button4);
+        reviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DoctorReview.class);
+                intent.putExtra("review", doc_name + "#" + doc_user_name + "#" + doc_specialization + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
+                startActivity(intent);
+            }
+        });
 
         take_appointment.setOnClickListener(new View.OnClickListener() {
             @Override

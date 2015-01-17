@@ -169,6 +169,10 @@
             android:name=".DoctorReview"
             android:label="Suvidha" >
         </activity>
+        <activity
+            android:name=".SearchHospitals"
+            android:label="@string/title_activity_search_hospitals" >
+        </activity>
     </application>
 
 </manifest>

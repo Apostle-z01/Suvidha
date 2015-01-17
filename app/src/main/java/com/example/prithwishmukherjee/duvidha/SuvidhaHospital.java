@@ -94,11 +94,12 @@ public class SuvidhaHospital extends ActionBarActivity {
                     } else {
                         // do more work
                         List<Doctor> objects = task.getResult();
+                        int i = 0;
                         for(final Doctor doc:objects){
                             Log.e(CLASS_NAME, doc.getUsername());
                             Log.e(CLASS_NAME, doc.getName());
                             Log.e(CLASS_NAME, doc.getArea());
-                            //doctors.add(doc);
+                            doctors.add(doc);
 
                             //if(!doc.getHosUsername().equalsIgnoreCase(username)){
                                 TableRow row = new TableRow(context);
@@ -114,10 +115,12 @@ public class SuvidhaHospital extends ActionBarActivity {
                                 darea.setText(doc.getArea());
                                 darea.setTextSize(30);
 
-                                ImageButton acceptAppointment = new ImageButton(context);
+                                final ImageButton acceptAppointment = new ImageButton(context);
                                 acceptAppointment.setImageResource(R.drawable.plus);
                                 acceptAppointment.setClickable(true);
                                 acceptAppointment.setBackgroundColor(Color.WHITE);
+                                acceptAppointment.setId(i);
+                                i++;
                                 acceptAppointment.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -128,14 +131,13 @@ public class SuvidhaHospital extends ActionBarActivity {
                                         ViewGroup container = ((ViewGroup)row.getParent());
                                         // delete the row and invalidate your view so it gets redrawn
                                         TextView temptextview= (TextView) ((ViewGroup)row).getChildAt(0);
-                                        String username = (String) temptextview.getText();
 
                                         //Add to hospital_Doctor
                                         Hospital_Doctor hos_doc = new Hospital_Doctor();
-                                        hos_doc.setDocName(doc.getName());
+                                        hos_doc.setDocName(doctors.get(acceptAppointment.getId()).getName());
                                         hos_doc.setHosName(hosName);
-                                        hos_doc.setDocUsername(doc.getUsername());
-                                        hos_doc.setArea(doc.getArea());
+                                        hos_doc.setDocUsername(doctors.get(acceptAppointment.getId()).getUsername());
+                                        hos_doc.setArea(doctors.get(acceptAppointment.getId()).getArea());
                                         hos_doc.setHosUsername(username);
 
                                         hos_doc.save().continueWith(new Continuation<IBMDataObject, Void>() {

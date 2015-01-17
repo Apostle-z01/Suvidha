@@ -105,7 +105,7 @@ public class SuvidhaMember extends ActionBarActivity {
         startActivity(intent);
     }
 
-    public void searchHospitals()
+    public void searchHospitals(View v)
     {
         Spinner spinner = (Spinner)findViewById(R.id.spinner);
         String selected = spinner.getSelectedItem().toString();

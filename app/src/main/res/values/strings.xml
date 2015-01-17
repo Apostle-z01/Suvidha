@@ -11,7 +11,7 @@
     <string name="disease_prompt">Eye</string>
     //Database        <string name="speech_prompt">Say something…</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
-    //Database        <string-array name="Diseases">
+    //Database    <string-array name="Diseases">
         <item> Eye </item>
         <item> ENT </item>
         <item> Skin </item>
@@ -25,6 +25,10 @@
         <item> Top Rated Doctors </item>
         <item> Nearest First </item>
         <item> Cheapest First </item>
+        <item> By Name </item>
+    </string-array>
+    <string-array name="Hospital_Search_Options">
+        <item> Nearest First </item>
         <item> By Name </item>
     </string-array>
     <string-array name="Days">
@@ -94,5 +98,6 @@
     <string name="title_activity_doctor__page">Doctor_Page</string>
     <string name="title_activity_hospital__page">Hospital_Page</string>
     <string name="title_activity_doctor_review">DoctorReview</string>
+    <string name="title_activity_search_hospitals">SearchHospitals</string>
 
 </resources>

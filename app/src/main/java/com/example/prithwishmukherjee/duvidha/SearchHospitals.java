@@ -13,17 +13,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,9 +44,10 @@ public class SearchHospitals extends ActionBarActivity {
     List<String> list1;
     List<String> search_type;
     ArrayList<Hospital> hospitals = new ArrayList<Hospital>();
-    public static final String CLASS_NAME = "Search_Results";
+    public static final String CLASS_NAME = "Search_Hospitals";
     Spinner sp;
-    EditText text;
+    AutoCompleteTextView text;
+    AutoCompleteTextView autoHospitalNames;
     String pat_user_name = new String();
     int num_doctors;
     int num_views = 0;
@@ -61,12 +58,12 @@ public class SearchHospitals extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+        setContentView(R.layout.activity_search_hospitals);
 
         //Intent intent = getIntent();
         //String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
-        ll = (LinearLayout) findViewById(R.id.li);
+        ll = (LinearLayout) findViewById(R.id.lii);
 
         num_doctors = 3;
 
@@ -85,7 +82,7 @@ public class SearchHospitals extends ActionBarActivity {
         pat_user_name = lat_lon[3];
 
 
-        sp = (Spinner) findViewById(R.id.spinner2);
+        sp = (Spinner) findViewById(R.id.spinner5);
 
         sp.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -103,12 +100,13 @@ public class SearchHospitals extends ActionBarActivity {
 
                         final TextView textview = new TextView(SearchHospitals.this);
                         textview.setText("Search Name");
+                        textview.setTextSize(30);
 
                         textview.setTextColor(Color.BLACK);
                         ll.addView(textview);
                         num_views++;
 
-                        final AutoCompleteTextView autoHospitalNames = new AutoCompleteTextView(SearchHospitals.this);
+                        autoHospitalNames = new AutoCompleteTextView(SearchHospitals.this);
                         populate();
                         autoHospitalNames.setText("Type Name here");
 
@@ -120,16 +118,14 @@ public class SearchHospitals extends ActionBarActivity {
                             }
                         });
 
+                        text = autoHospitalNames;
+
                         autoHospitalNames.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 autoHospitalNames.setText("");
                             }
                         });
-
-                        ArrayAdapter adapter = new ArrayAdapter
-                                (SearchHospitals.this,android.R.layout.simple_list_item_1,Globals.doctors);
-                        autoHospitalNames.setAdapter(adapter);
 
                         ll.addView(autoHospitalNames);
                         num_views++;
@@ -174,6 +170,7 @@ public class SearchHospitals extends ActionBarActivity {
                                     grid.setId(i);
                                     grid.setTextColor(Color.WHITE);
                                     grid.setText("Name - " + new_hospitals.get(i).getName());
+                                    grid.setTextSize(30);
 
                                     grid.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -240,6 +237,7 @@ public class SearchHospitals extends ActionBarActivity {
                             grid.setId(i);
                             grid.setTextColor(Color.WHITE);
                             grid.setText("Name - " + hospitals.get(i).getName());
+                            grid.setTextSize(30);
 
                             grid.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -270,7 +268,7 @@ public class SearchHospitals extends ActionBarActivity {
             }
         });
 
-        ImageButton button = (ImageButton) findViewById(R.id.imageButton);
+        ImageButton button = (ImageButton) findViewById(R.id.imageButton2);
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -302,7 +300,7 @@ public class SearchHospitals extends ActionBarActivity {
 
                 @Override
                 public Void then(Task<List<Hospital>> task) throws Exception {
-                    ll = (LinearLayout) findViewById(R.id.li);
+                    ll = (LinearLayout) findViewById(R.id.lii);
                     if (task.isFaulted()) {
                         // Handle errors
                         System.out.println("Entered");
@@ -353,6 +351,7 @@ public class SearchHospitals extends ActionBarActivity {
                         grid.setTextColor(Color.WHITE);
 
                         grid.setText("Name - " + hospitals.get(i).getName() );
+                        grid.setTextSize(30);
 
                         grid.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -472,7 +471,7 @@ public class SearchHospitals extends ActionBarActivity {
 
                 @Override
                 public Void then(Task<List<Hospital>> task) throws Exception {
-                    ll = (LinearLayout) findViewById(R.id.li);
+                    ll = (LinearLayout) findViewById(R.id.lii);
                     if (task.isFaulted()) {
                         // Handle errors
                         System.out.println("Entered");
@@ -488,6 +487,14 @@ public class SearchHospitals extends ActionBarActivity {
                             hospit.add(hos);
                         }
                         Log.e(CLASS_NAME, "HERE");
+                        Globals.hospitals = new String[hospit.size()];
+                        for(int i = 0;i < hospit.size();i++){
+                            Globals.hospitals[i] = hospit.get(i).getName();
+                        }
+
+                        ArrayAdapter adapter = new ArrayAdapter
+                                (SearchHospitals.this,android.R.layout.simple_list_item_1,Globals.hospitals);
+                        autoHospitalNames.setAdapter(adapter);
                     }
 
                     return null;
@@ -497,9 +504,5 @@ public class SearchHospitals extends ActionBarActivity {
             Log.e(CLASS_NAME, "Exception : " + error.getMessage());
         }
 
-        Globals.hospitals = new String[hospit.size()];
-        for(int i = 0;i < hospit.size();i++){
-            Globals.hospitals[i] = hospit.get(i).getName();
-        }
     }
 }

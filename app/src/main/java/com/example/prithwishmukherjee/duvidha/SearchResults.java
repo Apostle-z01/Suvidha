@@ -19,7 +19,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -50,7 +49,8 @@ public class SearchResults extends ActionBarActivity {
     ArrayList<Doctor> doctors = new ArrayList<Doctor>();
     public static final String CLASS_NAME = "Search_Results";
     Spinner sp;
-    EditText text;
+    AutoCompleteTextView text;
+    AutoCompleteTextView autoDoctorNames;
     String pat_user_name = new String();
     int num_doctors;
     int num_views = 0;
@@ -110,7 +110,7 @@ public class SearchResults extends ActionBarActivity {
                         ll.addView(textview);
                         num_views++;
 
-                        final AutoCompleteTextView autoDoctorNames = new AutoCompleteTextView(SearchResults.this);
+                        autoDoctorNames = new AutoCompleteTextView(SearchResults.this);
                         populate();
                         autoDoctorNames.setText("Type Name here");
 
@@ -128,10 +128,8 @@ public class SearchResults extends ActionBarActivity {
                                 autoDoctorNames.setText("");
                             }
                         });
+                        text = autoDoctorNames;
 
-                        ArrayAdapter adapter = new ArrayAdapter
-                                (SearchResults.this,android.R.layout.simple_list_item_1,Globals.doctors);
-                        autoDoctorNames.setAdapter(adapter);
 
                         ll.addView(autoDoctorNames);
                         num_views++;
@@ -249,7 +247,7 @@ public class SearchResults extends ActionBarActivity {
                                         textviews1.setBackgroundColor(Color.rgb(120,120,120));
                                     }
                                     textviews1.setWidth(420);
-                                    textviews1.setHeight(75);
+                                    textviews1.setHeight(115);
                                     textviews1.setId(i);
 
                                     textviews1.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +274,7 @@ public class SearchResults extends ActionBarActivity {
                                         textviews.setBackgroundColor(Color.rgb(120,120,120));
                                     }
                                     textviews.setWidth(300);
-                                    textviews.setHeight(75);
+                                    textviews.setHeight(115);
                                     textviews.setId(i);
                                     lil.addView(textviews);
 
@@ -448,7 +446,7 @@ public class SearchResults extends ActionBarActivity {
                                 textviews1.setBackgroundColor(Color.rgb(120,120,120));
                             }
                             textviews1.setWidth(420);
-                            textviews1.setHeight(75);
+                            textviews1.setHeight(115);
                             textviews1.setId(i);
 
                             textviews1.setOnClickListener(new View.OnClickListener() {
@@ -475,7 +473,7 @@ public class SearchResults extends ActionBarActivity {
                                 textviews.setBackgroundColor(Color.rgb(120,120,120));
                             }
                             textviews.setWidth(300);
-                            textviews.setHeight(75);
+                            textviews.setHeight(115);
                             textviews.setId(i);
                             lil.addView(textviews);
 
@@ -595,13 +593,12 @@ public class SearchResults extends ActionBarActivity {
                         grid.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(click == 1) {
+                                if (click == 1) {
                                     Intent intent = new Intent(context, Doctor_Page.class);
                                     intent.putExtra("doctor", doctors.get(grid.getId()).getName() + "#" + doctors.get(grid.getId()).getUsername() + "#" + area + "#" + String.valueOf(lat) + "#" + String.valueOf(lon) + "#" + pat_user_name);
                                     startActivity(intent);
                                     click = 1;
-                                }
-                                else {
+                                } else {
                                     click++;
                                 }
                             }
@@ -657,7 +654,7 @@ public class SearchResults extends ActionBarActivity {
                             textviews1.setBackgroundColor(Color.rgb(120,120,120));
                         }
                         textviews1.setWidth(420);
-                        textviews1.setHeight(75);
+                        textviews1.setHeight(115);
                         textviews1.setId(i);
 
                         textviews1.setOnClickListener(new View.OnClickListener() {
@@ -684,7 +681,7 @@ public class SearchResults extends ActionBarActivity {
                             textviews.setBackgroundColor(Color.rgb(120,120,120));
                         }
                         textviews.setWidth(300);
-                        textviews.setHeight(75);
+                        textviews.setHeight(115);
                         textviews.setId(i);
                         lil.addView(textviews);
 
@@ -821,6 +818,14 @@ public class SearchResults extends ActionBarActivity {
                             doct.add(doc);
                         }
                         Log.e(CLASS_NAME, "HERE");
+                        Globals.doctors = new String[doct.size()];
+                        Log.e(String.valueOf(doct.size()),"cause fuck you, you don't know async");
+                        for(int i = 0;i < doct.size();i++){
+                            Globals.doctors[i] = doct.get(i).getName();
+                        }
+                        ArrayAdapter adapter = new ArrayAdapter
+                                (SearchResults.this,android.R.layout.simple_list_item_1,Globals.doctors);
+                        autoDoctorNames.setAdapter(adapter);
                     }
 
                     return null;
@@ -830,9 +835,5 @@ public class SearchResults extends ActionBarActivity {
             Log.e(CLASS_NAME, "Exception : " + error.getMessage());
         }
 
-        Globals.doctors = new String[doct.size()];
-        for(int i = 0;i < doct.size();i++){
-            Globals.doctors[i] = doct.get(i).getName();
-        }
     }
 }
