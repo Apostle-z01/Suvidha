@@ -120,7 +120,7 @@ public class PendingAppointments extends ActionBarActivity {
                                         String username = (String) temptextview.getText();
 
                                         //Change status from pending to existing
-                                        app.setStatus("existing");
+                                        app.setStatus("confirmed");
                                         app.save().continueWith(new Continuation<IBMDataObject, Object>() {
                                             @Override
                                             public Object then(Task<IBMDataObject> task) throws Exception {
