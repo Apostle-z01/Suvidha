@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -104,26 +106,30 @@ public class SearchResults extends ActionBarActivity {
                         ll.addView(textview);
                         num_views++;
 
-                        final EditText edittext = new EditText(SearchResults.this);
-                        edittext.setText("Type Name here");
+                        final AutoCompleteTextView autoDoctorNames = new AutoCompleteTextView(SearchResults.this);
+                        populate();
+                        autoDoctorNames.setText("Type Name here");
 
-                        edittext.setOnTouchListener(new View.OnTouchListener() {
+                        autoDoctorNames.setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View v, MotionEvent event) {
-                                edittext.setText("");
+                                autoDoctorNames.setText("");
                                 return false;
                             }
                         });
 
-                        edittext.setOnClickListener(new View.OnClickListener() {
+                        autoDoctorNames.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                edittext.setText("");
+                                autoDoctorNames.setText("");
                             }
                         });
 
+                        ArrayAdapter adapter = new ArrayAdapter
+                                (SearchResults.this,android.R.layout.simple_list_item_1,Globals.doctors);
+                        autoDoctorNames.setAdapter(adapter);
 
-                        ll.addView(edittext);
+                        ll.addView(autoDoctorNames);
                         num_views++;
 
                         Button button = new Button(SearchResults.this);
@@ -139,13 +145,13 @@ public class SearchResults extends ActionBarActivity {
                                 ArrayList<Doctor> new_doctors = new ArrayList<Doctor>();
                                 System.out.println("Size = " + doctors.size());
                                 for (int i = 0; i < doctors.size(); i++) {
-                                    System.out.println(doctors.get(i).getName() + " " + edittext.getText());
-                                    if (doctors.get(i).getName().toLowerCase().matches("(.*)" + edittext.getText().toString().toLowerCase() + "(.*)")) {
+                                    System.out.println(doctors.get(i).getName() + " " + autoDoctorNames.getText());
+                                    if (doctors.get(i).getName().toLowerCase().matches("(.*)" + autoDoctorNames.getText().toString().toLowerCase() + "(.*)")) {
                                         new_doctors.add(doctors.get(i));
                                     }
                                 }
 
-                                edittext.setText("Type Name here");
+                                autoDoctorNames.setText("Type Name here");
                                 System.out.println("Checking now" + num_views);
                                 for (int i = num_views; i > 3; i--) {
                                     System.out.println("Checking" + i);
@@ -768,4 +774,14 @@ public class SearchResults extends ActionBarActivity {
         return dist;
     }
 
+    public void populate(){
+
+        //  populate Globals.state here
+
+        Globals.doctors = new String[3];
+        Globals.doctors[0] = "Adhuna";
+        Globals.doctors[1] = "Samrajni";
+        Globals.doctors[2] = "Sneha";
+
+    }
 }

@@ -63,6 +63,7 @@
             android:textSize="20dp"
             android:hint="Address"
             android:clickable="true"
+            android:focusableInTouchMode="false"
             android:onClick="genMap"  />
     </RadioGroup>
 

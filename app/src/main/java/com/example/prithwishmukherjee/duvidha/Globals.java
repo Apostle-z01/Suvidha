@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class Globals {
     public static EditText address;
     public static String[] state;
+    public static String[] doctors;
     public static double latitude;
     public static double longitude;
     public static String add;
