@@ -55,7 +55,7 @@ public class SuvidhaDoctor extends ActionBarActivity {
         int rating = 4;
         rb.setRating(rating);
         rb.setIsIndicator(true);
-        formTable();
+        //formTable();
     }
 
 
@@ -136,7 +136,7 @@ public class SuvidhaDoctor extends ActionBarActivity {
         b1.setVisibility(View.GONE);
 
         TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
-        ll.setVisibility(View.VISIBLE);
+        ll.setVisibility(View.GONE);
 
         Spinner sp1 = (Spinner)findViewById(R.id.dayspinner);
         String appDay = sp1.getSelectedItem().toString();
@@ -162,7 +162,8 @@ public class SuvidhaDoctor extends ActionBarActivity {
         t1.setVisibility(View.VISIBLE);
 
         TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
-        ll.setVisibility(View.VISIBLE);
+        ll.setVisibility(View.GONE);
+        //formTable();
 
         TextView b1= (TextView)findViewById(R.id.done);
         b1.setVisibility(View.VISIBLE);
@@ -210,6 +211,7 @@ public class SuvidhaDoctor extends ActionBarActivity {
         TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
         ll.setVisibility(View.VISIBLE);
 
+
         //Add to database using appDay,appTime
         Doctor_Time doc_time = new Doctor_Time();
         doc_time.setDay(appDay);
@@ -252,6 +254,7 @@ public class SuvidhaDoctor extends ActionBarActivity {
         t1.setVisibility(View.VISIBLE);
         TableLayout ll = (TableLayout)findViewById(R.id.docAppointmentTable);
         ll.setVisibility(View.VISIBLE);
+        formTable();
 
         TextView b1= (TextView)findViewById(R.id.done);
         b1.setVisibility(View.VISIBLE);

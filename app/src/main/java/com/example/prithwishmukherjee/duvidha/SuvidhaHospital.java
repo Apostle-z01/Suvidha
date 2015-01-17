@@ -43,7 +43,7 @@ public class SuvidhaHospital extends ActionBarActivity {
         hosName = intent.getStringExtra(MainActivity.EXTRA_MESSAGE_NAME);
 
         TextView textView = (TextView)findViewById(R.id.textView11);
-        textView.setText(username + " Hospital");
+        textView.setText("Welcome " + username + " Hospital");
 
         doctors = new ArrayList<Doctor>();
     }
@@ -76,6 +76,7 @@ public class SuvidhaHospital extends ActionBarActivity {
         final TableLayout ll = (TableLayout)findViewById(R.id.docTable);
         ll.setStretchAllColumns(true);
         ll.setVerticalScrollBarEnabled(true);
+        ll.removeAllViews();
 
         final Context context = this;
 
@@ -167,6 +168,61 @@ public class SuvidhaHospital extends ActionBarActivity {
                                 row.addView(dname);row.addView(darea);row.addView(acceptAppointment);
                                 ll.addView(row, index);
                                 index++;
+                            //}
+                        }
+                    }
+                    return null;
+                }
+            }, Task.UI_THREAD_EXECUTOR);
+        } catch (IBMDataException error) {
+            Log.e(CLASS_NAME,"Exception : " +error.getMessage());
+        }
+    }
+
+    public void existingDoctors(View view)
+    {
+        final TableLayout ll = (TableLayout)findViewById(R.id.docTable);
+        ll.setStretchAllColumns(true);
+        ll.setVerticalScrollBarEnabled(true);
+        ll.removeAllViews();
+        final Context context = this;
+
+        try {
+            //To retrieve from the database
+            doctors.clear();
+            IBMQuery<Hospital_Doctor> query = IBMQuery.queryForClass(Hospital_Doctor.class);
+            query.find().continueWith(new Continuation<List<Hospital_Doctor>, Void>() {
+
+                @Override
+                public Void then(Task<List<Hospital_Doctor>> task) throws Exception {
+                    int index=0;
+                    if (task.isFaulted()) {
+                        // Handle errors
+                    } else {
+                        // do more work
+                        List<Hospital_Doctor> objects = task.getResult();
+                        for(final Hospital_Doctor doc:objects){
+                            Log.e(CLASS_NAME, doc.getDocName());
+                            Log.e(CLASS_NAME, doc.getArea());
+                            //doctors.add(doc);
+
+                            //if(!doc.getHosUsername().equalsIgnoreCase(username)){
+                            TableRow row = new TableRow(context);
+                            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+                            row.setLayoutParams(lp);
+
+                            //Get from Database
+                            TextView dname = new TextView(context);
+                            dname.setText(doc.getDocName());
+
+                            TextView darea = new TextView(context);
+                            darea.setText(doc.getArea());
+
+                            row.setBackgroundColor(Color.WHITE);
+
+                            row.addView(dname);row.addView(darea);
+                            ll.addView(row, index);
+                            index++;
                             //}
                         }
                     }
