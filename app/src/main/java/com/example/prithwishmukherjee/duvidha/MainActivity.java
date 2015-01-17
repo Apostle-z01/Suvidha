@@ -31,6 +31,7 @@ public class MainActivity extends ActionBarActivity {
     public static final String CLASS_NAME="MainActivity";
     int click = 1;
     public final static String EXTRA_MESSAGE = "com.example.prithwishmukherjee.duvidha.MESSAGE";
+    public final static String EXTRA_MESSAGE_NAME = "com.example.prithwishmukherjee.duvidha.MESSAGE_NAME";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,6 +234,7 @@ public class MainActivity extends ActionBarActivity {
                                 else
                                     intent = new Intent(context, SuvidhaHospital.class);
                                 intent.putExtra(EXTRA_MESSAGE, username);
+                                intent.putExtra(EXTRA_MESSAGE_NAME,newUser.getName());
                                 startActivity(intent);
                                 return null;
                             }

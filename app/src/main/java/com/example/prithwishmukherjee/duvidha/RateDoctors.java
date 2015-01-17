@@ -1,33 +1,54 @@
 package com.example.prithwishmukherjee.duvidha;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.AdapterView;
 import android.widget.RatingBar.OnRatingBarChangeListener;
+
+import com.ibm.mobile.services.data.IBMDataException;
+import com.ibm.mobile.services.data.IBMDataObject;
+import com.ibm.mobile.services.data.IBMQuery;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import bolts.Continuation;
+import bolts.Task;
 
 
 public class RateDoctors extends ActionBarActivity implements OnItemSelectedListener{
 
     Spinner spinner;
+    String username;
     RatingBar ratingBar2;
     EditText editReview;
     Button buttonPost;
     TextView textDcotorName;
+    public static final String CLASS_NAME="RateDoctors";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_doctors);
+        Intent intent = getIntent();
+        username = intent.getStringExtra(SuvidhaDoctor.EXTRA_MESSAGE);
         spinner = (Spinner)findViewById(R.id.spinner3);
         ratingBar2 = (RatingBar)findViewById(R.id.ratingBar2);
         editReview = (EditText)findViewById(R.id.editReview);
@@ -56,38 +77,47 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
         spinner.setOnItemSelectedListener(this);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_rate_doctors, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void populate(){
 
         //  populate Globals.state here
+        final List<Appointments> appList = new ArrayList<Appointments>();
+        final Context context = this;
+        try {
+            //To retrieve from the database
+            IBMQuery<Appointments> query = IBMQuery.queryForClass(Appointments.class);
+            query.find().continueWith(new Continuation<List<Appointments>, Void>() {
 
-        Globals.state = new String[3];
+                @Override
+                public Void then(Task<List<Appointments>> task) throws Exception {
+                    if (task.isFaulted()) {
+                        // Handle errors
+                    } else {
+                        // do more work
+                        List<Appointments> objects = task.getResult();
+                        for(final Appointments app:objects){
+                            Log.e(CLASS_NAME, app.getDocUsername());
+                            Log.e(CLASS_NAME, app.getPatUsername());
+                            if(app.getPatUsername().equalsIgnoreCase(username) && app.getStatus().equalsIgnoreCase("confirmed")){
+                                //Add the appointments here, and the patients username
+                                appList.add(app);
+                            }
+                        }
+                    }
+                    return null;
+                }
+            }, Task.UI_THREAD_EXECUTOR);
+        } catch (IBMDataException error) {
+            Log.e(CLASS_NAME,"Exception : " +error.getMessage());
+        }
+
+        Globals.state = new String[appList.size()+1];
         Globals.state[0] = "Select Doctor";
-        Globals.state[1] = "best";
-        Globals.state[2] = "test";
-
+        int index=1;
+        for(Appointments app:appList) {
+            Globals.state[index] = "Dr. "+ appList.get(index-1).getDocName();
+            index++;
+        }
+        Log.e(CLASS_NAME,"Populate done");
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int position,
@@ -112,6 +142,10 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
     }
 
     public void onNothingSelected(AdapterView<?> arg0){
+
+    }
+
+    public void postReview(View v){
 
     }
 }
