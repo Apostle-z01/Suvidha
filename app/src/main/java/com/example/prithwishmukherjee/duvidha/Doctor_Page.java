@@ -230,7 +230,7 @@ public class Doctor_Page extends ActionBarActivity {
                                         String setdate = "" + myCalendar.get(Calendar.DAY_OF_MONTH)  + myCalendar.get(Calendar.MONTH) +  myCalendar.get(Calendar.YEAR);
                                         app.setDate(setdate);
                                         String settime = "" + myCalendar.get(Calendar.HOUR) + ":" + myCalendar.get(Calendar.MINUTE);
-                                        app.setTme(settime);
+                                        app.setTime(settime);
 
                                         app.save().continueWith(new Continuation<IBMDataObject, Void>() {
 

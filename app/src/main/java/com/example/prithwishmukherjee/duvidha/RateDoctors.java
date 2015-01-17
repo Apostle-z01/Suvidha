@@ -153,24 +153,15 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
     }
 
     public void submit(View view){
-        AlertDialog.Builder alertDialog =  new AlertDialog.Builder(this);
-        AlertDialog dialog = alertDialog.create();
-        alertDialog.setTitle("Reviewed!");
-        alertDialog.setMessage("Your review has been submitted");
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        dialog = alertDialog.create();
-        alertDialog.show();
+        Log.e(CLASS_NAME,"Posting data");
+        postReview();
     }
 
     public void onNothingSelected(AdapterView<?> arg0){
 
     }
 
-    public void postReview(View v){
+    public void postReview(){
         String reviewMessage = editReview.getText().toString();
 
         //Add to hospital_Doctor
@@ -244,6 +235,18 @@ public class RateDoctors extends ActionBarActivity implements OnItemSelectedList
                                             Log.e(CLASS_NAME,doc1.getName());
                                             // Do more work
                                         }
+
+                                        AlertDialog.Builder alertDialog =  new AlertDialog.Builder(context);
+                                        AlertDialog dialog = alertDialog.create();
+                                        alertDialog.setTitle("Reviewed!");
+                                        alertDialog.setMessage("Your review has been submitted");
+                                        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                finish();
+                                            }
+                                        });
+                                        dialog = alertDialog.create();
+                                        alertDialog.show();
                                         return null;
                                     }
                                 });
