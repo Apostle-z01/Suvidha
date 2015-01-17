@@ -61,7 +61,9 @@
             android:textColor="#ff000000"
             android:scrollHorizontally="false"
             android:textSize="20dp"
-            android:hint="Address" />
+            android:hint="Address"
+            android:clickable="true"
+            android:onClick="genMap"  />
     </RadioGroup>
 
     <TextView

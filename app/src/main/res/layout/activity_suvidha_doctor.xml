@@ -1,3 +1,13 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="false"
+    android:id="@+id/app_result"
+    android:background="#ffd5d5d5">
+
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -15,7 +25,6 @@
         android:textSize="@dimen/abc_action_bar_progress_bar_size"
         android:singleLine="true"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/imageView2"
         android:textColor="#ff010101" />
 
     <View
@@ -63,13 +72,6 @@
         android:clickable="true"
         android:onClick="updateDetails"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
-        android:layout_below="@+id/textView4"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -79,7 +81,6 @@
         android:textSize="30dp"
         android:textColor="#ff805259"
         android:layout_alignParentStart="true"
-        android:layout_alignLeft="@+id/imageView2"
         android:layout_below="@+id/textView4"
         android:layout_marginTop="30dp" />
 
@@ -93,4 +94,129 @@
         android:stepSize="0.5"
         android:layout_marginTop="25dp" />
 
+    <TextView android:text="Manage your schedule:" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:id="@+id/textViewss"
+        android:layout_below="@+id/updateDetails"
+        android:layout_alignParentStart="true"
+        android:visibility="visible" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:layout_below="@+id/textViewss"
+        android:layout_alignParentStart="true"
+        android:id="@+id/stline5"
+        android:visibility="visible" />
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/docAppointmentTable"
+        android:stretchColumns="0"
+        android:divider="#ffffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="false"
+        android:visibility="gone"
+        android:layout_alignTop="@+id/addAppointment"
+        android:layout_marginTop="100dp">
+    </TableLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:id="@+id/done"
+        android:layout_alignEnd="@id/stl3"
+        android:textColor="#ff753b37"
+        android:clickable="true"
+        android:onClick="deactivateDocAppointmentTable"
+        android:textSize="20dp"
+        android:layout_below="@+id/updateDetails"
+
+        android:visibility="gone" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add new appointment"
+        android:id="@+id/addAppointment"
+        android:layout_below="@+id/stline5"
+        android:layout_alignParentEnd="true"
+        android:background="#ff605643"
+        android:textColor="#ffffffff"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        android:clickable="true"
+        android:onClick="showOptiontoAdd"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dayspinner"
+        android:spinnerMode="dropdown"
+        android:entries= "@array/Days"
+        android:prompt="@string/day_prompt"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/updateDetails" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addb"
+        android:src="@drawable/abc_btn_check_to_on_mtrl_015"
+        android:clickable="true"
+        android:onClick="addAppointmentDoc"
+        android:visibility="gone"
+        android:layout_below="@+id/stline5"
+        android:layout_toStartOf="@+id/cancelb"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancelb"
+        android:src="@drawable/abc_ic_clear_mtrl_alpha"
+        android:clickable="true"
+        android:onClick="removeOptiontoadd"
+        android:visibility="gone"
+        android:layout_below="@+id/stline5"
+        android:layout_marginTop="12dp"
+        android:layout_alignEnd="@+id/stline5" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/doctime_hour"
+        android:layout_alignTop="@+id/cancelb"
+        android:entries= "@array/Time_hour"
+        android:prompt="@string/time_hour_prompt"
+        android:spinnerMode="dropdown"
+        android:layout_alignEnd="@+id/pendingAppointments"
+        android:layout_toEndOf="@id/dayspinner"
+        android:layout_marginLeft="40dp"
+        android:visibility="gone" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/doctime_min"
+        android:layout_marginLeft="10dp"
+        android:entries="@array/Time_min"
+        android:prompt="@string/time_min_prompt"
+        android:spinnerMode="dropdown"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/pendingAppointments"
+        android:layout_toStartOf="@id/addb"
+        android:visibility="gone" />
+
+
 </RelativeLayout>
+</ScrollView>

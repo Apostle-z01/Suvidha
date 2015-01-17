@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:textColor="#ff4d2d34"
         android:textSize="@android:dimen/notification_large_icon_width"
-        android:gravity="left"
         android:id="@+id/u1"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -24,7 +24,7 @@
         android:editable="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/u1"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="120dp"
         android:hint="Username"
         android:textSize="20dp" />
 
@@ -43,39 +43,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login as Guest"
-        android:id="@+id/textView5"
-        android:textSize="25dp"
-        android:background="#ffd5d5d5"
-        android:clickable="true"
-        android:textColor="#ff90372b"
-        android:layout_below="@+id/textView8"
-        android:layout_marginTop="30dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Not registered yet?"
         android:id="@+id/textView6"
         android:textSize="25dp"
         android:clickable="true"
         android:onClick="gotoRegistrationPage"
         android:background="#ffd5d5d5"
         android:textColor="#ff90372b"
-        android:layout_alignTop="@+id/textView7"
-        android:layout_toEndOf="@+id/textView7"
-        android:layout_marginStart="40dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="or"
-        android:id="@+id/textView7"
-        android:textSize="25dp"
-        android:gravity="center_vertical"
-        android:layout_alignTop="@+id/textView5"
-        android:layout_marginLeft="200dp" />
+        android:layout_alignTop="@+id/textView8"
+        android:layout_toEndOf="@+id/textView8"
+        android:layout_marginLeft="50dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -84,10 +61,10 @@
         android:src="@drawable/emergency3"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textView5"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="120dp"
         android:longClickable="true"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:layout_below="@+id/textView8" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -101,6 +78,7 @@
         android:textColor="#ff100202"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/password"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="100dp" />
 
 </RelativeLayout>

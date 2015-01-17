@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import com.ibm.mobile.services.cloudcode.IBMCloudCode;
 import com.ibm.mobile.services.core.http.IBMHttpResponse;
 import com.ibm.mobile.services.data.IBMDataException;
+import com.ibm.mobile.services.data.IBMDataObject;
 import com.ibm.mobile.services.data.IBMQuery;
 
 import org.json.JSONException;
@@ -109,7 +110,7 @@ public class PendingAppointments extends ActionBarActivity {
                                 acceptAppointment.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        confirmAppointment(app.getDocName(),app.getDate(),app.getTime());
+                                        confirmAppointment(app.getDocName(),app.getDate(),app.getTime(),app.getPatUsername());
                                         // row is your row, the parent of the clicked button
                                         View row = (View) v.getParent();
                                         // container contains all the rows, you could keep a variable somewhere else to the container which you can refer to here
@@ -119,7 +120,25 @@ public class PendingAppointments extends ActionBarActivity {
                                         String username = (String) temptextview.getText();
 
                                         //Change status from pending to existing
+                                        app.setStatus("existing");
+                                        app.save().continueWith(new Continuation<IBMDataObject, Object>() {
+                                            @Override
+                                            public Object then(Task<IBMDataObject> task) throws Exception {
+                                                if (task.isFaulted()) {
+                                                    // Handle errors
+                                                    Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                                                    return null;
+                                                } else {
+                                                    Appointments myApp = (Appointments) task.getResult();
+                                                    Log.e(CLASS_NAME,myApp.getStatus());
+                                                    Log.e(CLASS_NAME,myApp.getDocUsername());
+                                                    Log.e(CLASS_NAME,myApp.getPatUsername());
 
+                                                    // Do more work
+                                                }
+                                                return null;
+                                            }
+                                        });
                                         container.removeView(row);
                                         container.invalidate();
                                     }
@@ -134,7 +153,7 @@ public class PendingAppointments extends ActionBarActivity {
                                     @Override
                                     public void onClick(View v) {
                                         // row is your row, the parent of the clicked button
-                                        declineAppointment(app.getDocName(),app.getDate(),app.getTime());
+                                        declineAppointment(app.getDocName(),app.getDate(),app.getTime(),app.getPatUsername());
                                         View row = (View) v.getParent();
                                         // container contains all the rows, you could keep a variable somewhere else to the container which you can refer to here
                                         ViewGroup container = ((ViewGroup)row.getParent());
@@ -143,6 +162,24 @@ public class PendingAppointments extends ActionBarActivity {
                                         String username = (String) temptextview.getText();
 
                                         //Delete from this pending database
+                                        app.delete().continueWith(new Continuation<IBMDataObject, Object>() {
+                                            @Override
+                                            public Object then(Task<IBMDataObject> task) throws Exception {
+                                                if (task.isFaulted()) {
+                                                    // Handle errors
+                                                    Log.e(CLASS_NAME,"Exception: "+task.getError().getMessage());
+                                                    return null;
+                                                } else {
+                                                    Appointments myApp = (Appointments) task.getResult();
+                                                    Log.e(CLASS_NAME,myApp.getStatus());
+                                                    Log.e(CLASS_NAME,myApp.getDocUsername());
+                                                    Log.e(CLASS_NAME,myApp.getPatUsername());
+
+                                                    // Do more work
+                                                }
+                                                return null;
+                                            }
+                                        });
 
                                         container.removeView(row);
                                         container.invalidate();
@@ -175,7 +212,7 @@ public class PendingAppointments extends ActionBarActivity {
     /**
      * Send a notification to all devices whenever the BlueList is modified (create, update, or delete).
      */
-    private void confirmAppointment(String docName, String date, String time) {
+    private void confirmAppointment(String docName, String date, String time, String idName) {
 
         // Initialize and retrieve an instance of the IBM CloudCode service.
         IBMCloudCode.initializeService();
@@ -185,6 +222,7 @@ public class PendingAppointments extends ActionBarActivity {
             jsonObj.put("name", docName);
             jsonObj.put("date", date);
             jsonObj.put("time", time);
+            jsonObj.put("consumerId",idName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -229,7 +267,7 @@ public class PendingAppointments extends ActionBarActivity {
     /**
      * Send a notification to all devices whenever the BlueList is modified (create, update, or delete).
      */
-    private void declineAppointment(String docName, String date, String time) {
+    private void declineAppointment(String docName, String date, String time, String idName) {
 
         // Initialize and retrieve an instance of the IBM CloudCode service.
         IBMCloudCode.initializeService();
@@ -239,6 +277,7 @@ public class PendingAppointments extends ActionBarActivity {
             jsonObj.put("name", docName);
             jsonObj.put("date", date);
             jsonObj.put("time", time);
+            jsonObj.put("consumerId",idName);
         } catch (JSONException e) {
             e.printStackTrace();
         }

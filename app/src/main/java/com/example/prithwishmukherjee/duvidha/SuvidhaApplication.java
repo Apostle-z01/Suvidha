@@ -26,8 +26,6 @@ public class SuvidhaApplication extends Application{
 
     public static IBMPush push = null;
     private Activity mActivity;
-    private static final String deviceAlias = "TargetDevice";
-    private static final String consumerID = "MBaaSListApp";
 
     private static final String APP_ID = "4767ba33-484b-46f6-a74d-e7eab6335e24";
     private static final String APP_SECRET = "8aa7f29ad24faca1da4f4adf01c98da87abb3117";
@@ -143,6 +141,7 @@ public class SuvidhaApplication extends Application{
         Doctor_Time.registerSpecialization(Doctor_Time.class);
 
         //Initialize the IBM push service
+        /*
         IBMPush.initializeService();
         push = IBMPush.getService();
         push.register(deviceAlias, consumerID).continueWith(new Continuation<String, Void>() {
@@ -161,6 +160,7 @@ public class SuvidhaApplication extends Application{
             }
 
         });
+        */
         //push.subscribe(username);
     }
 }
