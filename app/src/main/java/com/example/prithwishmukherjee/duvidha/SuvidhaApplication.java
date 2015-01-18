@@ -140,6 +140,7 @@ public class SuvidhaApplication extends Application{
         Appointments.registerSpecialization(Appointments.class);
         Doctor_Time.registerSpecialization(Doctor_Time.class);
         Hospital_Doctor.registerSpecialization(Hospital_Doctor.class);
+        Reviews.registerSpecialization(Reviews.class);
 
         //Initialize the IBM push service
         /*

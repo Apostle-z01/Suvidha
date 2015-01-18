@@ -44,6 +44,7 @@ public class DoctorReview extends ActionBarActivity {
         lat = doc[3];
         lon = doc[4];
         pat_user_name = doc[5];
+        Log.e(CLASS_NAME,username);
 
         final List<Reviews> reviews = new ArrayList<Reviews>();
         reviews.clear();
@@ -62,15 +63,18 @@ public class DoctorReview extends ActionBarActivity {
 
         try{
             IBMQuery<Reviews> query = IBMQuery.queryForClass(Reviews.class);
+            Log.e(CLASS_NAME,"HERE IN");
             query.find().continueWith(new Continuation<List<Reviews>, Void>() {
-
                 @Override
                 public Void then(Task<List<Reviews>> task) throws Exception {
+                    Log.e(CLASS_NAME,"INSIDE THEN");
                     if (task.isFaulted()) {
                         // Handle errors
+                        Log.e(CLASS_NAME,"CLASS FAULTED");
                     } else {
                         // do more work
                         List<Reviews> objects = task.getResult();
+                        Log.e(CLASS_NAME,"CLASS NOT FAULTED");
                         for(final Reviews rev:objects){
                             Log.e(CLASS_NAME, rev.getPatUsername());
                             Log.e(CLASS_NAME, rev.getReview());

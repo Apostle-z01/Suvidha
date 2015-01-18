@@ -158,14 +158,14 @@ public class Doctor_Page extends ActionBarActivity {
                         else {
                             Collections.sort(appointments, new Comparator<Appointments>() {
                                 public int compare(Appointments a1, Appointments a2) {
-                                    String[] dateobtained1 = a1.getDate().split(".", 3);
+                                    String[] dateobtained1 = a1.getDate().split("\\.", 3);
                                     int day1 = Integer.parseInt(dateobtained1[0]);
                                     int month1 = Integer.parseInt(dateobtained1[1]);
                                     int year1 = Integer.parseInt(dateobtained1[2]);
                                     String[] timeobtained1 = a1.getTime().split(":",2);
                                     int hour1 = Integer.parseInt(timeobtained1[0]);
                                     int minute1 = Integer.parseInt(timeobtained1[1]);
-                                    String[] dateobtained2 = a2.getDate().split(".", 3);
+                                    String[] dateobtained2 = a2.getDate().split("\\.", 3);
                                     int day2 = Integer.parseInt(dateobtained2[0]);
                                     int month2 = Integer.parseInt(dateobtained2[1]);
                                     int year2 = Integer.parseInt(dateobtained2[2]);
